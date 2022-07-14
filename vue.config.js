@@ -6,6 +6,7 @@ const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 
 module.exports = defineConfig({
   transpileDependencies: true,
+  lintOnSave: false, // 关闭eslint检查
   devServer: {
     host: 'localhost',
     port: 8090,
@@ -28,17 +29,13 @@ module.exports = defineConfig({
         '@assets': path.resolve(__dirname, 'src/assets'),
         '@comp': path.resolve(__dirname, 'src/components'),
         '@views': path.resolve(__dirname, 'src/views')
-      },
-      mainFields: ['style', 'main'], // 先用bootstrap中在package中的style,没有在用main
-      extensions: ['.js', '.css', '.json'] // 当没有拓展名的时候，先默认js、次之css、再次之json
+      }
     })
 
     config.plugins.push(
       AutoImport({
         resolvers: [ElementPlusResolver()]
-      })
-    )
-    config.plugins.push(
+      }),
       Components({
         resolvers: [ElementPlusResolver()]
       })
