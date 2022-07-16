@@ -4,56 +4,45 @@
       <el-col :xs="22" :sm="20" :md="19" :lg="18" :xl="16">
         <div class="inner-wrapper">
           <div class="title"></div>
-          <el-form :model="formInline" label-width="0px" class="el-form">
+          <el-form :model="formInline" label-width="0px" style="width:100%;">
             <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
               <el-tab-pane label="账号密码登录" name="first">
-                <el-row>
-                  <el-col :span="24">
-                    <el-form-item>
-                      <input-wrapper
-                        v-model="formInline.username"
-                        label="用户名"
-                        placeholder="请输入用户名"
-                        clearable
-                        :prefix-icon="User"
-                      ></input-wrapper>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="24">
-                    <el-form-item>
-                      <input-wrapper
-                        v-model="formInline.password"
-                        label="密码"
-                        placeholder="请输入密码"
-                        :prefix-icon="Lock"
-                        show-password
-                      ></input-wrapper>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
+                <el-form-item>
+                  <input-wrapper
+                    v-model="formInline.username"
+                    label="用户名"
+                    placeholder="请输入用户名"
+                    clearable
+                    :prefix-icon="User"
+                  ></input-wrapper>
+                </el-form-item>
+                <el-form-item>
+                  <input-wrapper
+                    v-model="formInline.password"
+                    label="密码"
+                    placeholder="请输入密码"
+                    :prefix-icon="Lock"
+                    show-password
+                  ></input-wrapper>
+                </el-form-item>
               </el-tab-pane>
               <el-tab-pane label="手机号登录" name="second">
-                <el-row>
-                  <el-col :span="24">
-                    <el-form-item>
-                      <input-wrapper
-                        v-model="formInline.username"
-                        label="手机号"
-                        placeholder="请输入手机号码"
-                        clearable
-                        :prefix-icon="Iphone"
-                      ></input-wrapper>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="24">
-                    <short-msg
-                      v-model="formInline.password"
-                      label="验证码"
-                      placeholder="请输入验证码"
-                      :prefix-icon="Cellphone"
-                    ></short-msg>
-                  </el-col>
-                </el-row>
+                <el-form-item>
+                  <input-wrapper
+                    v-model="formInline.username"
+                    label="手机号"
+                    placeholder="请输入手机号码"
+                    clearable
+                    :prefix-icon="Iphone"
+                  ></input-wrapper>
+                </el-form-item>
+
+                <short-msg
+                  v-model="formInline.password"
+                  label="验证码"
+                  placeholder="请输入验证码"
+                  :prefix-icon="Cellphone"
+                ></short-msg>
               </el-tab-pane>
             </el-tabs>
             <el-form-item>
