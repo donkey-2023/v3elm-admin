@@ -27,8 +27,8 @@
                         show-password
                       ></input-wrapper>
                     </el-form-item>
-                    <el-form-item style="margin-bottom:0px;">
-                      <verify-code-wrapper></verify-code-wrapper>
+                    <el-form-item>
+                      <verify-code-wrapper v-model="formInline.verifyCode" label="验证码"></verify-code-wrapper>
                     </el-form-item>
                   </div>
                 </transition>
@@ -46,7 +46,7 @@
                         :prefix-icon="Iphone"
                       ></input-wrapper>
                     </el-form-item>
-                    <el-form-item style="margin-bottom:0px;">
+                    <el-form-item>
                       <short-msg v-model="formInline.msg" label="验证码" placeholder="请输入验证码"></short-msg>
                     </el-form-item>
                   </div>
@@ -80,6 +80,7 @@ const handleClick = (tab, event) => {
 const formInline = ref({
   username: 'admin',
   password: '123',
+  verifyCode: '',
   mobileNo: '',
   msg: ''
 })
@@ -161,5 +162,8 @@ body {
 .tab2-fade-enter-from {
   transform: translateX(50%);
   opacity: 0;
+}
+::v-deep .el-form-item.el-form-item--default {
+  margin-bottom: 10px;
 }
 </style>

@@ -1,7 +1,7 @@
 <!-- #参考文章https://juejin.cn/post/6844903901699784711 -->
 <template>
-  <div ref="containerRef">
-    <canvas ref="canvasRef" :width="width" :height="height" class="container"></canvas>
+  <div ref="containerRef" class="canvas-container">
+    <canvas ref="canvasRef" :width="width" :height="height" class="canvas"></canvas>
   </div>
 </template>
 
@@ -56,7 +56,7 @@ let onClick = () => {
   )
 }
 
-let getRandomRgbStr = (o = 0.6) =>
+let getRandomRgbStr = (o = 1) =>
   255 * Math.random() +
   ',' +
   255 * Math.random() +
@@ -69,7 +69,7 @@ let getRandomRgbStr = (o = 0.6) =>
 let drawLine = () => {
   ctx.clearRect(0, 0, width, props.height)
   for (let i = 0; i < props.lineNum; i++) {
-    ctx.strokeStyle = 'rgba(' + getRandomRgbStr(0.4) + ')'
+    ctx.strokeStyle = 'rgba(' + getRandomRgbStr(0.6) + ')'
     ctx.beginPath()
     ctx.moveTo(Math.random() * width, Math.random() * props.height)
     ctx.lineTo(Math.random() * width, Math.random() * props.height)
@@ -84,10 +84,10 @@ let drawText = () => {
     ctx.font = '30px Helvetica'
     ctx.textBaseline = 'middle'
 
-    let xPos = (width / 4) * Math.random() + (width / 4 + 5) * i
+    let xPos = (width / 4) * Math.random() + (width / 4 + 2) * i
     ctx.fillText(
       text[i],
-      xPos > width - 30 ? width - 30 : xPos,
+      xPos > width - 20 ? width - 20 : xPos,
       Math.random() * 5 + props.height / 2
     )
   }
@@ -121,7 +121,7 @@ let randomText = () => {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.canvas {
   background: #f7f7f7;
 }
 </style>

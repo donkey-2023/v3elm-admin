@@ -1,19 +1,17 @@
 <template>
-  <el-row type="flex" justify="space-between" class="container">
-    <el-col :xs="14" :sm="16" :md="16" :lg="15" :xl="16">
-      <div class="wrapper">
-        <div class="label">{{ $attrs.label }}</div>
-        <el-input v-bind="$attrs" maxlength="6">
-          <template #prefix>
-            <svg-icon icon="msg"></svg-icon>
-          </template>
-        </el-input>
-      </div>
-    </el-col>
-    <el-col :xs="8" :sm="6" :md="6" :lg="7" :xl="6" class="btn-wrapper">
+  <div type="flex" justify="space-between" class="container">
+    <div class="input-wrapper">
+      <div class="label">{{ $attrs.label }}</div>
+      <el-input v-bind="$attrs" maxlength="6">
+        <template #prefix>
+          <svg-icon icon="msg"></svg-icon>
+        </template>
+      </el-input>
+    </div>
+    <div class="btn-wrapper">
       <el-button>获取验证码</el-button>
-    </el-col>
-  </el-row>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -21,16 +19,17 @@
 
 <style lang="scss" scoped>
 .container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  width: 100%;
   margin-bottom: 20px;
-  .btn-wrapper {
-    display: flex;
-    align-items: flex-end;
-  }
-  .wrapper {
+  .input-wrapper {
     position: relative;
     margin-top: 20px;
     padding: 2px 0;
-    width: 100%;
+    flex-grow: 1;
+    max-width: calc(100% - 120px);
     border: solid 1px #dcdfe6;
     .label {
       position: absolute;
@@ -43,6 +42,11 @@
       color: #888;
       background: #fff;
     }
+  }
+  .btn-wrapper {
+    display: flex;
+    align-items: flex-end;
+    width: 90px;
   }
 }
 ::v-deep {
