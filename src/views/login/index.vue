@@ -4,60 +4,22 @@
       <el-col :xs="22" :sm="19" :md="19" :lg="18" :xl="16">
         <div class="inner-wrapper">
           <div class="title"></div>
-          <el-form :model="formInline" label-width="0px" style="width:100%;">
-            <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-              <el-tab-pane label="账号密码登录" name="first">
-                <transition name="tab1-fade">
-                  <div v-if="activeName == 'first'">
-                    <el-form-item>
-                      <input-wrapper
-                        v-model="formInline.username"
-                        label="用户名"
-                        placeholder="请输入用户名"
-                        clearable
-                        :prefix-icon="User"
-                      ></input-wrapper>
-                    </el-form-item>
-                    <el-form-item>
-                      <input-wrapper
-                        v-model="formInline.password"
-                        label="密码"
-                        placeholder="请输入密码"
-                        :prefix-icon="Lock"
-                        show-password
-                      ></input-wrapper>
-                    </el-form-item>
-                    <el-form-item>
-                      <verify-code-wrapper v-model="formInline.verifyCode" label="验证码"></verify-code-wrapper>
-                    </el-form-item>
-                  </div>
-                </transition>
-              </el-tab-pane>
-              <el-tab-pane label="手机号登录" name="second">
-                <transition name="tab2-fade">
-                  <div v-if="activeName == 'second'">
-                    <el-form-item>
-                      <input-wrapper
-                        v-model="formInline.mobileNo"
-                        label="手机号"
-                        placeholder="请输入手机号码"
-                        maxlength="11"
-                        clearable
-                        :prefix-icon="Iphone"
-                      ></input-wrapper>
-                    </el-form-item>
-                    <el-form-item>
-                      <short-msg v-model="formInline.msg" label="验证码" placeholder="请输入验证码"></short-msg>
-                    </el-form-item>
-                  </div>
-                </transition>
-              </el-tab-pane>
-            </el-tabs>
-
-            <el-form-item>
-              <el-button type="primary" @click="onSubmit">登录</el-button>
-            </el-form-item>
-          </el-form>
+          <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+            <el-tab-pane label="账号密码登录" name="first">
+              <transition name="tab1-fade">
+                <div v-if="activeName == 'first'">
+                  <login-by-account></login-by-account>
+                </div>
+              </transition>
+            </el-tab-pane>
+            <el-tab-pane label="手机号登录" name="second">
+              <transition name="tab2-fade">
+                <div v-if="activeName == 'second'">
+                  <login-by-mobile></login-by-mobile>
+                </div>
+              </transition>
+            </el-tab-pane>
+          </el-tabs>
         </div>
       </el-col>
     </el-row>
@@ -66,26 +28,13 @@
 
 <script setup>
 import { ref } from 'vue'
-import { User, Lock, Cellphone, Iphone } from '@element-plus/icons-vue'
-import InputWrapper from '@views/components/InputWrapper'
-import ShortMsg from '@views/components/ShortMsg'
-import verifyCodeWrapper from '@views/components/VerifyCodeWrapper'
+import LoginByAccount from './login-by-account.vue'
+import LoginByMobile from './login-by-mobile.vue'
 
 const activeName = ref('first')
 
 const handleClick = (tab, event) => {
   console.log(tab, event)
-}
-
-const formInline = ref({
-  username: 'admin',
-  password: '123',
-  verifyCode: '',
-  mobileNo: '',
-  msg: ''
-})
-const onSubmit = () => {
-  console.log('onsubmit')
 }
 </script>
 <style lang="scss">

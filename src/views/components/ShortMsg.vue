@@ -55,7 +55,7 @@
   }
   .el-button {
     width: 100%;
-    height: 38px;
+    height: 40px;
   }
   .el-input__prefix-inner {
     display: flex;
