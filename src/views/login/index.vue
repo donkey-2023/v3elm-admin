@@ -2,20 +2,20 @@
   <div class="outer-container">
     <el-row justify="center">
       <el-col :xs="22" :sm="19" :md="19" :lg="18" :xl="16">
-        <div class="inner-wrapper">
+        <div ref="innerRef" class="inner-wrapper">
           <div class="title"></div>
           <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
             <el-tab-pane label="账号密码登录" name="first">
               <transition name="tab1-fade">
                 <div v-if="activeName == 'first'">
-                  <login-by-account></login-by-account>
+                  <account-form></account-form>
                 </div>
               </transition>
             </el-tab-pane>
             <el-tab-pane label="手机号登录" name="second">
               <transition name="tab2-fade">
                 <div v-if="activeName == 'second'">
-                  <login-by-mobile></login-by-mobile>
+                  <mobile-form></mobile-form>
                 </div>
               </transition>
             </el-tab-pane>
@@ -27,15 +27,35 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import LoginByAccount from './login-by-account.vue'
-import LoginByMobile from './login-by-mobile.vue'
+import { ref, onMounted, provide } from 'vue'
+import AccountForm from './account-form.vue'
+import MobileForm from './mobile-form.vue'
 
 const activeName = ref('first')
 
 const handleClick = (tab, event) => {
   console.log(tab, event)
 }
+
+const innerRef = ref(null)
+const width = ref(0)
+provide('width', width)
+
+const setWthAndHht = () => {
+  setTimeout(() => {
+    if (!innerRef.value) {
+      setWthAndHht()
+      return
+    }
+    width.value = innerRef.value.clientWidth - 80
+    console.log('width', width.value)
+  }, 0)
+}
+onMounted(() => {
+  setWthAndHht()
+})
+
+window.addEventListener('resize', setWthAndHht)
 </script>
 <style lang="scss">
 @import '@/styles/base.scss';
@@ -68,35 +88,39 @@ body {
     display: none;
   }
 }
-
-@media screen and (min-width: 1920px) {
+@media screen and (max-width: 375px) {
   .outer-container {
-    width: 30vw;
+    width: 90vw;
   }
 }
-@media screen and (min-width: 1200px) and (max-width: 1920px) {
+@media screen and (min-width: 376px) {
   .outer-container {
-    width: 40vw;
+    width: 85vw;
   }
 }
-@media screen and (min-width: 992px) and (max-width: 1200px) {
+@media screen and (min-width: 480px) {
   .outer-container {
-    width: 50vw;
+    width: 72vw;
   }
 }
-@media screen and (min-width: 768px) and (max-width: 992px) {
+@media screen and (min-width: 640px) {
+  .outer-container {
+    width: 65vw;
+  }
+}
+@media screen and (min-width: 768px) {
   .outer-container {
     width: 60vw;
   }
 }
-@media screen and (min-width: 420px) and (max-width: 768px) {
+@media screen and (min-width: 992px) {
   .outer-container {
-    width: 75vw;
+    width: 50vw;
   }
 }
-@media screen and (max-width: 420px) {
+@media screen and (min-width: 1200px) {
   .outer-container {
-    width: 100vw;
+    width: 40vw;
   }
 }
 

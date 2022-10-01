@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, getCurrentInstance, defineEmits } from 'vue'
+import { ref, onMounted, getCurrentInstance } from 'vue'
 const emits = defineEmits(['generate-code'])
 const props = defineProps({
   height: {

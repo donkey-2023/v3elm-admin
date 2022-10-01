@@ -19,7 +19,7 @@
     position: absolute;
     top: -8px;
     left: 30px;
-    z-index: 999;
+    z-index: 9;
     padding: 0 5px;
     line-height: 1;
     font-size: 14px;

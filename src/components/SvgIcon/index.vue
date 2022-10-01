@@ -1,11 +1,11 @@
 <template>
   <svg class="svg-icon" aria-hidden="true">
-    <use :xlink:href="iconName"></use>
+    <use :xlink:href="iconName" />
   </svg>
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 const props = defineProps({
   icon: {
     type: String,
