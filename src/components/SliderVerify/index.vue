@@ -1,8 +1,8 @@
 <template>
   <div class="slider-container">
     <div
-      :style="{ 'z-index' : data.showGraph? 100:-1}"
-      :class="['graph-wrapper',data.showGraph?'show':'hide']"
+      :style="{ 'z-index' : reactObj.showGraph? 100:-1}"
+      :class="['graph-wrapper',reactObj.showGraph?'show':'hide']"
     >
       <canvas
         ref="fullImgRef"
@@ -15,10 +15,10 @@
         ref="partialImgRef"
         :width="width"
         height="150"
-        :style="{left: data.left+'px'}"
+        :style="{left: reactObj.left+'px'}"
         class="partial-img"
       ></canvas>
-      <div v-show="data.showGraph" class="icon-wrap">
+      <div v-show="reactObj.showGraph" class="icon-wrap">
         <div @click="refresh" class="refresh"></div>
         <div @click="close" class="close"></div>
       </div>
@@ -26,18 +26,18 @@
     <div @mouseenter="mouseenter" :style="{width:width + 'px'}" class="btn-wrapper">
       <div
         ref="sliderRef"
-        @mousedown="hanleMouseDownEvent"
-        :style="{left:data.slideDistance+'px',transition: data.isMove ? 'none' : 'left 0.3s ease-in-out'}"
-        :class="[data.state ? data.state : '','slider',data.isMove ? 'is-move' : '']"
+        @mousedown="handleMouseDownEvent"
+        :style="{left:reactObj.slideDistance+'px',transition: reactObj.isMove ? 'none' : 'left 0.3s ease-in-out'}"
+        :class="[reactObj.state ? reactObj.state : '','slider',reactObj.isMove ? 'is-move' : '']"
       >
         <span class="arrow"></span>
       </div>
       <div
-        v-show="data.isMove && data.slideDistance > 2"
-        :class="[data.state ? data.state : '','mask']"
-        :style="{width:data.slideDistance +'px'}"
+        v-show="reactObj.isMove && reactObj.slideDistance > 2"
+        :class="[reactObj.state ? reactObj.state : '','mask']"
+        :style="{width:reactObj.slideDistance +'px'}"
       ></div>
-      <div ref="trackRef" class="track">{{data.showPlaceHolder ? '向右滑动完成验证' : ''}}</div>
+      <div ref="trackRef" class="track">{{reactObj.placeHolder}}</div>
     </div>
   </div>
 </template>
@@ -45,13 +45,13 @@
 <script setup>
 import { ref, reactive, toRef, inject } from 'vue'
 // ==============   滑块  =================
-const data = reactive({
+const reactObj = reactive({
   slideDistance: 0,
   left: 0,
   isMove: false,
   showGraph: false,
   state: null,
-  showPlaceHolder: true
+  placeHolder: '向右滑动完成验证'
 })
 const sliderRef = ref(null)
 const trackRef = ref(null)
@@ -70,7 +70,7 @@ let isRezie = false // 浏览器窗口是否缩放
 
 const width = inject('width')
 
-const hanleMouseDownEvent = (e) => {
+const handleMouseDownEvent = (e) => {
   // 阻止默认行为
   // 在滑块上方按住鼠标拖拽，会有一定几率出现拖拽文字的效果，然后此时松手是不会触发mouseup事件
   if (e.preventDefault) {
@@ -79,60 +79,61 @@ const hanleMouseDownEvent = (e) => {
     window.event.returnValue = false //IE
   }
 
-  data.isMove = true
+  reactObj.isMove = true
   initClientX = e.clientX
 
-  document.addEventListener('mousemove', hanleMouseMoveEvent)
-  document.addEventListener('mouseup', hanleMouseUpEvent)
+  document.addEventListener('mousemove', handleMouseMoveEvent)
+  document.addEventListener('mouseup', handleMouseUpEvent)
 }
 
-const hanleMouseMoveEvent = (e) => {
-  if (!data.isMove || !portability) return
-  data.showPlaceHolder = false
-  data.slideDistance = e.clientX - initClientX
+const handleMouseMoveEvent = (e) => {
+  if (!reactObj.isMove || !portability) return
+  reactObj.placeHolder = ''
+  reactObj.slideDistance = e.clientX - initClientX
   // 边界判断
-  if (data.slideDistance < 0) {
-    data.slideDistance = 0
+  if (reactObj.slideDistance < 0) {
+    reactObj.slideDistance = 0
   } else if (
-    data.slideDistance >
+    reactObj.slideDistance >
     trackRef.value.clientWidth - sliderRef.value.clientWidth
   ) {
-    data.slideDistance =
+    reactObj.slideDistance =
       trackRef.value.clientWidth - sliderRef.value.clientWidth
   }
-  data.left = data.slideDistance - offsetX
+  reactObj.left = reactObj.slideDistance - offsetX
 }
 
-const hanleMouseUpEvent = () => {
+const handleMouseUpEvent = () => {
   // 设置允许误差距为±3px
-  if (Math.abs(data.slideDistance - offsetX) < 3) {
-    data.state = 'success'
-    data.showGraph = false
+  if (Math.abs(reactObj.slideDistance - offsetX) < 3) {
+    reactObj.state = 'success'
+    reactObj.showGraph = false
     portability = false // 不可移动
   } else {
-    data.state = 'fail'
+    reactObj.state = 'fail'
     imgIndex = imgIndex > 8 ? 1 : imgIndex + 1
     setTimeout(() => {
-      data.state = null
-      data.isMove = false
-      data.slideDistance = 0
+      reactObj.state = null
+      reactObj.isMove = false
+      reactObj.slideDistance = 0
       startDrawing(fullCvsCtx, partialCvsCtx)
 
       // 等滑块复位之后(.3s)，才显示“向右滑动完成验证”
+      reactObj.placeHolder = '加载中...'
       setTimeout(() => {
-        data.showPlaceHolder = true
+        reactObj.placeHolder = '向右滑动完成验证'
       }, 300)
     }, 400)
   }
 
-  document.removeEventListener('mousemove', hanleMouseMoveEvent)
-  document.removeEventListener('mouseup', hanleMouseUpEvent)
+  document.removeEventListener('mousemove', handleMouseMoveEvent)
+  document.removeEventListener('mouseup', handleMouseUpEvent)
 }
 
 const mouseenter = () => {
   // 验证成功后不再显示拼图
   if (!portability) return
-  data.showGraph = true
+  reactObj.showGraph = true
   fullCvsCtx = fullImgRef.value.getContext('2d')
   partialCvsCtx = partialImgRef.value.getContext('2d')
 
@@ -144,7 +145,7 @@ const mouseenter = () => {
 
 window.addEventListener('resize', () => {
   isRezie = true
-  data.showGraph = false
+  reactObj.showGraph = false
 })
 
 // ==============   canvas  =================
@@ -162,7 +163,7 @@ const refresh = () => {
 
 // 关闭拼图
 const close = () => {
-  data.showGraph = false
+  reactObj.showGraph = false
 }
 
 const startDrawing = (fullCvsCtx, partialCvsCtx) => {
@@ -174,7 +175,7 @@ const startDrawing = (fullCvsCtx, partialCvsCtx) => {
     drawFivePointedStar(fullCvsCtx, offsetX, offsetY, 'fill')
     drawFivePointedStar(partialCvsCtx, offsetX, offsetY, 'clip')
     // 防止出现在滑块验证失败后，新图还没有绘制完时，滑块向左位移到无规则位置的情况
-    data.left = -offsetX
+    reactObj.left = -offsetX
   }
 }
 const getRandomNum = (max, min) => {
@@ -289,7 +290,8 @@ const drawFivePointedStar = (ctx, offsetX, offsetY, type) => {
       height: 32px;
       border: solid 1px #dcdfe6;
       box-shadow: 0 0 3px 0 #dcdfe6;
-      cursor: pointer;
+      background-color: #fff;
+      cursor: move;
       .arrow {
         width: 14px;
         height: 12px;
@@ -345,6 +347,7 @@ const drawFivePointedStar = (ctx, offsetX, offsetY, type) => {
       text-align: center;
       user-select: none;
       height: 32px;
+      background-color: rgba(220, 220, 220, 0.1);
     }
   }
 }
