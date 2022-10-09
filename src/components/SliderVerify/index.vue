@@ -27,7 +27,7 @@
       <div
         ref="sliderRef"
         @mousedown="handleMouseDownEvent"
-        :style="{left:reactObj.slideDistance+'px',transition: reactObj.isMove ? 'none' : 'left 0.3s ease-in-out'}"
+        :style="{left:reactObj.slideDistance+'px',transition: reactObj.isMove ? 'none' : 'left .3s ease-in-out'}"
         :class="[reactObj.state ? reactObj.state : '','slider',reactObj.isMove ? 'is-move' : '']"
       >
         <span class="arrow"></span>
@@ -44,6 +44,7 @@
 
 <script setup>
 import { ref, reactive, toRef, inject } from 'vue'
+import { throttle } from '@utils/index'
 // ==============   滑块  =================
 const reactObj = reactive({
   slideDistance: 0,
@@ -70,7 +71,7 @@ let isRezie = false // 浏览器窗口是否缩放
 
 const width = inject('width')
 
-const handleMouseDownEvent = (e) => {
+const mouseDownCallback = (e) => {
   // 阻止默认行为
   // 在滑块上方按住鼠标拖拽，会有一定几率出现拖拽文字的效果，然后此时松手是不会触发mouseup事件
   if (e.preventDefault) {
@@ -86,7 +87,10 @@ const handleMouseDownEvent = (e) => {
   document.addEventListener('mouseup', handleMouseUpEvent)
 }
 
-const handleMouseMoveEvent = (e) => {
+// 防抖(避免用户1s内多次触发mousedown事件)
+const handleMouseDownEvent = throttle(mouseDownCallback, 1000)
+
+const mouseMoveCallback = (e) => {
   if (!reactObj.isMove || !portability) return
   reactObj.placeHolder = ''
   reactObj.slideDistance = e.clientX - initClientX
@@ -103,6 +107,9 @@ const handleMouseMoveEvent = (e) => {
   reactObj.left = reactObj.slideDistance - offsetX
 }
 
+// 防抖
+const handleMouseMoveEvent = throttle(mouseMoveCallback, 1000 / 60)
+
 const handleMouseUpEvent = () => {
   // 设置允许误差距为±3px
   if (Math.abs(reactObj.slideDistance - offsetX) < 3) {
@@ -112,18 +119,19 @@ const handleMouseUpEvent = () => {
   } else {
     reactObj.state = 'fail'
     imgIndex = imgIndex > 8 ? 1 : imgIndex + 1
+
+    startDrawing(fullCvsCtx, partialCvsCtx)
     setTimeout(() => {
       reactObj.state = null
       reactObj.isMove = false
       reactObj.slideDistance = 0
-      startDrawing(fullCvsCtx, partialCvsCtx)
 
       // 等滑块复位之后(.3s)，才显示“向右滑动完成验证”
       reactObj.placeHolder = '加载中...'
       setTimeout(() => {
         reactObj.placeHolder = '向右滑动完成验证'
       }, 300)
-    }, 400)
+    }, 100)
   }
 
   document.removeEventListener('mousemove', handleMouseMoveEvent)
@@ -231,7 +239,7 @@ const drawFivePointedStar = (ctx, offsetX, offsetY, type) => {
     height: 150px;
     left: 1px;
     border-radius: 8px;
-    transition: all 0.3s ease-in-out;
+    transition: top 0.3s ease-in-out;
     .full-img {
       height: 150px;
     }
