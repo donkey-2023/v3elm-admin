@@ -1,4 +1,4 @@
-import { isNotEmpty } from './verify'
+import { isNotNull } from './verify'
 
 export function addResizeListener(target, callback) {
   const iframe = document.createElement('iframe')
@@ -42,7 +42,8 @@ export function addResizeListener(target, callback) {
 
 export function removeResizeListener(target) {
   target._timer_ && clearTimeout(target._timer_)
-  isNotEmpty(target.children) &&
+
+  isNotNull(target.children) &&
     target.children.forEach((el) => {
       if (
         el.tagName.toLowerCase() === 'iframe' &&

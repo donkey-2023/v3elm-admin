@@ -1,4 +1,6 @@
 import { isNumeric } from '@utils/verify'
+
+// 获取变量的类型
 export function getType(v) {
   return Object.prototype.toString.call(v).slice(8, -1).toLowerCase()
 }
@@ -77,7 +79,6 @@ export function getElementStyle(el) {
   return el.currentStyle ? el.currentStyle : window.getComputedStyle(el, null)
 }
 
-// 从字符串 '100px' 中提取 数字100
 export function calcPixelValue(str) {
   if (str && str.includes('px')) {
     return Number(str.split('px')[0])

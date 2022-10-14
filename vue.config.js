@@ -32,7 +32,8 @@ module.exports = defineConfig({
         '@': path.resolve(__dirname, 'src'),
         '@assets': path.resolve(__dirname, 'src/assets'),
         '@comps': path.resolve(__dirname, 'src/components'),
-        '@views': path.resolve(__dirname, 'src/views')
+        '@views': path.resolve(__dirname, 'src/views'),
+        '@utils': path.resolve(__dirname, 'src/utils')
       }
     })
 

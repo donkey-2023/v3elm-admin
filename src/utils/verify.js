@@ -1,11 +1,18 @@
 import { getType } from './index'
-export function isNullObj(obj) {
-  return obj && Object.keys(obj).length === 0
+
+export function isNull(obj) {
+  return !obj && obj !== 0
 }
 
+// 非空(类)数组
+export function isNotNull(obj) {
+  return obj && obj.length
+}
+
+// 非空对象 + 非空数组
 export function isNotEmpty(target) {
   return (
-    (getType(target) === 'object' && target) ||
+    (getType(target) === 'object' && Object.keys(obj).length) ||
     (Array.isArray(target) && target.length)
   )
 }

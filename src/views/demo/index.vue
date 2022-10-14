@@ -1,7 +1,7 @@
 <template>
-  <scroll-bar class="container">
+  <scroll-bar class="outer">
     <span class="demo01">{{ word1 }}</span>
-    <div class="demo01">{{ word1 }}</div>
+    <span class="demo02">{{ word1 }}</span>
   </scroll-bar>
 </template>
 
@@ -25,18 +25,23 @@ onBeforeUnmount(() => {
   margin: 100px;
   overflow: hidden;
 }
-.container {
+.outer {
   width: 300px;
   height: 100px;
   background-color: rgba(253, 253, 150, 0.5);
 }
 .demo01 {
-  // width: 600px;
-  // height: 600px;
+  width: 400px;
+  // height: 400px;
   padding: 10px;
-  // white-space: nowrap;
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: normal;
+}
+.demo02 {
+  width: 600px;
+  height: 100px;
+  padding: 10px;
+  white-space: nowrap;
 }
 </style>

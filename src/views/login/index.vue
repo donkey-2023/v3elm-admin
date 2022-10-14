@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, provide } from 'vue'
+import { ref, onMounted, onBeforeUnmount, provide } from 'vue'
 import AccountForm from './account-form.vue'
 import MobileForm from './mobile-form.vue'
 
@@ -52,14 +52,18 @@ const setWthAndHht = () => {
   }, 0)
 }
 onMounted(() => {
+  document.querySelector('body').classList.add('flex-center')
   setWthAndHht()
+})
+onBeforeUnmount(() => {
+  document.querySelector('body').classList.remove('flex-center')
 })
 
 window.addEventListener('resize', setWthAndHht)
 </script>
 <style lang="scss">
 @import '@/styles/base.scss';
-body {
+.flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
