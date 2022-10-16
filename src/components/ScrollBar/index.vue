@@ -58,7 +58,7 @@ let barObj = {
   cacheY: {}
 }
 
-// 重置表单和滚动条
+// 重置表单和滚动条相关变量
 const reset = () => {
   formData.showHtlBar = false
   formData.showVtlBar = false
@@ -85,9 +85,10 @@ onMounted(() => {
     if (viewRef.value && isNotNull(viewRef.value.children)) {
       init()
 
-      setChildrenDisplay()
+      displayBlock()
 
-      addResizeListener(viewRef.value, handleResize)
+      // 为视图区元素绑定resize事件
+      addResizeListener(viewRef.value, init)
 
       // Firefox
       wrapRef.value.addEventListener('DOMMouseScroll', mouseScroll)
@@ -98,24 +99,20 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  removeResizeListener(viewRef.value, handleResize)
+  removeResizeListener(viewRef.value, init)
+
   wrapRef.value.removeEventListener('DOMMouseScroll', mouseScroll)
   wrapRef.value.removeEventListener('wheel', mouseScroll)
 })
 
-// 将子元素中的内联元素设置为内联块元素
-const setChildrenDisplay = () => {
+// 将子元素中的内联元素设置为块级元素
+const displayBlock = () => {
   Array.prototype.forEach.call(viewRef.value.children, (item) => {
     let styles = getElementStyle(item)
     if (styles.display === 'inline') {
-      item.style.display = 'inline-block'
+      item.style.display = 'block'
     }
   })
-}
-
-const handleResize = () => {
-  console.log('resized')
-  init()
 }
 
 const init = () => {
@@ -130,15 +127,18 @@ const init = () => {
       wrapRef.value[map.clientSize] || calcPixelValue(wrapStyle[map.size])
     const viewSize = viewRef.value[map.offsetSize]
 
-    // 如果组件的尺寸（指宽高）为0，则将其尺寸设置成与视图区的尺寸一致
+    // 如果组件的尺寸（即宽高）为0，则将其尺寸设置成与视图区的尺寸一致
     if (wrapSize === 0) {
       wrapRef.value.style[map.size] = viewSize + 'px'
-    } else if (viewSize > wrapSize) {
+    }
+    if (viewSize > wrapSize) {
       // 当视图区的尺寸大于外层盒子的尺寸时，显示水平或垂直方向上的滚动条
       formData[map.showBar] = true
       barObj[map.cache] = { wrapSize, viewSize }
 
       createScrollBar(key, viewStyle, barObj[map.cache])
+    } else {
+      viewRef.value.style[map.dir1] = '0px'
     }
   })
 }
@@ -147,20 +147,20 @@ const init = () => {
 const createScrollBar = (key, viewStyle, { wrapSize, viewSize }) => {
   const map = BAR_MAP[key]
   // 计算视图区已经卷曲的尺寸(取绝对值)
-  let viewScrollSize = Math.abs(calcPixelValue(viewStyle[map.direction1]))
+  let viewScrollSize = Math.abs(calcPixelValue(viewStyle[map.dir1]))
 
   // 当视图区的尺寸发生变化时，会出现viewScrollSize + wrapSize > viewSize的情况
-  // 此时需要重新设置滚动条的viewScrollSize(即top或left)
+  // 此时需要重新设置滚动条的边偏移(即top或left)
   if (viewScrollSize + wrapSize > viewSize) {
     viewScrollSize = viewSize - wrapSize
-    viewRef.value.style[map.direction1] = -viewScrollSize + 'px'
+    viewRef.value.style[map.dir1] = -viewScrollSize + 'px'
   }
   /**
    * 以垂直滚动条为例, 涉及2个公式：
    * 滚动条的高度/外层div高度 = 外层div高度/整体视图区高度
    * 滚动条的位置/(外层div高度-滚动条高度) = 视图区卷曲的高度/(整体视图区的高度-外层div高度)
    */
-  // 滚动条尺寸(width | height)
+  // 滚动条尺寸
   formData[map.barSize] = Math.pow(wrapSize, 2) / viewSize
   // 滚动条位置(left | top)
   formData[map.barDir] =
@@ -207,14 +207,12 @@ const moveBar = (map, diff) => {
   // 边界判断：滚动条不能超出轨道
   if (position < 0) {
     formData[map.barDir] = 0
-    barObj[map.prevClient] = wrapClientRect[map.direction1] + barObj[map.offset]
+    barObj[map.prevClient] = wrapClientRect[map.dir1] + barObj[map.offset]
   } else if (position > wrapSize - formData[map.barSize]) {
     formData[map.barDir] = wrapSize - formData[map.barSize]
 
     barObj[map.prevClient] =
-      wrapClientRect[map.direction2] -
-      formData[map.barSize] +
-      barObj[map.offset]
+      wrapClientRect[map.dir2] - formData[map.barSize] + barObj[map.offset]
   } else {
     formData[map.barDir] = position
     barObj[map.prevClient] = barObj[map.prevClient] + diff
@@ -227,7 +225,7 @@ const setPositionOfView = (map) => {
   const viewScrollSize =
     (formData[map.barDir] * (viewSize - wrapSize)) /
     (wrapSize - formData[map.barSize])
-  viewRef.value.style[map.direction1] = -viewScrollSize + 'px'
+  viewRef.value.style[map.dir1] = -viewScrollSize + 'px'
 }
 
 const mouseUp = (e) => {

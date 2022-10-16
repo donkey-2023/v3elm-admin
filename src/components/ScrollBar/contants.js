@@ -9,8 +9,8 @@ export const BAR_MAP = {
     cache: 'cacheY',
     prevClient: 'prevClientY',
     client: 'clientY',
-    direction1: 'top',
-    direction2: 'bottom',
+    dir1: 'top',
+    dir2: 'bottom',
     showBar: 'showVtlBar',
     barSize: 'barHeight',
     barDir: 'barTop'
@@ -25,8 +25,8 @@ export const BAR_MAP = {
     cache: 'cacheX',
     prevClient: 'prevClientX',
     client: 'clientX',
-    direction1: 'left',
-    direction2: 'right',
+    dir1: 'left',
+    dir2: 'right',
     showBar: 'showHtlBar',
     barSize: 'barWidth',
     barDir: 'barLeft'

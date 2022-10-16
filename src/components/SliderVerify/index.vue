@@ -1,6 +1,8 @@
 <template>
   <div class="slider-container">
     <div
+      v-elm-loading="formData.showLoading"
+      elm-loading-text="加载中..."
       :style="{ 'z-index' : formData.showGraph? 100:-1}"
       :class="['graph-wrapper',formData.showGraph?'show':'hide']"
     >
@@ -47,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRef, inject } from 'vue'
+import { ref, reactive, inject } from 'vue'
 import { throttle } from '@utils/index'
 const sliderRef = ref(null)
 const trackRef = ref(null)
@@ -59,6 +61,7 @@ const formData = reactive({
   isMove: false,
   showGraph: false,
   state: null,
+  showLoading: false,
   placeHolder: '向右滑动完成验证'
 })
 
@@ -117,25 +120,24 @@ const mouseMove = throttle(mouseMoveCallback, 1000 / 60)
 const mouseUp = () => {
   // 设置允许误差距
   if (Math.abs(formData.dragDis - offsetX) < 3) {
+    // 滑块验证成功
     formData.state = 'success'
     formData.showGraph = false
     portability = false // 不可移动
   } else {
+    // 滑块验证失败
     formData.state = 'fail'
     imgIndex = imgIndex > 8 ? 1 : imgIndex + 1
 
+    formData.showLoading = true
+    startDrawing(fullCvsCtx, partialCvsCtx)
     setTimeout(() => {
       formData.state = null
       formData.isMove = false
       formData.dragDis = 0
-      startDrawing(fullCvsCtx, partialCvsCtx)
-
-      // 等滑块复位之后(.3s)，才显示“向右滑动完成验证”
-      formData.placeHolder = '加载中...'
-      setTimeout(() => {
-        formData.placeHolder = '向右滑动完成验证'
-      }, 300)
-    }, 200)
+      formData.placeHolder = '向右滑动完成验证'
+      formData.showLoading = false
+    }, 500)
   }
 
   document.removeEventListener('mousemove', mouseMove)
