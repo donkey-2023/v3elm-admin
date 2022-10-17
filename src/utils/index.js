@@ -1,4 +1,6 @@
-import { isNumeric } from '@utils/verify'
+import { isNumeric, isNotNull } from '@utils/verify'
+import { createApp } from 'vue'
+import GlobalLoading from '@/components/GlobalLoading'
 
 // 获取变量的类型
 export function getType(v) {
@@ -86,4 +88,35 @@ export function calcPixelValue(str) {
     return Number(str)
   }
   return 0
+}
+
+export function showLoading() {
+  const instance = createApp(GlobalLoading).mount(document.createElement('div'))
+  document.body.appendChild(instance.$el.parentElement.firstChild)
+}
+
+export const requestAnimationFrame = (function () {
+  return (
+    window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    function (callback) {
+      return window.setTimeout(callback, 1000 / 60)
+    }
+  )
+})()
+
+export const cancelAnimationFrame =
+  window.cancelAnimationFrame ||
+  window.webkitCancelAnimationFrame ||
+  window.mozCancelAnimationFrame ||
+  window.clearTimeout
+
+export function hideLoading() {
+  const $loading = document.getElementsByClassName('global-loading-wrap')
+  isNotNull($loading) && document.body.removeChild($loading[0])
+
+  let timer = localStorage.getItem('global-loading-timer')
+  // 终止定时器
+  timer && cancelAnimationFrame(timer)
 }
