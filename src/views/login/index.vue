@@ -27,9 +27,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, provide } from 'vue'
-import AccountForm from './account-form.vue'
-import MobileForm from './mobile-form.vue'
+import {
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  provide,
+  getCurrentInstance
+} from 'vue'
+import AccountForm from './components/account-form.vue'
+import MobileForm from './components/mobile-form.vue'
 
 const activeName = ref('first')
 
@@ -37,29 +43,25 @@ const handleClick = (tab, event) => {
   console.log(tab, event)
 }
 
-const innerRef = ref(null)
+// 与 SliderVerify组件通信，动态修改其宽度
 const width = ref(0)
 provide('width', width)
 
-const setWthAndHht = () => {
-  setTimeout(() => {
-    if (!innerRef.value) {
-      setWthAndHht()
-      return
-    }
-    width.value = innerRef.value.clientWidth - 80
-    console.log('width', width.value)
-  }, 0)
+const { proxy } = getCurrentInstance()
+const updateSliderWidth = () => {
+  width.value = proxy.$refs['innerRef'].clientWidth - 80
+  console.log('width', width.value)
 }
+
 onMounted(() => {
   document.querySelector('body').classList.add('flex-center')
-  setWthAndHht()
+  updateSliderWidth()
 })
 onBeforeUnmount(() => {
   document.querySelector('body').classList.remove('flex-center')
 })
 
-window.addEventListener('resize', setWthAndHht)
+window.addEventListener('resize', updateSliderWidth)
 </script>
 <style lang="scss">
 @import '@/styles/base.scss';

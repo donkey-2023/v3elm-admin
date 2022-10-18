@@ -1,7 +1,7 @@
 <template>
   <el-form :model="formData" label-width="0px" style="width:100%;">
     <el-form-item>
-      <input-wrapper
+      <input-wrap
         ref="btnRef"
         v-model="formData.mobileNo"
         label="手机号"
@@ -9,7 +9,7 @@
         maxlength="11"
         clearable
         :prefix-icon="Iphone"
-      ></input-wrapper>
+      ></input-wrap>
     </el-form-item>
     <el-form-item>
       <short-msg v-model="formData.msg" label="图形验证码" placeholder="请输入图形验证码"></short-msg>
@@ -24,12 +24,12 @@
 </template>
 
 <script setup>
-import { ref, toRef } from 'vue'
+import { reactive, toRef } from 'vue'
 import { Iphone } from '@element-plus/icons-vue'
-import InputWrapper from '@views/components/InputWrapper'
-import ShortMsg from '@views/components/ShortMsg'
+import InputWrap from '@views/wraps/InputWrap'
+import ShortMsg from '@views/wraps/ShortMsg'
 
-const formData = ref({
+const formData = reactive({
   mobileNo: '',
   msg: ''
 })

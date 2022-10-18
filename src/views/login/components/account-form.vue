@@ -1,25 +1,25 @@
 <template>
   <el-form :model="formData" label-width="0px" style="width:100%;">
     <el-form-item>
-      <input-wrapper
+      <input-wrap
         v-model="formData.username"
         label="用户名"
         placeholder="请输入用户名"
         clearable
         :prefix-icon="User"
-      ></input-wrapper>
+      ></input-wrap>
     </el-form-item>
     <el-form-item>
-      <input-wrapper
+      <input-wrap
         v-model="formData.password"
         label="密码"
         placeholder="请输入密码"
         :prefix-icon="Lock"
         show-password
-      ></input-wrapper>
+      ></input-wrap>
     </el-form-item>
     <el-form-item>
-      <verify-code-wrapper v-model="formData.verifyCode" label="验证码"></verify-code-wrapper>
+      <graph-verify-wrap v-model="formData.verifyCode" label="验证码"></graph-verify-wrap>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">登录</el-button>
@@ -28,11 +28,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
-import InputWrapper from '@views/components/InputWrapper'
-import verifyCodeWrapper from '@views/components/VerifyCodeWrapper'
-const formData = ref({
+import InputWrap from '@views/wraps/InputWrap'
+import GraphVerifyWrap from '@views/wraps/GraphVerifyWrap'
+import { showLoading, hideLoading } from '@utils/index'
+
+const formData = reactive({
   username: '',
   password: '',
   verifyCode: ''

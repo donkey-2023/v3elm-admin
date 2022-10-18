@@ -1,5 +1,5 @@
 <template>
-  <scroll-bar v-elm-loading="word2" elm-loading-text="加载中..." class="outer">
+  <scroll-bar v-local-loading="word2" elm-loading-text="加载中..." class="outer">
     <span class="demo01">{{ word1 }}</span>
     <span class="demo02">{{ word1 }}</span>
   </scroll-bar>

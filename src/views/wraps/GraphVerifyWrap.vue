@@ -5,7 +5,7 @@
       <el-input v-bind="$attrs" maxlength="4"></el-input>
     </div>
     <div class="code-wrapper">
-      <graph-verify-code :height="38"></graph-verify-code>
+      <graph-verify :height="38"></graph-verify>
     </div>
   </div>
 </template>

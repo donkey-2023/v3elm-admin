@@ -1,9 +1,9 @@
-import loading from './module/elm-loading'
-import enter from './module/elm-enter'
+import LocalLoading from './module/local-loading'
+import EnterKey from './module/enter-key'
 
 const directives = {
-  'elm-loading': loading,
-  'elm-enter': enter
+  'local-loading': LocalLoading,
+  'enter-key': EnterKey
 }
 
 export default {

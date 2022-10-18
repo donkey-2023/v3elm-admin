@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, getCurrentInstance } from 'vue'
+import { ref, onMounted } from 'vue'
 const emits = defineEmits(['generate-code'])
 const props = defineProps({
   height: {
@@ -19,7 +19,6 @@ const props = defineProps({
   }
 })
 
-//第一种方式获取dom节点：
 let canvasRef = ref(null)
 let containerRef = ref(null)
 let ctx = null
@@ -35,13 +34,6 @@ onMounted(() => {
     drawText()
   }, 0)
 })
-
-//第二种方式获取dom节点：
-// const { proxy } = getCurrentInstance()
-// onMounted(() => {
-//   const dom = proxy.$refs['canvasRef']
-//   let ctx = dom.getContext('2d')
-// })
 
 let onClick = () => {
   var _ = this

@@ -12,7 +12,6 @@ import { ref, onMounted } from 'vue'
 import { requestAnimationFrame } from '@utils/index'
 
 const canvasRef = ref(null)
-let n = 0
 let ctx = null
 let timer = null
 onMounted(() => {
@@ -25,6 +24,7 @@ onMounted(() => {
 
 window.requestAnimationFrame = requestAnimationFrame
 
+let n = 0
 function showLoading() {
   console.log('----------showLoading' + n + '----------')
   const diff = (Math.PI / 60) * n++

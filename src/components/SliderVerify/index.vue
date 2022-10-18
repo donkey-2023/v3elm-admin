@@ -1,7 +1,7 @@
 <template>
   <div class="slider-container">
     <div
-      v-elm-loading="formData.showLoading"
+      v-local-loading="formData.showLoading"
       elm-loading-text="加载中..."
       :style="{ 'z-index' : formData.showGraph? 100:-1}"
       :class="['graph-wrapper',formData.showGraph?'show':'hide']"
