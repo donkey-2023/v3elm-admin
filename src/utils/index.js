@@ -120,3 +120,8 @@ export function hideLoading() {
   // 终止定时器
   timer && cancelAnimationFrame(timer)
 }
+
+// 生成随机整数
+export function generateRandomInt(min, max) {
+  return Math.ceil(Math.random() * (max - min) + min)
+}

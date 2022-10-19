@@ -7,20 +7,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-const emits = defineEmits(['generate-code'])
-const props = defineProps({
-  height: {
-    type: Number,
-    default: 32
-  },
-  lineNum: {
-    type: Number,
-    default: 5
-  }
-})
+import { generateRandomInt } from '@/utils/index'
 
-let canvasRef = ref(null)
-let containerRef = ref(null)
+const canvasRef = ref(null)
+const containerRef = ref(null)
 let ctx = null
 let text = ''
 let width = 100
@@ -35,8 +25,7 @@ onMounted(() => {
   }, 0)
 })
 
-let onClick = () => {
-  var _ = this
+const onClick = () => {
   canvasRef.value.addEventListener(
     'click',
     () => {
@@ -48,32 +37,52 @@ let onClick = () => {
   )
 }
 
-let getRandomRgbStr = (o = 1) =>
-  255 * Math.random() +
+// 生成随机rgba颜色码
+const generateRgbCode = (opacity = 1) =>
+  generateRandomInt(100, 220) +
   ',' +
-  255 * Math.random() +
+  generateRandomInt(100, 220) +
   ',' +
-  255 * Math.random() +
+  generateRandomInt(100, 220) +
   ',' +
-  o
+  opacity
 
-// 绘制干扰线
-let drawLine = () => {
+const props = defineProps({
+  height: {
+    type: Number,
+    default: 32
+  },
+  lineNum: {
+    type: Number,
+    default: 4
+  }
+})
+
+// 绘制干扰线条
+const drawLine = () => {
   ctx.clearRect(0, 0, width, props.height)
+  ctx.save()
   for (let i = 0; i < props.lineNum; i++) {
-    ctx.strokeStyle = 'rgba(' + getRandomRgbStr(0.6) + ')'
     ctx.beginPath()
-    ctx.moveTo(Math.random() * width, Math.random() * props.height)
-    ctx.lineTo(Math.random() * width, Math.random() * props.height)
+    ctx.lineWidth = 2
+    ctx.strokeStyle =
+      'rgba(' + generateRgbCode(generateRandomInt(4, 6) / 10) + ')'
+    ctx.moveTo(generateRandomInt(0, width), generateRandomInt(0, props.height))
+    ctx.lineTo(
+      generateRandomInt(width / 3, width),
+      generateRandomInt(props.height / 3, props.height)
+    )
     ctx.stroke()
   }
+  ctx.restore()
 }
-// 画文字
-let drawText = () => {
+
+// 绘制文本
+const drawText = () => {
   let len = text.length
   for (let i = 0; i < len; i++) {
-    ctx.fillStyle = 'rgb(' + getRandomRgbStr() + ')'
-    ctx.font = '30px Helvetica'
+    ctx.fillStyle = 'rgb(' + generateRgbCode() + ')'
+    ctx.font = '26px Helvetica'
     ctx.textBaseline = 'middle'
 
     let xPos = (width / 4) * Math.random() + (width / 4 + 2) * i
@@ -85,23 +94,28 @@ let drawText = () => {
   }
 }
 
-let randomText = () => {
+const emits = defineEmits(['generate-code'])
+// 生产随机文本(字母和数字)
+const randomText = () => {
   let code = 'xyXY'.replace(/[xyXY]/g, function (c) {
     let res = ''
     switch (c) {
       case 'x':
-        res = Math.floor(Math.random() * 5)
+        // 生成数字:0~4
+        res = generateRandomInt(0, 4)
         break
       case 'X':
-        res = 5 + Math.floor(Math.random() * 4)
+        // 生成数字:5~9
+        res = generateRandomInt(5, 9)
         break
       case 'y':
-        //小写字母'a'的ASCII是97,a~z的ASCII码就是97 + 0~25;
-        //然后调用String.fromCharCode()传入ASCII值
-        res = String.fromCharCode(97 + Math.ceil(Math.random() * 13))
+        //1.小写字母a~z的ASCII码值是97~122;2.调用String.fromCharCode方法，其会根据传入ASCII值返回对应的字符串
+        // 生成小写字母:a ~ m
+        res = String.fromCharCode(generateRandomInt(97, 109))
         break
       case 'Y':
-        res = String.fromCharCode(110 + Math.ceil(Math.random() * 12))
+        // 生成小写字母:n ~ z
+        res = String.fromCharCode(generateRandomInt(110, 122))
         break
     }
     return res
