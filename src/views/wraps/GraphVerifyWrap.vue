@@ -2,15 +2,41 @@
   <div class="container">
     <div class="input-wrapper">
       <div class="label">{{ $attrs.label }}</div>
-      <el-input v-bind="$attrs" maxlength="4"></el-input>
+      <el-input v-bind="$attrs" maxlength="4" @input="inputCaptcha">
+        <template #prefix>
+          <svg-icon :icon="icon"></svg-icon>
+        </template>
+      </el-input>
     </div>
     <div class="code-wrapper">
-      <graph-verify :height="38"></graph-verify>
+      <graph-verify ref="captchaRef" :height="38" @captcha="updateCaptcha"></graph-verify>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
+
+let correctCaptcha = '' // 正确的验证码
+const updateCaptcha = val => {
+  correctCaptcha = val
+}
+
+const icon = ref('captcha01')
+const captchaRef = ref(null)
+// 监听验证码的输入
+const inputCaptcha = val => {
+  if (val && val.length === 4) {
+    if (val.toLowerCase() === correctCaptcha) {
+      icon.value = 'captcha02'
+    } else {
+      // 刷新验证码
+      captchaRef.value.init()
+      ElMessage.warning('验证码输入错误')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -52,6 +78,10 @@
   .canvas-container {
     display: flex;
     align-items: flex-end;
+  }
+  .el-input__prefix-inner {
+    display: flex;
+    align-items: center;
   }
 }
 </style>

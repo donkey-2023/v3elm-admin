@@ -14,9 +14,5 @@ export default {
 }
 
 function keyDown(e) {
-  if (!callback && $el) {
-    $el.click()
-  } else {
-    e.keyCode == 13 && typeof callback == 'function' && callback(e)
-  }
+  e.keyCode == 13 && typeof callback == 'function' && callback(e)
 }

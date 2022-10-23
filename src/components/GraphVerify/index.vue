@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { generateRandomInt } from '@/utils/index'
 
 const canvasRef = ref(null)
@@ -14,38 +14,27 @@ const containerRef = ref(null)
 let ctx = null
 let text = ''
 let width = 100
+
+const init = () => {
+  text = randomText()
+  drawLine()
+  drawText()
+}
 onMounted(() => {
   setTimeout(() => {
     width = containerRef.value.getBoundingClientRect().width
     ctx = canvasRef.value.getContext('2d')
-    onClick()
-    text = randomText()
-    drawLine()
-    drawText()
+    init()
+
+    canvasRef.value.addEventListener('click', init)
   }, 0)
 })
-
-const onClick = () => {
-  canvasRef.value.addEventListener(
-    'click',
-    () => {
-      text = randomText()
-      drawLine()
-      drawText()
-    },
-    false
-  )
-}
+onBeforeUnmount(() => {
+  canvasRef.value.removeEventListener('click', init)
+})
 
 // 生成随机rgba颜色码
-const generateRgbCode = (opacity = 1) =>
-  generateRandomInt(100, 220) +
-  ',' +
-  generateRandomInt(100, 220) +
-  ',' +
-  generateRandomInt(100, 220) +
-  ',' +
-  opacity
+const generateRgbCode = (opacity = 1, cb) => cb(50, 200) + ',' + cb(50, 200) + ',' + cb(50, 200) + ',' + opacity
 
 const props = defineProps({
   height: {
@@ -65,13 +54,9 @@ const drawLine = () => {
   for (let i = 0; i < props.lineNum; i++) {
     ctx.beginPath()
     ctx.lineWidth = 2
-    ctx.strokeStyle =
-      'rgba(' + generateRgbCode(generateRandomInt(4, 6) / 10) + ')'
-    ctx.moveTo(generateRandomInt(0, width), generateRandomInt(0, props.height))
-    ctx.lineTo(
-      generateRandomInt(width / 3, width),
-      generateRandomInt(props.height / 3, props.height)
-    )
+    ctx.strokeStyle = 'rgba(' + generateRgbCode(generateRandomInt(2, 5) / 10, generateRandomInt) + ')'
+    ctx.moveTo(Math.random() * width, Math.random() * props.height)
+    ctx.lineTo(Math.random() * width, Math.random() * props.height)
     ctx.stroke()
   }
   ctx.restore()
@@ -81,21 +66,17 @@ const drawLine = () => {
 const drawText = () => {
   let len = text.length
   for (let i = 0; i < len; i++) {
-    ctx.fillStyle = 'rgb(' + generateRgbCode() + ')'
+    ctx.fillStyle = 'rgb(' + generateRgbCode(generateRandomInt(8, 10) / 10, generateRandomInt) + ')'
     ctx.font = '26px Helvetica'
     ctx.textBaseline = 'middle'
 
     let xPos = (width / 4) * Math.random() + (width / 4 + 2) * i
-    ctx.fillText(
-      text[i],
-      xPos > width - 20 ? width - 20 : xPos,
-      Math.random() * 5 + props.height / 2
-    )
+    ctx.fillText(text[i], xPos > width - 20 ? width - 20 : xPos, Math.random() * 5 + props.height / 2)
   }
 }
 
-const emits = defineEmits(['generate-code'])
-// 生产随机文本(字母和数字)
+const emits = defineEmits(['captcha'])
+// 生成随机文本(字母和数字)
 const randomText = () => {
   let code = 'xyXY'.replace(/[xyXY]/g, function (c) {
     let res = ''
@@ -121,9 +102,12 @@ const randomText = () => {
     return res
   })
   console.log('-------- text -------- ', code)
-  emits('generate-code', code)
+  emits('captcha', code)
   return code
 }
+defineExpose({
+  init
+})
 </script>
 
 <style lang="scss" scoped>
