@@ -20,10 +20,15 @@
       ></input-wrap>
     </el-form-item>
     <el-form-item prop="verifyCode" class="last-form-item">
-      <graph-verify-wrap v-model="formData.verifyCode" label="验证码"></graph-verify-wrap>
+      <graph-verify-wrap v-model="formData.verifyCode" @clear="clear" label="验证码"></graph-verify-wrap>
     </el-form-item>
     <el-form-item>
-      <el-button v-elm-enter="onSubmit" type="primary" @click="onSubmit">登录</el-button>
+      <el-button
+        v-elm-enter="onSubmit"
+        :disabled="formData.verifyCode.length !== 4"
+        type="primary"
+        @click="onSubmit"
+      >登录</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -75,11 +80,24 @@ const onSubmit = () => {
         ElMessage.warning('用户名或密码输入不正确')
         return
       }
-      httpUtil.post('/login', formData).then(data => {
-        ElMessage.success('登陆成功')
-      })
+      if (formData.verifyCode.length < 4) {
+        return
+      }
+      httpUtil
+        .post('/login', formData)
+        .then(data => {
+          ElMessage.success('登陆成功')
+        })
+        .finally(() => {
+          rules.verifyCode[0].message = '验证码不为空'
+        })
     }
   })
+}
+
+const clear = () => {
+  formData.verifyCode = ''
+  rules.verifyCode[0].message = '验证码输入错误'
 }
 </script>
 

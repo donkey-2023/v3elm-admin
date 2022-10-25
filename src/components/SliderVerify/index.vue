@@ -29,7 +29,12 @@
         </div>
       </div>
     </div>
-    <div @mouseenter="mouseenter" :style="{width:width + 'px'}" class="btn-wrapper">
+    <div
+      @mouseenter="mouseenter"
+      @mouseleave="mouseleave"
+      :style="{width:width + 'px'}"
+      class="btn-wrapper"
+    >
       <div
         ref="sliderRef"
         @mousedown="mouseDown"
@@ -79,7 +84,7 @@ const onSubmit = () => {
   console.log('onsubmit')
 }
 
-const mouseDownCallback = (e) => {
+const mouseDownCallback = e => {
   // 阻止默认行为
   // 在滑块上方按住鼠标拖拽，会有一定几率出现拖拽文字的效果，然后此时松手是不会触发mouseup事件
   if (e.preventDefault) {
@@ -98,17 +103,14 @@ const mouseDownCallback = (e) => {
 // 防抖(避免用户1s内多次触发mousedown事件)
 const mouseDown = throttle(mouseDownCallback, 1000)
 
-const mouseMoveCallback = (e) => {
+const mouseMoveCallback = e => {
   if (!formData.isMove || !portability) return
   formData.placeHolder = ''
   formData.dragDis = e.clientX - initClientX
   // 边界判断
   if (formData.dragDis < 0) {
     formData.dragDis = 0
-  } else if (
-    formData.dragDis >
-    trackRef.value.clientWidth - sliderRef.value.clientWidth
-  ) {
+  } else if (formData.dragDis > trackRef.value.clientWidth - sliderRef.value.clientWidth) {
     formData.dragDis = trackRef.value.clientWidth - sliderRef.value.clientWidth
   }
   formData.left = formData.dragDis - offsetX
@@ -117,6 +119,7 @@ const mouseMoveCallback = (e) => {
 // 防抖
 const mouseMove = throttle(mouseMoveCallback, 1000 / 60)
 
+const emits = defineEmits(['success'])
 const mouseUp = () => {
   // 设置允许误差距
   if (Math.abs(formData.dragDis - offsetX) < 3) {
@@ -124,6 +127,7 @@ const mouseUp = () => {
     formData.state = 'success'
     formData.showGraph = false
     portability = false // 不可移动
+    emits('success')
   } else {
     // 滑块验证失败
     formData.state = 'fail'
@@ -144,17 +148,26 @@ const mouseUp = () => {
   document.removeEventListener('mouseup', mouseUp)
 }
 
+// 优化：鼠标在滑道上停留0.5s才显示图片
+let timer = null
 const mouseenter = () => {
   // 验证成功后不再显示拼图
   if (!portability) return
-  formData.showGraph = true
-  fullCvsCtx = fullImgRef.value.getContext('2d')
-  partialCvsCtx = partialImgRef.value.getContext('2d')
+  timer && clearTimeout(timer)
+  timer = setTimeout(() => {
+    formData.showGraph = true
+    fullCvsCtx = fullImgRef.value.getContext('2d')
+    partialCvsCtx = partialImgRef.value.getContext('2d')
 
-  if (firstTime || isRezie) {
-    firstTime = false
-    startDrawing(fullCvsCtx, partialCvsCtx)
-  }
+    if (firstTime || isRezie) {
+      firstTime = false
+      startDrawing(fullCvsCtx, partialCvsCtx)
+    }
+  }, 500)
+}
+
+const mouseleave = () => {
+  timer && clearTimeout(timer)
 }
 
 window.addEventListener('resize', () => {

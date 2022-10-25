@@ -5,20 +5,31 @@
         ref="btnRef"
         v-model="formData.mobileNo"
         label="手机号"
-        placeholder="请输入手机号码"
+        placeholder="请输入11位手机号码"
         maxlength="11"
         clearable
         :prefix-icon="Iphone"
       ></input-wrap>
     </el-form-item>
-    <el-form-item prop="msg" class="last-form-item">
-      <short-msg v-model="formData.msg" label="验证码" placeholder="请输入验证码"></short-msg>
+    <el-form-item prop="shortMsgCode" class="last-form-item">
+      <short-msg
+        v-model="formData.shortMsgCode"
+        label="验证码"
+        placeholder="请输入验证码"
+        :mobileNo="formData.mobileNo"
+        @setVal="setVerifyCode"
+      ></short-msg>
     </el-form-item>
     <el-form-item>
-      <slider-verify />
+      <slider-verify @success="formData.sliderVerify = true" />
     </el-form-item>
     <el-form-item>
-      <el-button v-elm-enter="onSubmit" type="primary" @click="onSubmit">登录</el-button>
+      <el-button
+        :disabled="!formData.sliderVerify"
+        v-elm-enter="onSubmit"
+        type="primary"
+        @click="onSubmit"
+      >登录</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -33,7 +44,8 @@ import httpUtil from '@/utils/httpUtil'
 
 const formData = reactive({
   mobileNo: '',
-  msg: ''
+  shortMsgCode: '',
+  sliderVerify: false
 })
 const rules = reactive({
   mobileNo: [
@@ -43,7 +55,7 @@ const rules = reactive({
       trigger: 'change'
     }
   ],
-  msg: [
+  shortMsgCode: [
     {
       required: true,
       message: '验证码不为空',
@@ -52,10 +64,18 @@ const rules = reactive({
   ]
 })
 
+let verifyCode = null
+const setVerifyCode = code => {
+  verifyCode = code
+}
 const ruleFormRef = ref(null)
 const onSubmit = () => {
   ruleFormRef.value.validate((valid, fields) => {
     if (valid) {
+      if (formData.shortMsgCode != verifyCode) {
+        ElMessage.warning('短信验证码输入错误')
+        return
+      }
       httpUtil.post('/login', formData).then(data => {
         ElMessage.success('登陆成功')
       })

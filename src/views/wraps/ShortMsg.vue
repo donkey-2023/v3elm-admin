@@ -9,12 +9,31 @@
       </el-input>
     </div>
     <div class="btn-wrapper">
-      <el-button>获取验证码</el-button>
+      <el-button @click="open" :disabled="!props.mobileNo || props.mobileNo.length != 11 ">获取验证码</el-button>
     </div>
   </div>
 </template>
 
 <script setup>
+import { h, ref, watchEffect, watch } from 'vue'
+import { ElNotification } from 'element-plus'
+import { generateRandomInt } from '@/utils/index'
+
+const props = defineProps({
+  mobileNo: {
+    type: [String, Number]
+  }
+})
+
+const emits = defineEmits(['setVal'])
+const open = () => {
+  let code = generateRandomInt(1000, 9999)
+  emits('setVal', code)
+  ElNotification({
+    title: '短信验证码',
+    message: h('i', { style: 'color: teal' }, code)
+  })
+}
 </script>
 
 <style lang="scss" scoped>

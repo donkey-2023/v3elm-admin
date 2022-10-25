@@ -25,6 +25,7 @@ const updateCaptcha = val => {
 
 const icon = ref('captcha01')
 const captchaRef = ref(null)
+const emits = defineEmits(['clear'])
 // 监听验证码的输入
 const inputCaptcha = val => {
   if (val && val.length === 4) {
@@ -33,7 +34,7 @@ const inputCaptcha = val => {
     } else {
       // 刷新验证码
       captchaRef.value.init()
-      ElMessage.warning('验证码输入错误')
+      emits('clear')
     }
   }
 }

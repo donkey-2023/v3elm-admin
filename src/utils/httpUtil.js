@@ -16,6 +16,7 @@ service.interceptors.request.use(
     return config
   },
   error => {
+    console.log(error)
     return Promise.reject(error)
   }
 )
@@ -23,16 +24,21 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
   response => {
-    const { data } = response.data
-    if (response.status === 200 || data.code === 0) {
-      return data
+    const res = response.data
+    if (response.status === 200) {
+      if (res.code == 0) {
+        return res.data
+      } else {
+        ElMessage.error(res.msg)
+        return Promise.reject(res)
+      }
     } else {
-      ElMessage.error(data)
-      return Promise.reject(data)
+      ElMessage.error(res || 'Error')
+      return Promise.reject(res)
     }
   },
   error => {
-    const { response } = error
+    const response = error.response
     console.log(response)
 
     response && ElMessage.error(response.data)

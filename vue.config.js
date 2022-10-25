@@ -23,8 +23,8 @@ module.exports = defineConfig({
       }
     }
   },
-  configureWebpack: (config) => {
-    console.log('config', config)
+  configureWebpack: config => {
+    // console.log('config', config)
     Object.assign(config.resolve, {
       // 在当前目录查找
       modules: [path.resolve('node_modules')],
