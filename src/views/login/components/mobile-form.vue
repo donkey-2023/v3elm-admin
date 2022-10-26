@@ -43,7 +43,7 @@ import { ElMessage } from 'element-plus'
 import httpUtil from '@/utils/httpUtil'
 
 const formData = reactive({
-  mobileNo: '',
+  mobileNo: '13511111111',
   shortMsgCode: '',
   sliderVerify: false
 })

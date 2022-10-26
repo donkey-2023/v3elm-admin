@@ -9,13 +9,20 @@
       </el-input>
     </div>
     <div class="btn-wrapper">
-      <el-button @click="open" :disabled="!props.mobileNo || props.mobileNo.length != 11 ">获取验证码</el-button>
+      <el-button
+        @click="open"
+        :disabled="!props.mobileNo || props.mobileNo.length != 11 || form.showTimer"
+        style="position:relative;"
+      >
+        获取验证码
+        <div v-if="form.showTimer" class="timer">{{ form.num + ' s'}}</div>
+      </el-button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { h, ref, watchEffect, watch } from 'vue'
+import { h, ref, reactive } from 'vue'
 import { ElNotification } from 'element-plus'
 import { generateRandomInt } from '@/utils/index'
 
@@ -23,6 +30,11 @@ const props = defineProps({
   mobileNo: {
     type: [String, Number]
   }
+})
+
+const form = reactive({
+  showTimer: false,
+  num: 30
 })
 
 const emits = defineEmits(['setVal'])
@@ -33,6 +45,20 @@ const open = () => {
     title: '短信验证码',
     message: h('i', { style: 'color: teal' }, code)
   })
+
+  form.showTimer = true
+  fn()
+}
+
+const fn = () => {
+  setTimeout(() => {
+    if (--form.num >= 0) {
+      fn()
+    } else {
+      form.showTimer = false
+      form.num = 30
+    }
+  }, 1000)
 }
 </script>
 
@@ -63,9 +89,22 @@ const open = () => {
     }
   }
   .btn-wrapper {
+    position: relative;
     display: flex;
     align-items: flex-end;
     width: 90px;
+    .timer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(255, 255, 255, 1);
+      color: #409eff;
+    }
   }
 }
 ::v-deep {

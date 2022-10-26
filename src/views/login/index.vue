@@ -27,13 +27,7 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  onMounted,
-  onBeforeUnmount,
-  provide,
-  getCurrentInstance
-} from 'vue'
+import { ref, onMounted, onBeforeUnmount, provide, getCurrentInstance } from 'vue'
 import AccountForm from './components/account-form.vue'
 import MobileForm from './components/mobile-form.vue'
 
@@ -69,6 +63,9 @@ window.addEventListener('resize', updateSliderWidth)
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url('@/assets/img/bg.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 </style>
 <style lang="scss" scoped>
