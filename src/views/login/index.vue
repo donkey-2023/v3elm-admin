@@ -63,9 +63,7 @@ window.addEventListener('resize', updateSliderWidth)
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('@/assets/img/bg.jpeg');
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-image: linear-gradient(rgba(176, 176, 238, 0.5), rgba(255, 255, 255, 1));
 }
 </style>
 <style lang="scss" scoped>

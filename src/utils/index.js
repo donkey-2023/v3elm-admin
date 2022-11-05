@@ -40,10 +40,7 @@ export function accMul(arg1, arg2) {
   try {
     m += s2.split('.')[1].length
   } catch (e) {}
-  return (
-    (Number(s1.replace('.', '')) * Number(s2.replace('.', ''))) /
-    Math.pow(10, m)
-  )
+  return (Number(s1.replace('.', '')) * Number(s2.replace('.', ''))) / Math.pow(10, m)
 }
 
 //除法
@@ -90,7 +87,7 @@ export function calcPixelValue(str) {
   return 0
 }
 
-export function showLoading() {
+export function startFullScreenLoading() {
   const instance = createApp(GlobalLoading).mount(document.createElement('div'))
   document.body.appendChild(instance.$el.parentElement.firstChild)
 }
@@ -106,13 +103,9 @@ export const requestAnimationFrame = (function () {
   )
 })()
 
-export const cancelAnimationFrame =
-  window.cancelAnimationFrame ||
-  window.webkitCancelAnimationFrame ||
-  window.mozCancelAnimationFrame ||
-  window.clearTimeout
+export const cancelAnimationFrame = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.clearTimeout
 
-export function hideLoading() {
+export function stopFullScreenLoading() {
   const $loading = document.getElementsByClassName('global-loading-wrap')
   isNotNull($loading) && document.body.removeChild($loading[0])
 

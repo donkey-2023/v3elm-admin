@@ -38,13 +38,12 @@ import { ref, reactive } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
 import InputWrap from '@views/wraps/InputWrap'
 import GraphVerifyWrap from '@views/wraps/GraphVerifyWrap'
-import { showLoading, hideLoading } from '@utils/index'
 import { ElMessage } from 'element-plus'
-import httpUtil from '@/utils/httpUtil'
+import $http from '@/utils/http/index'
 
 const formData = reactive({
-  username: '',
-  password: '',
+  username: 'admin',
+  password: '123',
   verifyCode: ''
 })
 
@@ -83,8 +82,8 @@ const onSubmit = () => {
       if (formData.verifyCode.length < 4) {
         return
       }
-      httpUtil
-        .post('/login', formData)
+      $http
+        .post('/login', formData, { cancelDuplicateRequest: true, loading: true })
         .then(data => {
           ElMessage.success('登陆成功')
         })

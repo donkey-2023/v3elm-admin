@@ -40,7 +40,7 @@ import { Iphone } from '@element-plus/icons-vue'
 import InputWrap from '@views/wraps/InputWrap'
 import ShortMsg from '@views/wraps/ShortMsg'
 import { ElMessage } from 'element-plus'
-import httpUtil from '@/utils/httpUtil'
+import $http from '@/utils/http/index'
 
 const formData = reactive({
   mobileNo: '13511111111',
@@ -76,7 +76,8 @@ const onSubmit = () => {
         ElMessage.warning('短信验证码输入错误')
         return
       }
-      httpUtil.post('/login', formData).then(data => {
+      if (!formData.sliderVerify) return false
+      $http.post('/login', formData).then(data => {
         ElMessage.success('登陆成功')
       })
     }

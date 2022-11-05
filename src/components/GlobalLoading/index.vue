@@ -26,7 +26,6 @@ window.requestAnimationFrame = requestAnimationFrame
 
 let n = 0
 function showLoading() {
-  console.log('----------showLoading' + n + '----------')
   const diff = (Math.PI / 60) * n++
   ctx.clearRect(0, 0, 26, 26)
   ctx.beginPath()

@@ -1,6 +1,9 @@
 import axios from 'axios'
 import store from '@/store'
 import { ElMessage } from 'element-plus'
+import { addPending, removePending } from './helper/cancelToken'
+import { showLoading, hideLoading } from './helper/loading'
+import handleStatus from './helper/handleStatus'
 
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API,
@@ -13,10 +16,16 @@ service.interceptors.request.use(
   config => {
     const token = store.state.token
     token && (config.headers.Authorization = token)
+    // 取消重复的请求
+    if (config.cancelDuplicateRequest) {
+      removePending(config)
+      addPending(config)
+    }
+
+    config.loading && showLoading()
     return config
   },
   error => {
-    console.log(error)
     return Promise.reject(error)
   }
 )
@@ -24,24 +33,25 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
   response => {
+    hideLoading()
+    // 取消重复的请求
+    response.config.cancelDuplicateRequest && removePending(response.config)
+
     const res = response.data
-    if (response.status === 200) {
-      if (res.code == 0) {
-        return res.data
-      } else {
-        ElMessage.error(res.msg)
-        return Promise.reject(res)
-      }
+    if (response.status === 200 && res.code == 0) {
+      return res.data
     } else {
-      ElMessage.error(res || 'Error')
+      ElMessage.error(res.msg || 'Error')
       return Promise.reject(res)
     }
   },
   error => {
-    const response = error.response
-    console.log(response)
+    hideLoading()
+    // 取消重复的请求
+    error.config && error.config.cancelDuplicateRequest && removePending(error.config)
 
-    response && ElMessage.error(response.data)
+    // 根据响应状态码具体处理
+    handleStatus(error)
     return Promise.reject(error)
   }
 )
