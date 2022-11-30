@@ -1,14 +1,11 @@
 import { createStore } from 'vuex'
+import app from './modules/app'
 
 export default createStore({
-  state: {
+  modules: {
+    app
   },
   getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
+    token: state => state.app.token
   }
 })

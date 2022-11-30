@@ -45,12 +45,12 @@ export default function (error) {
       default:
         errorMsg = '未知错误，请联系管理员！'
     }
-  }
-  if (error.message.includes('timeout')) {
-    errorMsg = '网络请求超时！'
-  }
-  if (error.message.includes('Network')) {
-    errorMsg = window.navigator.onLine ? '服务端异常！' : '您断网了！'
+    if (error.message.toLowerCase().includes('timeout')) {
+      errorMsg = '网络请求超时'
+    }
+    if (error.message.toLowerCase().includes('network')) {
+      errorMsg = window.navigator.onLine ? '服务器异常' : '网络断开'
+    }
   }
   ElMessage.error(errorMsg)
 }

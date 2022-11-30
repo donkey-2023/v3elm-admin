@@ -40,7 +40,9 @@ import { Iphone } from '@element-plus/icons-vue'
 import InputWrap from '@views/wraps/InputWrap'
 import ShortMsg from '@views/wraps/ShortMsg'
 import { ElMessage } from 'element-plus'
-import $http from '@/utils/http/index'
+import { useStore } from 'vuex'
+
+const store = useStore()
 
 const formData = reactive({
   mobileNo: '13511111111',
@@ -77,7 +79,7 @@ const onSubmit = () => {
         return
       }
       if (!formData.sliderVerify) return false
-      $http.post('/login', formData).then(data => {
+      store.dispatch('app/login', formData).then(() => {
         ElMessage.success('登陆成功')
       })
     }

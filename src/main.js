@@ -8,6 +8,7 @@ import 'element-plus/theme-chalk/display.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import useSvgIcons from '@/icons/index'
 import directives from './directives/index'
+import '@/router/permission'
 
 const app = createApp(App)
 

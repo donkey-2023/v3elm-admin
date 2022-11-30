@@ -42,11 +42,11 @@ const formData = reactive({
 const props = defineProps({
   wheelSpeed: {
     type: Number,
-    default: 6
+    default: 30
   }
 })
 // 滚动条相关属性的映射
-let mapping = {}
+let globalMap = {}
 let barObj = {
   isHtlMove: false, // 是否拖动水平滚动条
   isVtlMove: false, // 是否拖动垂直滚动条
@@ -107,7 +107,7 @@ onBeforeUnmount(() => {
 
 // 将子元素中的内联元素设置为块级元素
 const displayBlock = () => {
-  Array.prototype.forEach.call(viewRef.value.children, (item) => {
+  Array.prototype.forEach.call(viewRef.value.children, item => {
     let styles = getElementStyle(item)
     if (styles.display === 'inline') {
       item.style.display = 'block'
@@ -121,10 +121,9 @@ const init = () => {
   const wrapStyle = getElementStyle(wrapRef.value)
   const viewStyle = getElementStyle(viewRef.value)
 
-  ;['horizontal', 'vertical'].forEach((key) => {
+  ;['horizontal', 'vertical'].forEach(key => {
     const map = BAR_MAP[key]
-    const wrapSize =
-      wrapRef.value[map.clientSize] || calcPixelValue(wrapStyle[map.size])
+    const wrapSize = wrapRef.value[map.clientSize] || calcPixelValue(wrapStyle[map.size])
     const viewSize = viewRef.value[map.offsetSize]
 
     // 如果组件的尺寸（即宽高）为0，则将其尺寸设置成与视图区的尺寸一致
@@ -134,6 +133,7 @@ const init = () => {
     if (viewSize > wrapSize) {
       // 当视图区的尺寸大于外层盒子的尺寸时，显示水平或垂直方向上的滚动条
       formData[map.showBar] = true
+      formData.opacity = 1
       barObj[map.cache] = { wrapSize, viewSize }
 
       createScrollBar(key, viewStyle, barObj[map.cache])
@@ -163,9 +163,7 @@ const createScrollBar = (key, viewStyle, { wrapSize, viewSize }) => {
   // 滚动条尺寸
   formData[map.barSize] = Math.pow(wrapSize, 2) / viewSize
   // 滚动条位置(left | top)
-  formData[map.barDir] =
-    (viewScrollSize * (wrapSize - formData[map.barSize])) /
-    (viewSize - wrapSize)
+  formData[map.barDir] = (viewScrollSize * (wrapSize - formData[map.barSize])) / (viewSize - wrapSize)
 }
 
 const mouseDown = (e, key) => {
@@ -177,22 +175,22 @@ const mouseDown = (e, key) => {
   } else {
     window.event.returnValue = false //IE
   }
-  mapping = BAR_MAP[key]
-  barObj[mapping.isMove] = true
-  barObj[mapping.prevClient] = e[mapping.client]
-  barObj[mapping.offset] = e[mapping.offset]
+  globalMap = BAR_MAP[key]
+  barObj[globalMap.isMove] = true
+  barObj[globalMap.prevClient] = e[globalMap.client]
+  barObj[globalMap.offset] = e[globalMap.offset]
 
   document.addEventListener('mousemove', mouseMove)
   document.addEventListener('mouseup', mouseUp)
 }
 
-const mouseMoveCb = (e) => {
-  if (!barObj[mapping.isMove]) return
+const mouseMoveCb = e => {
+  if (!barObj[globalMap.isMove]) return
 
   // 设置滚动条的位置
-  moveBar(mapping, e[mapping.client] - barObj[mapping.prevClient])
+  moveBar(globalMap, e[globalMap.client] - barObj[globalMap.prevClient])
   // 设置视图区的位置
-  setPositionOfView(mapping)
+  setPositionOfView(globalMap)
 }
 
 // 防抖
@@ -211,8 +209,7 @@ const moveBar = (map, diff) => {
   } else if (position > wrapSize - formData[map.barSize]) {
     formData[map.barDir] = wrapSize - formData[map.barSize]
 
-    barObj[map.prevClient] =
-      wrapClientRect[map.dir2] - formData[map.barSize] + barObj[map.offset]
+    barObj[map.prevClient] = wrapClientRect[map.dir2] - formData[map.barSize] + barObj[map.offset]
   } else {
     formData[map.barDir] = position
     barObj[map.prevClient] = barObj[map.prevClient] + diff
@@ -220,24 +217,22 @@ const moveBar = (map, diff) => {
 }
 
 // 同步设置视图区的位置， 即left 或 top
-const setPositionOfView = (map) => {
+const setPositionOfView = map => {
   const { wrapSize, viewSize } = barObj[map.cache]
-  const viewScrollSize =
-    (formData[map.barDir] * (viewSize - wrapSize)) /
-    (wrapSize - formData[map.barSize])
+  const viewScrollSize = (formData[map.barDir] * (viewSize - wrapSize)) / (wrapSize - formData[map.barSize])
   viewRef.value.style[map.dir1] = -viewScrollSize + 'px'
 }
 
-const mouseUp = (e) => {
-  barObj[mapping.isMove] = false
-  barObj[mapping.prevClient] = e[mapping.client]
+const mouseUp = e => {
+  barObj[globalMap.isMove] = false
+  barObj[globalMap.prevClient] = e[globalMap.client]
 
   document.removeEventListener('mousemove', mouseMove)
   document.removeEventListener('mouseup', mouseUp)
 }
 
 // 鼠标滑轮滚动
-const mouseScroll = (e) => {
+const mouseScroll = e => {
   if (!formData.showVtlBar) {
     return false
   }
@@ -265,7 +260,7 @@ const mouseEnter = () => {
 }
 const mouseLeave = () => {
   // 当用户还在拖动滚动条时，垂直滚动条不能隐藏
-  if (!barObj[mapping.isMove]) {
+  if (!barObj[globalMap.isMove]) {
     formData.opacity = 0
   }
 }

@@ -4,7 +4,7 @@
       <el-col :xs="22" :sm="19" :md="19" :lg="18" :xl="16">
         <div ref="innerRef" class="inner-wrapper">
           <div class="title"></div>
-          <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+          <el-tabs v-model="activeName" class="demo-tabs">
             <el-tab-pane label="账号密码登录" name="first">
               <transition name="tab1-fade">
                 <div v-if="activeName == 'first'">
@@ -33,18 +33,16 @@ import MobileForm from './components/mobile-form.vue'
 
 const activeName = ref('first')
 
-const handleClick = (tab, event) => {
-  console.log(tab, event)
-}
-
 // 与 SliderVerify组件通信，动态修改其宽度
 const width = ref(0)
 provide('width', width)
 
 const { proxy } = getCurrentInstance()
 const updateSliderWidth = () => {
-  width.value = proxy.$refs['innerRef'].clientWidth - 80
-  console.log('width', width.value)
+  if (proxy.$refs['innerRef']) {
+    width.value = proxy.$refs['innerRef'].clientWidth - 80
+    console.log('width', width.value)
+  }
 }
 
 onMounted(() => {

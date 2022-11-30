@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import { addPending, removePending } from './helper/cancelToken'
 import { showLoading, hideLoading } from './helper/loading'
 import handleStatus from './helper/handleStatus'
+import { isValid } from '@/utils/verify'
 
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API,
@@ -14,7 +15,11 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
   config => {
-    const token = store.state.token
+    const token = store.getters.token
+    if (token && !isValid()) {
+      store.dispatch('app/logout')
+      return config
+    }
     token && (config.headers.Authorization = token)
     // 取消重复的请求
     if (config.cancelDuplicateRequest) {
