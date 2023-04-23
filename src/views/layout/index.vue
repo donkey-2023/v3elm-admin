@@ -6,12 +6,14 @@
     <el-container class="offside-container">
       <el-header>Header</el-header>
       <el-main>Main</el-main>
+      <main-content></main-content>
     </el-container>
   </el-container>
 </template>
 
 <script setup>
 import SiderBar from './components/SideBar.vue'
+import MainContent from './components/MainContent.vue'
 </script>
 
 <style lang="scss">
@@ -23,12 +25,12 @@ import SiderBar from './components/SideBar.vue'
   width: 100%;
   height: 100vh;
   .aside-container {
-    width: 200px;
+    width: 220px;
     height: 100%;
     overflow: hidden;
   }
   .offside-container {
-    width: calc(100% - 200px);
+    width: calc(100% - 220px);
     height: 100%;
   }
 }

@@ -1,26 +1,28 @@
 import $http from '@/utils/http/index'
-import { TOKEN, START_TIME } from '@/utils/constant'
+import { TOKEN, EFFECTIVE_TIME } from '@/utils/constant'
 import router from '@/router'
 
 const state = () => ({
-  token: localStorage.getItem(TOKEN) || ''
+  token: localStorage.getItem(TOKEN) || '',
+  logouting: false
 })
 
 const mutations = {
   setToken(state, token) {
     state.token = token
     localStorage.setItem(TOKEN, token)
-    localStorage.setItem(START_TIME, Date.now())
+    localStorage.setItem(EFFECTIVE_TIME, Date.now())
   },
   clearToken(state) {
     state.token = ''
+    state.logouting = true
     localStorage.removeItem(TOKEN)
-    localStorage.removeItem(START_TIME)
+    localStorage.removeItem(EFFECTIVE_TIME)
   }
 }
 
 const actions = {
-  login({ commit }, params) {
+  login({ commit }, params = {}) {
     return new Promise((resovle, reject) => {
       $http
         .post('/login', params, { cancelDuplicateRequest: true, loading: true })
@@ -36,6 +38,8 @@ const actions = {
   },
   logout({ commit }) {
     commit('clearToken')
+    commit('menu/clearMenu', null, { root: true })
+    commit('user/clearUserInfo', null, { root: true })
     router.replace('/login')
   }
 }

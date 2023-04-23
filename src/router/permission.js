@@ -2,22 +2,28 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import router from './index'
 import store from '@/store'
+import { isNotNull } from '@/utils/verify'
 
 NProgress.configure({ showSpinner: false }) // 不显示右上角螺旋加载提示
 
-const whiteList = ['/login', '/404']
+const whiteList = ['/login']
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start() //开启进度条
 
   const token = store.getters.token
-
   if (token) {
     // 已登录的情况下不允许跳转到登录页
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
-      next()
+      // 未添加动态路由
+      if (!store.getters.addRouteFlag) {
+        await store.dispatch('menu/getUserMenus')
+        addAsyncRoutes(to.path, next)
+      } else {
+        next()
+      }
     }
   } else {
     // 未登录
@@ -31,6 +37,19 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+function addAsyncRoutes(path, next) {
+  store.commit('menu/generateAsyncRoutes')
+  const asyncRoutes = store.getters.asyncRoutes
+
+  if (isNotNull(asyncRoutes)) {
+    asyncRoutes.forEach(item => {
+      router.addRoute(item)
+    })
+    next({ path: path, replace: true }) //路由进行重定向放行
+  } else {
+    next()
+  }
+}
 router.afterEach(() => {
   NProgress.done() //完成进度条
 })

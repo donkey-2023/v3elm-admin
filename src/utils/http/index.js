@@ -5,6 +5,7 @@ import { addPending, removePending } from './helper/cancelToken'
 import { showLoading, hideLoading } from './helper/loading'
 import handleStatus from './helper/handleStatus'
 import { isValid } from '@/utils/verify'
+import { TOKEN_EXPIRED } from '@/utils/constant'
 
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API,
@@ -18,7 +19,7 @@ service.interceptors.request.use(
     const token = store.getters.token
     if (token && !isValid()) {
       store.dispatch('app/logout')
-      return config
+      return Promise.reject(new Error(TOKEN_EXPIRED))
     }
     token && (config.headers.Authorization = token)
     // 取消重复的请求
@@ -42,19 +43,17 @@ service.interceptors.response.use(
     // 取消重复的请求
     response.config.cancelDuplicateRequest && removePending(response.config)
 
-    const res = response.data
-    if (response.status === 200 && res.code == 0) {
-      return res.data
+    if (response.status === 200 && response.data.code == 0) {
+      return response.data
     } else {
-      ElMessage.error(res.msg || 'Error')
-      return Promise.reject(res)
+      ElMessage.error(response.data.msg || 'Error')
+      return Promise.reject(response.data)
     }
   },
   error => {
     hideLoading()
     // 取消重复的请求
     error.config && error.config.cancelDuplicateRequest && removePending(error.config)
-
     // 根据响应状态码具体处理
     handleStatus(error)
     return Promise.reject(error)

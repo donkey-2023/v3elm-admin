@@ -41,7 +41,7 @@ const formData = reactive({
 // 鼠标滑轮的速度
 const props = defineProps({
   wheelSpeed: {
-    type: Number,
+    type: [Number, String],
     default: 30
   }
 })

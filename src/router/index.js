@@ -7,21 +7,20 @@ const routes = [
     component: () => import('@views/login/index')
   },
   {
-    name: '404',
-    path: '/404',
-    component: () => import('@/views/404/index')
-  },
-  {
     path: '/',
     name: '首页',
     component: Layout,
     children: [
-      // {
-      //   path: 'dashboard',
-      //   name: 'Dashboard',
-      //   component: () => import('@/views/dashboard/index'),
-      //   meta: { title: 'Dashboard', icon: 'dashboard' }
-      // }
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        meta: { title: 'Dashboard', icon: 'dashboard' }
+      },
+      {
+        name: '404',
+        path: '/404',
+        component: () => import('@/views/404/index')
+      }
     ]
   },
   { path: '/:pathMatch(.*)', redirect: '/404' }

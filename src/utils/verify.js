@@ -1,5 +1,5 @@
 import { getType } from './index'
-import { START_TIME, DURATION } from './constant'
+import { EFFECTIVE_TIME, DURATION } from './constant'
 
 export function isNull(obj) {
   return !obj && obj !== 0
@@ -22,6 +22,6 @@ export function isNumeric(value) {
 
 // 判断token是否有效
 export function isValid() {
-  const createTime = localStorage.getItem(START_TIME)
+  const createTime = localStorage.getItem(EFFECTIVE_TIME)
   return Date.now() - createTime <= DURATION
 }

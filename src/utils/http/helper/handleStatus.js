@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { TOKEN_EXPIRED } from '@/utils/constant'
 
 export default function (error) {
   if (axios.isCancel(error)) {
@@ -52,5 +53,5 @@ export default function (error) {
       errorMsg = window.navigator.onLine ? '服务器异常' : '网络断开'
     }
   }
-  ElMessage.error(errorMsg)
+  error.message !== TOKEN_EXPIRED && ElMessage.error(errorMsg)
 }
