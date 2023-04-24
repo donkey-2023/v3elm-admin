@@ -20,7 +20,7 @@
       ></input-wrap>
     </el-form-item>
     <el-form-item prop="verifyCode" class="last-form-item">
-      <graph-verify-wrap v-model="formData.verifyCode" @clear="clear" label="验证码"></graph-verify-wrap>
+      <graph-verify-wrap v-model="formData.verifyCode" @setVal="setCaptcha" label="验证码"></graph-verify-wrap>
     </el-form-item>
     <el-form-item>
       <el-button
@@ -28,7 +28,7 @@
         :disabled="formData.verifyCode.length !== 4"
         type="primary"
         @click="onSubmit"
-      >登录</el-button>
+      >{{ btnText }}</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -72,7 +72,13 @@ const rules = reactive({
   ]
 })
 
+let correctCaptcha = '' // 正确的图形验证码
+const setCaptcha = val => {
+  correctCaptcha = val
+}
+
 const ruleFormRef = ref(null)
+const btnText = ref('登录')
 const onSubmit = () => {
   ruleFormRef.value.validate((valid, fields) => {
     if (valid) {
@@ -80,9 +86,13 @@ const onSubmit = () => {
         ElMessage.warning('用户名或密码输入不正确')
         return
       }
-      if (formData.verifyCode.length < 4) {
+      if (formData.verifyCode != correctCaptcha) {
+        ElMessage.warning('验证码输入错误')
         return
       }
+
+      btnText.value = '登陆中...'
+
       store
         .dispatch('app/login', formData)
         .then(() => {
@@ -93,11 +103,6 @@ const onSubmit = () => {
         })
     }
   })
-}
-
-const clear = () => {
-  formData.verifyCode = ''
-  rules.verifyCode[0].message = '验证码输入错误'
 }
 </script>
 

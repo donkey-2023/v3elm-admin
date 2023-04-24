@@ -2,7 +2,7 @@
   <el-sub-menu v-if="isNotEmpty(menu.children)" :index="menu.id">
     <template #title>
       <el-icon class="icon-wrapper">
-        <svg-icon :icon="menu.icon"></svg-icon>
+        <svg-icon :icon="activeMenu.id === menu.id ? (menu.icon + '1'): menu.icon"></svg-icon>
       </el-icon>
       <span>{{ menu.name }}</span>
     </template>
@@ -10,15 +10,17 @@
   </el-sub-menu>
   <el-menu-item v-else :index="menu.id" @click="clickMenu(menu)">
     <el-icon class="icon-wrapper">
-      <svg-icon :icon="menu.icon"></svg-icon>
+      <svg-icon :icon="activeMenu.id === menu.id ? (menu.icon + '1'): menu.icon"></svg-icon>
     </el-icon>
     <span>{{ menu.name }}</span>
   </el-menu-item>
 </template>
 
 <script setup name="ElmSubMenu">
+import { reactive } from 'vue'
 import { isNotEmpty } from '@/utils/verify'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 const props = defineProps({
   menu: {
@@ -27,9 +29,13 @@ const props = defineProps({
 })
 
 const router = useRouter()
+const store = useStore()
+const activeMenu = reactive(store.getters.activeMenu)
 
 const clickMenu = menu => {
+  activeMenu.id = menu.id
   router.push(menu.url)
+  store.commit('menu/setActiveMenu', menu)
 }
 </script>
 

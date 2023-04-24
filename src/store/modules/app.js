@@ -25,7 +25,7 @@ const actions = {
   login({ commit }, params = {}) {
     return new Promise((resovle, reject) => {
       $http
-        .post('/login', params, { cancelDuplicateRequest: true, loading: true })
+        .post('/login', params, { cancelDuplicateRequest: true, loading: false })
         .then(res => {
           commit('setToken', res.token)
           router.replace('/')

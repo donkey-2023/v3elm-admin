@@ -2,7 +2,7 @@
   <scroll-bar :wheel-speed="30" class="scroll-bar">
     <div class="system-info">
       <svg-icon icon="Vue" class="system-icon"></svg-icon>
-      <div class="system-name">Vue3-elm管理系统</div>
+      <div class="system-name elipsis">Vue3-elm管理系统</div>
     </div>
     <el-menu
       text-color="#fff"
@@ -10,6 +10,7 @@
       background-color="rgb(48, 65, 86)"
       class="el-menu-vertical"
       :unique-opened="true"
+      :default-active="activeMenu.id"
     >
       <ElmSubMenu v-for="item in menus" :key="item.id" :menu="item"></ElmSubMenu>
     </el-menu>
@@ -17,13 +18,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import ElmSubMenu from './ElmSubMenu.vue'
-import $http from '@/utils/http/index'
 
 const store = useStore()
 const menus = ref(store.getters.asyncRoutes)
+const activeMenu = ref(store.getters.activeMenu)
 
 store.dispatch('user/getUserInfo')
 </script>
@@ -46,6 +47,7 @@ store.dispatch('user/getUserInfo')
       padding-right: 10px;
     }
     .system-name {
+      max-width: 140px;
       height: 22px;
       line-height: 22px;
     }

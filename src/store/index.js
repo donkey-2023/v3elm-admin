@@ -13,6 +13,7 @@ export default createStore({
     token: state => state.app.token,
     logouting: state => state.app.logouting,
     menus: state => state.menu.menuList,
+    activeMenu: state => state.menu.activeMenu,
     asyncRoutes: state => state.menu.asyncRoutes,
     addRouteFlag: state => state.menu.addRouteFlag,
     userInfo: state => state.user.userInfo

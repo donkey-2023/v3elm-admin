@@ -22,8 +22,8 @@ const routes = [
         component: () => import('@/views/404/index')
       }
     ]
-  },
-  { path: '/:pathMatch(.*)', redirect: '/404' }
+  }
+  // { path: '/:pathMatch(.*)', redirect: '/404' }
 ]
 
 const router = createRouter({

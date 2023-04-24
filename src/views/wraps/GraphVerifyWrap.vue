@@ -4,39 +4,20 @@
       <div class="label">{{ $attrs.label }}</div>
       <el-input v-bind="$attrs" maxlength="4" @input="inputCaptcha">
         <template #prefix>
-          <svg-icon :icon="icon"></svg-icon>
+          <svg-icon icon="captcha01"></svg-icon>
         </template>
       </el-input>
     </div>
     <div class="code-wrapper">
-      <graph-verify ref="captchaRef" :height="38" @captcha="updateCaptcha"></graph-verify>
+      <graph-verify :height="38" @captcha="updateCaptcha"></graph-verify>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
-
-let correctCaptcha = '' // 正确的验证码
+const emits = defineEmits(['setVal'])
 const updateCaptcha = val => {
-  correctCaptcha = val
-}
-
-const icon = ref('captcha01')
-const captchaRef = ref(null)
-const emits = defineEmits(['clear'])
-// 监听验证码的输入
-const inputCaptcha = val => {
-  if (val && val.length === 4) {
-    if (val.toLowerCase() === correctCaptcha) {
-      icon.value = 'captcha02'
-    } else {
-      // 刷新验证码
-      captchaRef.value.init()
-      emits('clear')
-    }
-  }
+  emits('setVal', val)
 }
 </script>
 

@@ -45,8 +45,11 @@ function addAsyncRoutes(path, next) {
     asyncRoutes.forEach(item => {
       router.addRoute(item)
     })
+    // 解决bug：对于addRoute添加的路由，F5刷新时会白屏
+    router.addRoute({ path: '/:pathMatch(.*)', redirect: '/404' })
     next({ path: path, replace: true }) //路由进行重定向放行
   } else {
+    router.addRoute({ path: '/:pathMatch(.*)', redirect: '/404' })
     next()
   }
 }

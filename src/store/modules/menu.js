@@ -1,11 +1,12 @@
-import { MENUS, EFFECTIVE_TIME } from '@/utils/constant'
+import { MENUS, ACTIVE_MENU, EFFECTIVE_TIME } from '@/utils/constant'
 import { isNotEmpty } from '@/utils/verify'
 import $http from '@/utils/http/index'
 
 const state = () => ({
   menuList: JSON.parse(localStorage.getItem(MENUS)) || [],
   addRouteFlag: false, // 是否添加动态路由
-  asyncRoutes: [] // 处理后的动态路由
+  asyncRoutes: [], // 处理后的动态路由
+  activeMenu: JSON.parse(localStorage.getItem(ACTIVE_MENU)) || {} //当前激活菜单
 })
 
 const mutations = {
@@ -17,6 +18,10 @@ const mutations = {
   clearMenu(state) {
     state.menuList = []
     localStorage.removeItem(MENUS)
+  },
+  setActiveMenu(state, data) {
+    state.activeMenu = data
+    localStorage.setItem(ACTIVE_MENU, JSON.stringify(data))
   },
   generateAsyncRoutes(state) {
     if (state.addRouteFlag || !isNotEmpty(state.menuList)) {

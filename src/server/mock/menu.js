@@ -9,32 +9,32 @@ const menus = [
         id: 'muid_01100',
         icon: 'user',
         name: '用户管理',
-        path: '/user-manage',
-        url: '/user-manage',
+        path: '/system-manage/user-manage',
+        url: '/system-manage/user-manage',
         children: []
       },
       {
         id: 'muid_01200',
         icon: 'role',
         name: '角色管理',
-        path: '/role-manage',
-        url: '/role-manage',
+        path: '/system-manage/role-manage',
+        url: '/system-manage/role-manage',
         children: []
       },
       {
         id: 'muid_01300',
         icon: 'menu',
         name: '菜单管理',
-        path: '/menu-manage',
-        url: '/menu-manage',
+        path: '/system-manage/menu-manage',
+        url: '/system-manage/menu-manage',
         children: []
       },
       {
         id: 'muid_01400',
         icon: 'dept',
         name: '部门管理',
-        path: '/dept-manage',
-        url: '/dept-manage',
+        path: '/system-manage/dept-manage',
+        url: '/system-manage/dept-manage',
         children: []
       }
     ]

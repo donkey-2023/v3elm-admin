@@ -29,7 +29,7 @@
         v-elm-enter="onSubmit"
         type="primary"
         @click="onSubmit"
-      >登录</el-button>
+      >{{ btnText }}</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -70,7 +70,9 @@ let verifyCode = null
 const setVerifyCode = code => {
   verifyCode = code
 }
+
 const ruleFormRef = ref(null)
+const btnText = ref('登录')
 const onSubmit = () => {
   ruleFormRef.value.validate((valid, fields) => {
     if (valid) {
@@ -79,6 +81,7 @@ const onSubmit = () => {
         return
       }
       if (!formData.sliderVerify) return false
+      btnText.value = '登陆中...'
       store.dispatch('app/login', formData).then(() => {
         ElMessage.success('登陆成功')
       })
