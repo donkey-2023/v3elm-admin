@@ -1,16 +1,22 @@
 <template>
   <scroll-bar :wheel-speed="30" class="scroll-bar">
     <div class="system-info">
-      <svg-icon icon="Vue" class="system-icon"></svg-icon>
-      <div class="system-name elipsis">Vue3-elm管理系统</div>
+      <svg-icon
+        icon="Vue"
+        class="system-icon"
+        :style="{'padding-right': $store.getters.isCollapse ? '' : '10px'}"
+      ></svg-icon>
+      <div v-if="!$store.getters.isCollapse" class="system-name elipsis">Vue3-elm管理系统</div>
     </div>
     <el-menu
+      :unique-opened="true"
+      :default-active="$store.getters.activeMenu.id"
+      :collapse="$store.getters.isCollapse"
+      :collapse-transition="false"
       text-color="#fff"
       active-text-color="#ffd04b"
       background-color="rgb(48, 65, 86)"
       class="el-menu-vertical"
-      :unique-opened="true"
-      :default-active="activeMenu.id"
     >
       <ElmSubMenu v-for="item in menus" :key="item.id" :menu="item"></ElmSubMenu>
     </el-menu>
@@ -18,14 +24,16 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import ElmSubMenu from './ElmSubMenu.vue'
 
 const store = useStore()
 const menus = ref(store.getters.asyncRoutes)
-const activeMenu = ref(store.getters.activeMenu)
-
+// const activeMenu = ref(store.getters.activeMenu)
+// const activeMenu = computed(() => store.getters.activeMenu)
+const asideWidth = computed(() => (store.getters.isCollapse ? '62px' : '222px'))
+//获取当前登录人的信息
 store.dispatch('user/getUserInfo')
 </script>
 
@@ -38,13 +46,12 @@ store.dispatch('user/getUserInfo')
     justify-content: center;
     align-items: center;
     flex-wrap: nowrap;
-    width: 220px;
+    width: 100%;
     padding: 14px 0;
     color: #fff;
     .system-icon {
-      width: 22px;
-      height: 22px;
-      padding-right: 10px;
+      width: 20px;
+      height: 20px;
     }
     .system-name {
       max-width: 140px;
@@ -53,8 +60,9 @@ store.dispatch('user/getUserInfo')
     }
   }
   .el-menu-vertical {
+    border-right: none;
     .el-sub-menu {
-      width: 220px;
+      width: v-bind(asideWidth);
     }
   }
 }

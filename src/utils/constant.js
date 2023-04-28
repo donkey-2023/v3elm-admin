@@ -5,9 +5,7 @@ export const TOKEN = 'token'
 export const EFFECTIVE_TIME = 'effective_time'
 
 // TOKEN有效时长
-// export const DURATION = 3600 * 1000
-
-export const DURATION = 300 * 1000
+export const DURATION = 3600 * 1000
 
 export const MENUS = 'menus'
 

@@ -6,7 +6,8 @@ const state = () => ({
   menuList: JSON.parse(localStorage.getItem(MENUS)) || [],
   addRouteFlag: false, // 是否添加动态路由
   asyncRoutes: [], // 处理后的动态路由
-  activeMenu: JSON.parse(localStorage.getItem(ACTIVE_MENU)) || {} //当前激活菜单
+  activeMenu: JSON.parse(localStorage.getItem(ACTIVE_MENU)) || {}, //当前激活菜单
+  isCollapse: false // 侧边菜单栏是否折叠
 })
 
 const mutations = {
@@ -16,8 +17,13 @@ const mutations = {
     localStorage.setItem(EFFECTIVE_TIME, Date.now())
   },
   clearMenu(state) {
+    state.activeMenu = {}
     state.menuList = []
+    localStorage.removeItem(ACTIVE_MENU)
     localStorage.removeItem(MENUS)
+  },
+  toggleCollapse(state) {
+    state.isCollapse = !state.isCollapse
   },
   setActiveMenu(state, data) {
     state.activeMenu = data

@@ -17,7 +17,7 @@
 </template>
 
 <script setup name="ElmSubMenu">
-import { reactive } from 'vue'
+import { computed } from 'vue'
 import { isNotEmpty } from '@/utils/verify'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -30,10 +30,9 @@ const props = defineProps({
 
 const router = useRouter()
 const store = useStore()
-const activeMenu = reactive(store.getters.activeMenu)
+const activeMenu = computed(() => store.getters.activeMenu)
 
 const clickMenu = menu => {
-  activeMenu.id = menu.id
   router.push(menu.url)
   store.commit('menu/setActiveMenu', menu)
 }

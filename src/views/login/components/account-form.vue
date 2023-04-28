@@ -86,17 +86,17 @@ const onSubmit = () => {
         ElMessage.warning('用户名或密码输入不正确')
         return
       }
-      if (formData.verifyCode != correctCaptcha) {
+      if (formData.verifyCode && formData.verifyCode.toLowerCase() != correctCaptcha) {
         ElMessage.warning('验证码输入错误')
         return
       }
 
-      btnText.value = '登陆中...'
+      btnText.value = '登录中...'
 
       store
         .dispatch('app/login', formData)
         .then(() => {
-          ElMessage.success('登陆成功')
+          ElMessage.success('登录成功')
         })
         .finally(() => {
           rules.verifyCode[0].message = '验证码不为空'

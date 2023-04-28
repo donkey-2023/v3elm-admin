@@ -14,6 +14,7 @@ export default createStore({
     logouting: state => state.app.logouting,
     menus: state => state.menu.menuList,
     activeMenu: state => state.menu.activeMenu,
+    isCollapse: state => state.menu.isCollapse,
     asyncRoutes: state => state.menu.asyncRoutes,
     addRouteFlag: state => state.menu.addRouteFlag,
     userInfo: state => state.user.userInfo

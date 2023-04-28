@@ -81,9 +81,9 @@ const onSubmit = () => {
         return
       }
       if (!formData.sliderVerify) return false
-      btnText.value = '登陆中...'
+      btnText.value = '登录中...'
       store.dispatch('app/login', formData).then(() => {
-        ElMessage.success('登陆成功')
+        ElMessage.success('登录成功')
       })
     }
   })
