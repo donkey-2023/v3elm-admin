@@ -13,7 +13,7 @@
 import { useStore } from 'vuex'
 const store = useStore()
 const toggleCollapse = () => {
-  store.commit('menu/toggleCollapse')
+  store.commit('sideBar/toggleCollapse')
 }
 </script>
 
@@ -26,7 +26,7 @@ const toggleCollapse = () => {
     height: 32px;
     line-height: 32px;
     width: 100%;
-    padding: 5px 10px;
+    padding: 5px 15px;
     border-bottom: solid 1px #f3f3f3;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     .menu-close {

@@ -4,7 +4,8 @@ import router from '@/router'
 
 const state = () => ({
   token: localStorage.getItem(TOKEN) || '',
-  logouting: false
+  logouting: false,
+  deviceType: '01' // 设备类型：01 PC | 02 Mobile
 })
 
 const mutations = {
@@ -18,6 +19,9 @@ const mutations = {
     state.logouting = true
     localStorage.removeItem(TOKEN)
     localStorage.removeItem(EFFECTIVE_TIME)
+  },
+  setDeviceType(state, data) {
+    state.deviceType = data
   }
 }
 
@@ -38,7 +42,8 @@ const actions = {
   },
   logout({ commit }) {
     commit('clearToken')
-    commit('menu/clearMenu', null, { root: true })
+    commit('menu/clearMenuList', null, { root: true })
+    commit('menu/clearActiveMenu', null, { root: true })
     commit('user/clearUserInfo', null, { root: true })
     router.replace('/login')
   }

@@ -1,29 +1,27 @@
-import { MENUS, ACTIVE_MENU, EFFECTIVE_TIME } from '@/utils/constant'
+import { MENUS_LIST, ACTIVE_MENU, EFFECTIVE_TIME } from '@/utils/constant'
 import { isNotEmpty } from '@/utils/verify'
 import $http from '@/utils/http/index'
 
 const state = () => ({
-  menuList: JSON.parse(localStorage.getItem(MENUS)) || [],
+  menuList: JSON.parse(localStorage.getItem(MENUS_LIST)) || [],
   addRouteFlag: false, // 是否添加动态路由
   asyncRoutes: [], // 处理后的动态路由
-  activeMenu: JSON.parse(localStorage.getItem(ACTIVE_MENU)) || {}, //当前激活菜单
-  isCollapse: false // 侧边菜单栏是否折叠
+  activeMenu: JSON.parse(localStorage.getItem(ACTIVE_MENU)) || {} //当前激活菜单
 })
 
 const mutations = {
-  setMenu(state, data) {
+  setMenuList(state, data) {
     state.menuList = data
-    localStorage.setItem(MENUS, JSON.stringify(data))
+    localStorage.setItem(MENUS_LIST, JSON.stringify(data))
     localStorage.setItem(EFFECTIVE_TIME, Date.now())
   },
-  clearMenu(state) {
-    state.activeMenu = {}
+  clearMenuList(state) {
     state.menuList = []
-    localStorage.removeItem(ACTIVE_MENU)
-    localStorage.removeItem(MENUS)
+    localStorage.removeItem(MENUS_LIST)
   },
-  toggleCollapse(state) {
-    state.isCollapse = !state.isCollapse
+  clearActiveMenu(state) {
+    state.activeMenu = {}
+    localStorage.removeItem(ACTIVE_MENU)
   },
   setActiveMenu(state, data) {
     state.activeMenu = data
@@ -51,7 +49,7 @@ const actions = {
       $http
         .post('/getUserMenus', params, { cancelDuplicateRequest: true, loading: true })
         .then(res => {
-          commit('setMenu', res.data)
+          commit('setMenuList', res.data)
           resovle()
         })
         .catch(error => {

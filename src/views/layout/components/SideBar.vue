@@ -1,44 +1,57 @@
 <template>
   <scroll-bar :wheel-speed="30" class="scroll-bar">
     <div class="system-info">
-      <svg-icon
-        icon="Vue"
-        class="system-icon"
-        :style="{'padding-right': $store.getters.isCollapse ? '' : '10px'}"
-      ></svg-icon>
-      <div v-if="!$store.getters.isCollapse" class="system-name elipsis">Vue3-elm管理系统</div>
+      <svg-icon icon="Vue" class="system-icon" :style="{'padding-right': isCollapse ? '' : '10px'}"></svg-icon>
+      <div v-if="deviceType === '02' || !isCollapse" class="system-name elipsis">Vue3-elm管理系统</div>
     </div>
+
     <el-menu
       :unique-opened="true"
-      :default-active="$store.getters.activeMenu.id"
-      :collapse="$store.getters.isCollapse"
+      :default-active="activeMenu.id"
+      :collapse="deviceType === '01' && isCollapse"
       :collapse-transition="false"
       text-color="#fff"
       active-text-color="#ffd04b"
       background-color="rgb(48, 65, 86)"
       class="el-menu-vertical"
     >
-      <ElmSubMenu v-for="item in menus" :key="item.id" :menu="item"></ElmSubMenu>
+      <ElmSubMenu v-for="item in allMenus" :key="item.id" :menu="item"></ElmSubMenu>
     </el-menu>
   </scroll-bar>
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import ElmSubMenu from './ElmSubMenu.vue'
 
 const store = useStore()
-const menus = ref(store.getters.asyncRoutes)
-// const activeMenu = ref(store.getters.activeMenu)
-// const activeMenu = computed(() => store.getters.activeMenu)
-const asideWidth = computed(() => (store.getters.isCollapse ? '62px' : '222px'))
+const router = useRouter()
+
+const deviceType = computed(() => store.getters.deviceType)
+const isCollapse = computed(() => store.getters.isCollapse)
+const activeMenu = computed(() => store.getters.activeMenu)
+const allMenus = computed(() => store.getters.asyncRoutes)
+
 //获取当前登录人的信息
 store.dispatch('user/getUserInfo')
+
+// 若当前路由fullPath为'/'，则须清空活跃菜单的缓存数据
+watch(
+  () => router.currentRoute.value,
+  newValue => {
+    newValue.fullPath === '/' && store.commit('menu/clearActiveMenu')
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <style lang="scss" scoped>
 .scroll-bar {
+  width: 100%;
   height: 100%;
   background-color: rgb(48, 65, 86);
   .system-info {
@@ -61,8 +74,12 @@ store.dispatch('user/getUserInfo')
   }
   .el-menu-vertical {
     border-right: none;
-    .el-sub-menu {
-      width: v-bind(asideWidth);
+    width: 100%;
+    &.el-menu--collapse {
+      ::v-deep .el-sub-menu__title {
+        display: flex;
+        justify-content: center;
+      }
     }
   }
 }
