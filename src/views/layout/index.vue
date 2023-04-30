@@ -17,7 +17,7 @@ import { useStore } from 'vuex'
 import { MAX_ASIDE_WIDTH, MIN_ASIDE_WIDTH } from '@/utils/constant'
 import SiderBar from './components/SideBar.vue'
 import MainContent from './components/MainContent.vue'
-import NavBar from './components/NavBar.vue'
+import NavBar from './components/NavBar'
 
 const store = useStore()
 const isCollapse = computed(() => store.getters.isCollapse)

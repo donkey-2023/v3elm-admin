@@ -33,7 +33,7 @@ const mutations = {
     }
 
     state.menuList.forEach(item => {
-      const parent = generateRoute(item)
+      const parent = generateRoute({ ...item, fullName: item.name })
       if (isNotEmpty(item.children)) {
         fmtChildrenRoute(parent, item.children)
       }
@@ -61,7 +61,7 @@ const actions = {
 
 function fmtChildrenRoute(parent1, children) {
   children.forEach(item => {
-    const parent2 = generateRoute(item)
+    const parent2 = generateRoute({ ...item, fullName: parent1.fullName + '/' + item.name })
     if (isNotEmpty(item.children)) {
       fmtChildrenRoute(parent2, item.children)
     } else {
