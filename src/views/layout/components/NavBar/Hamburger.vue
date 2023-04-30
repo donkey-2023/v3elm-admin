@@ -1,6 +1,6 @@
 <template>
   <div class="hamburger" @click="toggleCollapse">
-    <svg-icon :icon="$store.getters.isCollapse ? 'menuOpen' : 'menuClose'" class="icon"></svg-icon>
+    <svg-icon :icon="$store.getters.isCollapse ? 'menuOpen' : 'menuClose'"></svg-icon>
   </div>
 </template>
 
@@ -15,7 +15,8 @@ const toggleCollapse = () => {
 <style lang="scss" scoped>
 .hamburger {
   float: left;
-  font-size: 18px;
+  margin-left: 15px;
+  font-size: 20px;
   cursor: pointer;
 }
 </style>

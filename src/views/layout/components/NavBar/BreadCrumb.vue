@@ -16,6 +16,8 @@ const fullNameArr = computed(() => {
   const activeMenu = store.getters.activeMenu
   if (activeMenu && activeMenu.fullName) {
     return activeMenu.fullName.split('/')
+  } else if (activeMenu.name) {
+    return [activeMenu.name]
   }
   return []
 })

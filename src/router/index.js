@@ -12,9 +12,15 @@ const routes = [
     component: Layout,
     children: [
       {
-        path: 'dashboard',
         name: 'Dashboard',
+        path: '/dashboard',
         meta: { title: 'Dashboard', icon: 'dashboard' }
+      },
+      {
+        name: '个人中心',
+        path: '/personalCenter',
+        meta: { title: '个人中心', icon: '' },
+        component: () => import('@/views/personal-center/index')
       },
       {
         name: '404',
