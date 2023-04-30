@@ -20,7 +20,7 @@ const actions = {
   getUserInfo({ commit }, params = {}) {
     return new Promise((resovle, reject) => {
       $http
-        .post('/getUserInfo', params, { cancelDuplicateRequest: true, loading: true })
+        .post('/getUserInfo', params, { cancelDuplicateRequest: true, loading: false })
         .then(res => {
           commit('setUserInfo', res.user)
           resovle()

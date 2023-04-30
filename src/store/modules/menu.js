@@ -47,7 +47,7 @@ const actions = {
   getUserMenus({ commit }, params = {}) {
     return new Promise((resovle, reject) => {
       $http
-        .post('/getUserMenus', params, { cancelDuplicateRequest: true, loading: true })
+        .post('/getUserMenus', params, { cancelDuplicateRequest: true, loading: false })
         .then(res => {
           commit('setMenuList', res.data)
           resovle()

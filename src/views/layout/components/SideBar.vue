@@ -2,7 +2,7 @@
   <scroll-bar :wheel-speed="30" class="scroll-bar">
     <div class="system-info">
       <svg-icon icon="Vue" class="system-icon" :style="{'padding-right': isCollapse ? '' : '10px'}"></svg-icon>
-      <div v-if="deviceType === '02' || !isCollapse" class="system-name elipsis">Vue3-elm管理系统</div>
+      <div v-if="deviceType === '02' || !isCollapse" class="system-name elipsis">V3elm Admin</div>
     </div>
 
     <el-menu
