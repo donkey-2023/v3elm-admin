@@ -1,10 +1,10 @@
 <template>
   <el-container class="app-container" :class="deviceType === '02' ? 'mobile' : ''">
-    <el-aside class="aside-container" :class="!isCollapse ? 'display' : ''">
+    <el-aside class="sidebar-wrapper" :class="!isCollapse ? 'display' : ''">
       <sider-bar></sider-bar>
     </el-aside>
     <div v-if="deviceType === '02' && !isCollapse" class="mask" @click="hideMask"></div>
-    <el-container class="main-container">
+    <el-container class="offside-wrapper">
       <nav-bar></nav-bar>
       <main-content></main-content>
     </el-container>
@@ -12,10 +12,10 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { MAX_ASIDE_WIDTH, MIN_ASIDE_WIDTH } from '@/utils/constant'
-import SiderBar from './components/SideBar.vue'
+import SiderBar from './components/SideBar'
 import MainContent from './components/MainContent.vue'
 import NavBar from './components/NavBar'
 
@@ -24,6 +24,7 @@ const isCollapse = computed(() => store.getters.isCollapse)
 const asideWidth = computed(() => (store.getters.isCollapse ? MIN_ASIDE_WIDTH : MAX_ASIDE_WIDTH))
 const deviceType = computed(() => store.getters.deviceType)
 
+const hideSideBar = ref(false)
 const hideMask = () => {
   store.commit('sideBar/toggleCollapse')
 }
@@ -49,19 +50,19 @@ window.addEventListener('resize', setDeviceType)
   height: 100vh;
   overflow-x: hidden;
   &.mobile {
-    .aside-container {
+    .sidebar-wrapper {
       transform: translateX(-100%);
-      transition: transform 0.2s;
+      transition: transform 0.1s;
       &.display {
         transform: translateX(0);
       }
     }
-    .main-container {
+    .offside-wrapper {
       margin-left: 0;
     }
   }
 
-  .aside-container {
+  .sidebar-wrapper {
     width: v-bind(asideWidth);
     height: 100%;
     overflow: hidden;
@@ -83,7 +84,7 @@ window.addEventListener('resize', setDeviceType)
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 99;
   }
-  .main-container {
+  .offside-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

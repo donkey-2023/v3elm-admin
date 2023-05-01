@@ -2,7 +2,7 @@
   <div class="avatar">
     <el-dropdown placement="bottom-start" @command="handleCommand">
       <div class="img-wrapper">
-        <img :src="require(`@assets/img/${sex == '1' ? 'boy' : 'girl'}.jpeg`)" alt />
+        <img :src="imgUrl" alt />
         <el-icon>
           <arrow-down />
         </el-icon>
@@ -18,14 +18,18 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 const store = useStore()
 const router = useRouter()
-const sex = computed(() => store.getters.userInfo.sex)
+
+const imgUrl = ref(null)
+setTimeout(() => {
+  imgUrl.value = require(`@assets/img/${store.getters.userInfo.sex == '1' ? 'boy' : 'girl'}.jpeg`)
+}, 0)
 
 const handleCommand = command => {
   if (command === 'a') {

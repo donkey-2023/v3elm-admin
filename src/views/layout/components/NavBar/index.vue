@@ -1,37 +1,27 @@
 <template>
   <div class="navbar-wrapper">
-    <div class="header">
-      <hamburger></hamburger>
-      <bread-crumb></bread-crumb>
-      <avatar></avatar>
-      <screen-full></screen-full>
-    </div>
-    <div class="tabs"></div>
+    <hamburger></hamburger>
+    <bread-crumb></bread-crumb>
+    <avatar></avatar>
+    <screen-full></screen-full>
   </div>
 </template>
   
 <script setup>
-import Hamburger from './Hamburger.vue'
-import BreadCrumb from './BreadCrumb.vue'
-import ScreenFull from './ScreenFull.vue'
-import Avatar from './Avatar.vue'
+import hamburger from './hamburger.vue'
+import breadCrumb from './breadCrumb.vue'
+import screenFull from './screenFull.vue'
+import Avatar from './avatar.vue'
 </script>
   
 <style lang="scss" scoped>
 .navbar-wrapper {
-  height: 90px;
+  height: 38px;
+  line-height: 38px;
   width: 100%;
-  background: #fff;
-  .header {
-    height: 38px;
-    line-height: 38px;
-    width: 100%;
-    padding: 5px 0;
-    border-bottom: solid 1px #f3f3f3;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    :after {
-      clear: both;
-    }
-  }
+  padding: 5px 0;
+  border-bottom: solid 1px #f3f3f3;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 </style>

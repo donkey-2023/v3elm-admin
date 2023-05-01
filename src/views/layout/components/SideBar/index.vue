@@ -2,13 +2,13 @@
   <scroll-bar :wheel-speed="30" class="scroll-bar">
     <div class="system-info">
       <svg-icon icon="Vue" class="system-icon" :style="{'padding-right': isCollapse ? '' : '10px'}"></svg-icon>
-      <div v-if="deviceType === '02' || !isCollapse" class="system-name elipsis">V3elm Admin</div>
+      <div v-if="!isCollapse" class="system-name elipsis">V3elm Admin</div>
     </div>
 
     <el-menu
       :unique-opened="true"
       :default-active="activeMenu.id"
-      :collapse="deviceType === '01' && isCollapse"
+      :collapse="isCollapse"
       :collapse-transition="false"
       text-color="#fff"
       active-text-color="#ffd04b"
@@ -24,7 +24,7 @@
 import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import ElmSubMenu from './ElmSubMenu.vue'
+import ElmSubMenu from './elmSubMenu.vue'
 
 const store = useStore()
 const router = useRouter()

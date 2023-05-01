@@ -1,5 +1,20 @@
 <template>
-  <div class="personal-center">个人中心</div>
+  <div class="personal-center">
+    <el-row :gutter="10">
+      <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
+        <div class="grid-content ep-bg-purple" />
+      </el-col>
+      <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
+        <div class="grid-content ep-bg-purple-light" />
+      </el-col>
+      <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
+        <div class="grid-content ep-bg-purple" />
+      </el-col>
+      <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
+        <div class="grid-content ep-bg-purple-light" />
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script setup>

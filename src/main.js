@@ -11,7 +11,7 @@ import directives from './directives/index'
 import '@/router/permission'
 import AppLoading from './components/AppLoading'
 
-async function startApp() {
+async function setupApp() {
   // 创建一个用于挂载appLoading组件的div节点
   const $div = document.createElement('div')
   // 将该div节点挂载到html或body上
@@ -26,11 +26,15 @@ async function startApp() {
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }
-  await initRouter(app)
-  // 路由加载完成后,再挂载常规页面
-  app.mount('#app')
-  // 最后，移除div节点，显示常规页面
-  $container.removeChild($div)
+  try {
+    await initRouter(app)
+    // 路由加载完成后,再挂载常规页面
+    app.mount('#app')
+    // 最后，移除div节点，显示常规页面
+    $container.removeChild($div)
+  } catch (error) {
+    console.log('try-catch:', error)
+  }
 }
 
 async function initRouter(app) {
@@ -38,4 +42,4 @@ async function initRouter(app) {
   // 等待导航初始化完成
   await router.isReady()
 }
-startApp()
+setupApp()

@@ -25,8 +25,9 @@
     </el-form-item>
     <el-form-item>
       <el-button
-        :disabled="!formData.sliderVerify"
         v-elm-enter="onSubmit"
+        :disabled="!formData.sliderVerify"
+        :loading="loading"
         type="primary"
         @click="onSubmit"
       >{{ btnText }}</el-button>
@@ -72,7 +73,9 @@ const setVerifyCode = code => {
 }
 
 const ruleFormRef = ref(null)
+const loading = ref(false)
 const btnText = ref('登录')
+
 const onSubmit = () => {
   ruleFormRef.value.validate((valid, fields) => {
     if (valid) {
@@ -81,6 +84,7 @@ const onSubmit = () => {
         return
       }
       if (!formData.sliderVerify) return false
+      loading.value = true
       btnText.value = '登录中...'
       store.dispatch('app/login', formData).then(() => {
         ElMessage.success('登录成功')

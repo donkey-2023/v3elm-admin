@@ -3,10 +3,11 @@ import { isNotEmpty } from '@/utils/verify'
 import $http from '@/utils/http/index'
 
 const state = () => ({
-  menuList: JSON.parse(localStorage.getItem(MENUS_LIST)) || [],
+  menuList: JSON.parse(localStorage.getItem(MENUS_LIST)) || [], // 后台返回的菜单集合
   addRouteFlag: false, // 是否添加动态路由
-  asyncRoutes: [], // 处理后的动态路由
-  activeMenu: JSON.parse(localStorage.getItem(ACTIVE_MENU)) || {} //当前激活菜单
+  asyncRoutes: [], // 处理后的动态路由集合
+  activeMenu: JSON.parse(localStorage.getItem(ACTIVE_MENU)) || {}, //当前菜单
+  visitedMenuList: [] // 已浏览的菜单集合
 })
 
 const mutations = {
@@ -26,6 +27,9 @@ const mutations = {
   setActiveMenu(state, data) {
     state.activeMenu = data
     localStorage.setItem(ACTIVE_MENU, JSON.stringify(data))
+
+    const res = state.visitedMenuList.find(item => item.path === data.path)
+    !res && state.visitedMenuList.push(data)
   },
   generateAsyncRoutes(state) {
     if (state.addRouteFlag || !isNotEmpty(state.menuList)) {

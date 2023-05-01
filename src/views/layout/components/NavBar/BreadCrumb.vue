@@ -30,7 +30,7 @@ const deviceType = computed(() => store.getters.deviceType)
 .bread-crumb {
   float: left;
   margin: 0 10px;
-  font-size: 14px;
+  font-size: 15px;
   color: #333;
   .menu-name:last-child {
     color: #97a8be;

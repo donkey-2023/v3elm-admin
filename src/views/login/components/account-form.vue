@@ -26,6 +26,7 @@
       <el-button
         v-elm-enter="onSubmit"
         :disabled="formData.verifyCode.length !== 4"
+        :loading="loading"
         type="primary"
         @click="onSubmit"
       >{{ btnText }}</el-button>
@@ -78,7 +79,9 @@ const setCaptcha = val => {
 }
 
 const ruleFormRef = ref(null)
+const loading = ref(false)
 const btnText = ref('登录')
+
 const onSubmit = () => {
   ruleFormRef.value.validate((valid, fields) => {
     if (valid) {
@@ -91,6 +94,7 @@ const onSubmit = () => {
         return
       }
 
+      loading.value = true
       btnText.value = '登录中...'
 
       store

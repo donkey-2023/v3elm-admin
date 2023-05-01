@@ -16,7 +16,7 @@ const toggleCollapse = () => {
 .hamburger {
   float: left;
   margin-left: 15px;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
 }
 </style>
