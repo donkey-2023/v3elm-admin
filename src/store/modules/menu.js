@@ -18,6 +18,7 @@ const mutations = {
   },
   clearMenuList(state) {
     state.menuList = []
+    state.visitedMenuList = []
     localStorage.removeItem(MENUS_LIST)
   },
   clearActiveMenu(state) {
@@ -28,9 +29,27 @@ const mutations = {
     state.activeMenu = data
     localStorage.setItem(ACTIVE_MENU, JSON.stringify(data))
 
-    const res = state.visitedMenuList.find(item => item.path === data.path)
-    !res && state.visitedMenuList.push(data)
+    const index = state.visitedMenuList.findIndex(item => item.path === data.path)
+    index === -1 && state.visitedMenuList.push(data)
   },
+  removeTab(state, data) {
+    const arr = JSON.parse(JSON.stringify(state.visitedMenuList))
+    if (isNotEmpty(arr)) {
+      const r = arr.findIndex(item => item.path === data.path)
+      r > -1 && arr.splice(r, 1)
+      if (state.activeMenu.path === data.path) {
+        const length = arr.length
+        if (length > 0) {
+          state.activeMenu = arr[length - 1]
+          localStorage.setItem(ACTIVE_MENU, JSON.stringify(arr[length - 1]))
+        } else {
+          mutations.clearActiveMenu(state)
+        }
+      }
+      r > -1 && state.visitedMenuList.splice(r, 1)
+    }
+  },
+  removeAllTab() {},
   generateAsyncRoutes(state) {
     if (state.addRouteFlag || !isNotEmpty(state.menuList)) {
       return

@@ -6,25 +6,26 @@
     <div v-if="deviceType === '02' && !isCollapse" class="mask" @click="hideMask"></div>
     <el-container class="offside-wrapper">
       <nav-bar></nav-bar>
+      <tag-bar></tag-bar>
       <main-content></main-content>
     </el-container>
   </el-container>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { MAX_ASIDE_WIDTH, MIN_ASIDE_WIDTH } from '@/utils/constant'
 import SiderBar from './components/SideBar'
 import MainContent from './components/MainContent.vue'
 import NavBar from './components/NavBar'
+import TagBar from './components/TagBar'
 
 const store = useStore()
 const isCollapse = computed(() => store.getters.isCollapse)
 const asideWidth = computed(() => (store.getters.isCollapse ? MIN_ASIDE_WIDTH : MAX_ASIDE_WIDTH))
 const deviceType = computed(() => store.getters.deviceType)
 
-const hideSideBar = ref(false)
 const hideMask = () => {
   store.commit('sideBar/toggleCollapse')
 }

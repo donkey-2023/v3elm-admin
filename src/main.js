@@ -26,20 +26,18 @@ async function setupApp() {
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }
-  try {
-    await initRouter(app)
-    // 路由加载完成后,再挂载常规页面
-    app.mount('#app')
-    // 最后，移除div节点，显示常规页面
-    $container.removeChild($div)
-  } catch (error) {
-    console.log('try-catch:', error)
-  }
+  await initRouter(app)
+  // 路由加载完成后,再挂载常规页面
+  app.mount('#app')
+  // 最后，移除div节点，显示常规页面
+  $container.removeChild($div)
 }
 
 async function initRouter(app) {
   app.use(router)
   // 等待导航初始化完成
-  await router.isReady()
+  await router.isReady().catch(error => {
+    console.log(error) // 捕捉token失效的错误
+  })
 }
 setupApp()

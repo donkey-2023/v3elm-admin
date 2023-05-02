@@ -2,7 +2,7 @@
   <scroll-bar :wheel-speed="30" class="scroll-bar">
     <div class="system-info">
       <svg-icon icon="Vue" class="system-icon" :style="{'padding-right': isCollapse ? '' : '10px'}"></svg-icon>
-      <div v-if="!isCollapse" class="system-name elipsis">V3elm Admin</div>
+      <div v-if="!isCollapse" class="system-name ellipsis">V3elm Admin</div>
     </div>
 
     <el-menu

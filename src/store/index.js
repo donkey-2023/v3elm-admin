@@ -17,6 +17,7 @@ export default createStore({
     deviceType: state => state.app.deviceType,
     isCollapse: state => state.sideBar.isCollapse,
     activeMenu: state => state.menu.activeMenu,
+    visitedMenuList: state => state.menu.visitedMenuList,
     asyncRoutes: state => state.menu.asyncRoutes,
     addRouteFlag: state => state.menu.addRouteFlag,
     userInfo: state => state.user.userInfo

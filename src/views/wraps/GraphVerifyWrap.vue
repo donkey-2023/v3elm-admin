@@ -2,7 +2,7 @@
   <div class="container">
     <div class="input-wrapper">
       <div class="label">{{ $attrs.label }}</div>
-      <el-input v-bind="$attrs" maxlength="4" @input="inputCaptcha">
+      <el-input v-bind="$attrs" maxlength="4">
         <template #prefix>
           <svg-icon icon="captcha01"></svg-icon>
         </template>

@@ -12,7 +12,7 @@ export function isNotNull(obj) {
 
 // 非空对象 + 非空数组
 export function isNotEmpty(target) {
-  return (getType(target) === 'object' && Object.keys(obj).length) || (Array.isArray(target) && target.length)
+  return (getType(target) === 'object' && Object.keys(target).length) || (Array.isArray(target) && target.length)
 }
 
 // 判断是否为String或Number类型的数字

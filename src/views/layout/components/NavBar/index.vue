@@ -20,8 +20,7 @@ import Avatar from './avatar.vue'
   line-height: 38px;
   width: 100%;
   padding: 5px 0;
-  border-bottom: solid 1px #f3f3f3;
+  border-bottom: solid 1px #d9d9d9;
   background-color: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 </style>
