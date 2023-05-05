@@ -3,6 +3,7 @@ import 'nprogress/nprogress.css' // progress bar style
 import router from './index'
 import store from '@/store'
 import { isNotNull } from '@/utils/verify'
+import mitt from '@/utils/mitt'
 
 NProgress.configure({ showSpinner: false }) // 不显示右上角螺旋加载提示
 
@@ -53,6 +54,13 @@ function addAsyncRoutes(path, next) {
     next()
   }
 }
-router.afterEach(() => {
+router.afterEach(to => {
   NProgress.done() //完成进度条
+  const token = store.getters.token
+  if (token && !['/login', '/'].includes(to.path)) {
+    store.commit('menu/setActiveMenu', to)
+    setTimeout(() => {
+      mitt.emit('showActiveTag', to.path)
+    }, 0)
+  }
 })

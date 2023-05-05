@@ -75,10 +75,11 @@ export function throttle(fn, delay) {
 // 获取元素的样式
 export function getElementStyle(el) {
   // 兼容IE: currentStyle
-  return el.currentStyle ? el.currentStyle : window.getComputedStyle(el, null)
+  return !el ? {} : el.currentStyle ? el.currentStyle : window.getComputedStyle(el, null)
 }
 
-export function calcPixelValue(str) {
+// 获取像素值
+export function getPixelNum(str) {
   if (str && str.includes('px')) {
     return Number(str.split('px')[0])
   } else if (isNumeric(str)) {

@@ -48,8 +48,8 @@ const handleCommand = command => {
 
 <style lang="scss" scoped>
 .avatar {
-  float: right;
-  margin: -1px 25px 0 0;
+  display: flex;
+  justify-items: center;
   cursor: pointer;
   .img-wrapper {
     display: flex;

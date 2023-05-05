@@ -11,7 +11,6 @@ export const BAR_MAP = {
     client: 'clientY',
     dir1: 'top',
     dir2: 'bottom',
-    showBar: 'showVtlBar',
     barSize: 'barHeight',
     barDir: 'barTop'
   },
@@ -27,7 +26,6 @@ export const BAR_MAP = {
     client: 'clientX',
     dir1: 'left',
     dir2: 'right',
-    showBar: 'showHtlBar',
     barSize: 'barWidth',
     barDir: 'barLeft'
   }

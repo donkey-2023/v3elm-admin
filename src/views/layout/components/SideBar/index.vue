@@ -1,13 +1,12 @@
 <template>
+  <div class="system-info">
+    <svg-icon icon="Vue" class="system-icon" :style="{'padding-right': isCollapse ? '' : '10px'}"></svg-icon>
+    <div v-if="!isCollapse" class="system-name ellipsis">V3elm Admin</div>
+  </div>
   <scroll-bar :wheel-speed="30" class="scroll-bar">
-    <div class="system-info">
-      <svg-icon icon="Vue" class="system-icon" :style="{'padding-right': isCollapse ? '' : '10px'}"></svg-icon>
-      <div v-if="!isCollapse" class="system-name ellipsis">V3elm Admin</div>
-    </div>
-
     <el-menu
       :unique-opened="true"
-      :default-active="activeMenu.id"
+      :default-active="activeMenu.path"
       :collapse="isCollapse"
       :collapse-transition="false"
       text-color="#fff"
@@ -50,28 +49,30 @@ watch(
 </script>
 
 <style lang="scss" scoped>
+.system-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding: 14px 0;
+  color: #fff;
+  background-color: rgb(48, 65, 86);
+  .system-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .system-name {
+    max-width: 140px;
+    height: 22px;
+    line-height: 22px;
+  }
+}
 .scroll-bar {
   width: 100%;
   height: 100%;
   background-color: rgb(48, 65, 86);
-  .system-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
-    width: 100%;
-    padding: 14px 0;
-    color: #fff;
-    .system-icon {
-      width: 20px;
-      height: 20px;
-    }
-    .system-name {
-      max-width: 140px;
-      height: 22px;
-      line-height: 22px;
-    }
-  }
+
   .el-menu-vertical {
     border-right: none;
     width: 100%;

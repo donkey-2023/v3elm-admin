@@ -5,13 +5,11 @@
     </div>
     <div
       @mousedown="mouseDown($event, 'horizontal')"
-      v-show="formData.showHtlBar"
       class="scroll-bar is-horizontal"
       :style=" { width: formData.barWidth +'px', left: formData.barLeft + 'px',opacity: formData.opacity}"
     ></div>
     <div
       @mousedown="mouseDown($event,'vertical')"
-      v-show="formData.showVtlBar"
       class="scroll-bar is-vertical"
       :style=" { height: formData.barHeight +'px', top: formData.barTop + 'px',opacity: formData.opacity}"
     ></div>
@@ -21,7 +19,7 @@
 <script setup>
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { addResizeListener, removeResizeListener } from '@utils/resizeObserver'
-import { throttle, getElementStyle, calcPixelValue } from '@utils/index'
+import { throttle, getElementStyle, getPixelNum } from '@utils/index'
 import { isNotNull } from '@utils/verify'
 import { BAR_MAP } from './contants'
 
@@ -40,9 +38,15 @@ const formData = reactive({
 
 // 鼠标滑轮的速度
 const props = defineProps({
+  // 鼠标滑轮速度
   wheelSpeed: {
     type: [Number, String],
     default: 30
+  },
+  //当视图区的尺寸大于外层盒子的尺寸时，是否显示滚动条
+  displayBar: {
+    type: Boolean,
+    default: false
   }
 })
 // 滚动条相关属性的映射
@@ -90,6 +94,9 @@ onMounted(() => {
       // 为视图区元素绑定resize事件
       addResizeListener(viewRef.value, init)
 
+      // 调整浏览器窗口大小
+      window.addEventListener('resize', init)
+
       // Firefox
       wrapRef.value.addEventListener('DOMMouseScroll', mouseScroll)
       // IE9, Chrome【mousewheel 已废弃，使用 wheel 事件替代】
@@ -123,7 +130,7 @@ const init = () => {
 
   ;['horizontal', 'vertical'].forEach(key => {
     const map = BAR_MAP[key]
-    const wrapSize = wrapRef.value[map.clientSize] || calcPixelValue(wrapStyle[map.size])
+    const wrapSize = wrapRef.value[map.clientSize] || getPixelNum(wrapStyle[map.size])
     const viewSize = viewRef.value[map.offsetSize]
 
     // 如果组件的尺寸（即宽高）为0，则将其尺寸设置成与视图区的尺寸一致
@@ -131,12 +138,10 @@ const init = () => {
       wrapRef.value.style[map.size] = viewSize + 'px'
     }
     if (viewSize > wrapSize) {
-      // 当视图区的尺寸大于外层盒子的尺寸时，显示水平或垂直方向上的滚动条
-      formData[map.showBar] = true
-      formData.opacity = 1
+      // 当视图区的尺寸大于外层盒子的尺寸时，如果配置项displayBar为TRUE，则显示水平或垂直方向上的滚动条
       barObj[map.cache] = { wrapSize, viewSize }
-
       createScrollBar(key, viewStyle, barObj[map.cache])
+      props.displayBar && (formData.opacity = 1)
     } else {
       viewRef.value.style[map.dir1] = '0px'
     }
@@ -147,7 +152,7 @@ const init = () => {
 const createScrollBar = (key, viewStyle, { wrapSize, viewSize }) => {
   const map = BAR_MAP[key]
   // 计算视图区已经卷曲的尺寸(取绝对值)
-  let viewScrollSize = Math.abs(calcPixelValue(viewStyle[map.dir1]))
+  let viewScrollSize = Math.abs(getPixelNum(viewStyle[map.dir1]))
 
   // 当视图区的尺寸发生变化时，会出现viewScrollSize + wrapSize > viewSize的情况
   // 此时需要重新设置滚动条的边偏移(即top或left)
@@ -255,6 +260,7 @@ const mouseScroll = e => {
   setPositionOfView(map)
 }
 
+// 当鼠标指针划过视图区时，显示滚动条
 const mouseEnter = () => {
   formData.opacity = 1
 }
@@ -264,6 +270,11 @@ const mouseLeave = () => {
     formData.opacity = 0
   }
 }
+
+defineExpose({
+  $el: wrapRef,
+  init
+})
 </script>
 
 <style lang="scss" scoped>

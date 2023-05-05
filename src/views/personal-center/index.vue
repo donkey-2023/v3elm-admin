@@ -1,5 +1,6 @@
 <template>
   <div class="personal-center">
+    personal-center
     <el-row :gutter="10">
       <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
         <div class="grid-content ep-bg-purple" />
@@ -24,7 +25,7 @@ import { useStore } from 'vuex'
 const router = useRouter()
 const store = useStore()
 // 设置activeMenu,从而更新面包屑
-store.commit('menu/setActiveMenu', router.currentRoute.value)
+// store.commit('menu/setActiveMenu', router.currentRoute.value)
 </script>
 
 <style lang="scss" scoped>

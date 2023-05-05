@@ -1,6 +1,7 @@
 import { MENUS_LIST, ACTIVE_MENU, EFFECTIVE_TIME } from '@/utils/constant'
 import { isNotEmpty } from '@/utils/verify'
 import $http from '@/utils/http/index'
+import router from '@/router'
 
 const state = () => ({
   menuList: JSON.parse(localStorage.getItem(MENUS_LIST)) || [], // 后台返回的菜单集合
@@ -32,24 +33,52 @@ const mutations = {
     const index = state.visitedMenuList.findIndex(item => item.path === data.path)
     index === -1 && state.visitedMenuList.push(data)
   },
-  removeTab(state, data) {
+  // 关闭单个标签
+  removeSingleTab(state, data) {
     const arr = JSON.parse(JSON.stringify(state.visitedMenuList))
-    if (isNotEmpty(arr)) {
-      const r = arr.findIndex(item => item.path === data.path)
-      r > -1 && arr.splice(r, 1)
-      if (state.activeMenu.path === data.path) {
-        const length = arr.length
-        if (length > 0) {
-          state.activeMenu = arr[length - 1]
-          localStorage.setItem(ACTIVE_MENU, JSON.stringify(arr[length - 1]))
-        } else {
-          mutations.clearActiveMenu(state)
-        }
+    if (!isNotEmpty(arr)) {
+      return
+    }
+    const index = arr.findIndex(item => item.path === data.path)
+    index > -1 && arr.splice(index, 1)
+    if (state.activeMenu.path === data.path) {
+      const l = arr.length
+      if (l > 0) {
+        state.activeMenu = arr[l - 1]
+        localStorage.setItem(ACTIVE_MENU, JSON.stringify(arr[l - 1]))
+        router.push(state.activeMenu.path)
+      } else {
+        mutations.clearActiveMenu(state)
+        router.push('/')
       }
-      r > -1 && state.visitedMenuList.splice(r, 1)
+    }
+    index > -1 && state.visitedMenuList.splice(index, 1)
+  },
+  // 关闭左侧或右侧的标签
+  removeSomeTabs(state, type) {
+    const arr = state.visitedMenuList
+    if (!isNotEmpty(arr)) {
+      return
+    }
+    const index = arr.findIndex(item => item.path === state.activeMenu.path)
+    if (type === 'left') {
+      arr.splice(0, index)
+    } else if (type === 'right') {
+      arr.splice(index + 1)
     }
   },
-  removeAllTab() {},
+  // 关闭其他标签
+  removeOtherTabs(state) {
+    state.visitedMenuList = [state.activeMenu]
+  },
+  // 关闭全部标签
+  removeAllTabs(state) {
+    if (isNotEmpty(state.visitedMenuList)) {
+      mutations.clearActiveMenu(state)
+      state.visitedMenuList = []
+      router.push('/')
+    }
+  },
   generateAsyncRoutes(state) {
     if (state.addRouteFlag || !isNotEmpty(state.menuList)) {
       return

@@ -28,7 +28,6 @@ const deviceType = computed(() => store.getters.deviceType)
 
 <style lang="scss" scoped>
 .bread-crumb {
-  float: left;
   margin: 0 10px;
   font-size: 15px;
   color: #333;

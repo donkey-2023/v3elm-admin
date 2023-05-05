@@ -2,15 +2,15 @@
   <el-sub-menu v-if="isNotEmpty(menu.children)" :index="menu.id">
     <template #title>
       <el-icon class="icon-wrapper">
-        <svg-icon :icon="activeMenu.id === menu.id ? (menu.icon + '1'): menu.icon"></svg-icon>
+        <svg-icon :icon="activeMenu.path === menu.path ? (menu.icon + '1'): menu.icon"></svg-icon>
       </el-icon>
       <span>{{ menu.name }}</span>
     </template>
     <ElmSubMenu v-for="item in menu.children" :menu="item" :key="item.id"></ElmSubMenu>
   </el-sub-menu>
-  <el-menu-item v-else :index="menu.id" @click="clickMenu(menu)">
+  <el-menu-item v-else :index="menu.path" @click="clickMenu(menu)">
     <el-icon class="icon-wrapper">
-      <svg-icon :icon="activeMenu.id === menu.id ? (menu.icon + '1'): menu.icon"></svg-icon>
+      <svg-icon :icon="activeMenu.path === menu.path ? (menu.icon + '1'): menu.icon"></svg-icon>
     </el-icon>
     <span>{{ menu.name }}</span>
   </el-menu-item>
@@ -34,7 +34,6 @@ const activeMenu = computed(() => store.getters.activeMenu)
 
 const clickMenu = menu => {
   router.push(menu.url)
-  store.commit('menu/setActiveMenu', menu)
 }
 </script>
 

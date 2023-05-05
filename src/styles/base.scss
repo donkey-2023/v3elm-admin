@@ -7,9 +7,13 @@
 body {
   height: 100vh;
   background-color: #f8f8f9;
+  overflow: hidden;
 }
 .ellipsis{
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.el-dropdown-menu__item {
   white-space: nowrap;
 }
