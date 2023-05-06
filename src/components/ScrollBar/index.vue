@@ -19,7 +19,7 @@
 <script setup>
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { addResizeListener, removeResizeListener } from '@utils/resizeObserver'
-import { throttle, getElementStyle, getPixelNum } from '@utils/index'
+import { throttle, getElementStyle, getNumOfPixelVal } from '@utils/index'
 import { isNotNull } from '@utils/verify'
 import { BAR_MAP } from './contants'
 
@@ -130,7 +130,7 @@ const init = () => {
 
   ;['horizontal', 'vertical'].forEach(key => {
     const map = BAR_MAP[key]
-    const wrapSize = wrapRef.value[map.clientSize] || getPixelNum(wrapStyle[map.size])
+    const wrapSize = wrapRef.value[map.clientSize] || getNumOfPixelVal(wrapStyle[map.size])
     const viewSize = viewRef.value[map.offsetSize]
 
     // 如果组件的尺寸（即宽高）为0，则将其尺寸设置成与视图区的尺寸一致
@@ -152,7 +152,7 @@ const init = () => {
 const createScrollBar = (key, viewStyle, { wrapSize, viewSize }) => {
   const map = BAR_MAP[key]
   // 计算视图区已经卷曲的尺寸(取绝对值)
-  let viewScrollSize = Math.abs(getPixelNum(viewStyle[map.dir1]))
+  let viewScrollSize = Math.abs(getNumOfPixelVal(viewStyle[map.dir1]))
 
   // 当视图区的尺寸发生变化时，会出现viewScrollSize + wrapSize > viewSize的情况
   // 此时需要重新设置滚动条的边偏移(即top或left)

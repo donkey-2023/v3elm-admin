@@ -79,7 +79,7 @@ export function getElementStyle(el) {
 }
 
 // 获取像素值
-export function getPixelNum(str) {
+export function getNumOfPixelVal(str) {
   if (str && str.includes('px')) {
     return Number(str.split('px')[0])
   } else if (isNumeric(str)) {

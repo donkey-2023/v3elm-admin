@@ -60,7 +60,7 @@ router.afterEach(to => {
   if (token && !['/login', '/'].includes(to.path)) {
     store.commit('menu/setActiveMenu', to)
     setTimeout(() => {
-      mitt.emit('showActiveTag', to.path)
+      mitt.emit('showActiveTab', to.path)
     }, 0)
   }
 })

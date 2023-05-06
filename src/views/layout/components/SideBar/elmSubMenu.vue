@@ -2,7 +2,7 @@
   <el-sub-menu v-if="isNotEmpty(menu.children)" :index="menu.id">
     <template #title>
       <el-icon class="icon-wrapper">
-        <svg-icon :icon="activeMenu.path === menu.path ? (menu.icon + '1'): menu.icon"></svg-icon>
+        <svg-icon :icon="menu.icon"></svg-icon>
       </el-icon>
       <span>{{ menu.name }}</span>
     </template>

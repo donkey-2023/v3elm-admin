@@ -27,7 +27,9 @@
       @command="handleCommand"
     >
       <el-icon class="icon-wrapper">
-        <arrow-down />
+        <el-icon>
+          <svg-icon icon="menu2"></svg-icon>
+        </el-icon>
       </el-icon>
       <template #dropdown>
         <el-dropdown-menu>
@@ -49,16 +51,12 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { isNotEmpty } from '@/utils/verify'
-import { ArrowDown } from '@element-plus/icons-vue'
-import { getElementStyle, getPixelNum } from '@utils/index'
+import { getElementStyle, getNumOfPixelVal } from '@utils/index'
 import mitt from '@/utils/mitt'
-
-const store = useStore()
-const router = useRouter()
 
 const tabList = ref([
   { tabName: '关闭当前标签', iconName: 'close', command: 'rmCurTab' },
@@ -68,6 +66,7 @@ const tabList = ref([
   { tabName: '关闭全部标签', iconName: 'horizontal-line', command: 'rmAllTabs' }
 ])
 
+const store = useStore()
 const activeTab = computed(() => store.getters.activeMenu)
 const visitedTabList = computed(() => {
   if (isNotEmpty(store.getters.visitedMenuList)) {
@@ -77,6 +76,7 @@ const visitedTabList = computed(() => {
   }
 })
 
+const router = useRouter()
 // 点击标签,须显示对应的页面，并重新设置当前页
 const clickTab = item => {
   activeTab.value.path !== item.path && router.push(item.path)
@@ -101,57 +101,73 @@ const handleCommand = command => {
   showActiveTab()
 }
 
-const allTagsRef = []
+// 保存所有已打开的标签的ref
+const allTabsRef = []
 const setTagRef = el => {
   if (!el) return
-  if (allTagsRef.length > 0) {
-    const index = allTagsRef.findIndex(item => item.dataset.path === el.dataset.path)
+  if (allTabsRef.length > 0) {
+    const index = allTabsRef.findIndex(item => item.dataset.path === el.dataset.path)
     if (index === -1) {
-      allTagsRef.push(el)
+      allTabsRef.push(el)
     } else {
-      allTagsRef[index] = el
+      allTabsRef[index] = el
     }
   } else {
-    allTagsRef.push(el)
+    allTabsRef.push(el)
   }
 }
 
-onMounted(() => {
-  mitt.on('showActiveTag', path => {
-    if (['/', '/login'].includes(path)) return
-    showActiveTab(path)
-  })
+mitt.on('showActiveTab', path => {
+  if (['/', '/login'].includes(path)) return
+  showActiveTab(path)
 })
 onBeforeUnmount(() => {
-  mitt.off('showActiveTag')
+  mitt.off('showActiveTab')
 })
 
-const scrollBarRef = ref(null)
-// 将当前标签页移动到可视区之内
-const showActiveTab = path => {
-  const index = allTagsRef.findIndex(item => item.dataset.path === path)
-  if (index === -1) return
+// 根据path查询标签的ref
+const findTabRef = path => {
+  const index = allTabsRef.findIndex(item => item.dataset.path === path)
+  return index > -1 ? allTabsRef[index] : null
+}
 
-  let activeTagRef = allTagsRef[index]
-  console.log('activeTagRef', activeTagRef)
-  const activeTagRect = activeTagRef.getBoundingClientRect()
-  if (!scrollBarRef.value) return
-  const wrapRef = scrollBarRef.value.$el
-  const viewRef = wrapRef.children[0]
-
-  const scrollBarRect = wrapRef.getBoundingClientRect()
+// 计算当前标签activeTab的左侧与滚动条组件的可视区左侧的偏移量
+// 或计算当前标签activeTab的右侧与滚动条组件的可视区右侧的偏移量
+const calcDiff = (activeTabRect, scrollBarRect) => {
   let diff = 0
-  if (activeTagRect.left < scrollBarRect.left) {
-    diff = scrollBarRect.left - activeTagRect.left
-  } else if (activeTagRect.right > scrollBarRect.right) {
-    diff = scrollBarRect.right - activeTagRect.right
+  if (activeTabRect.left < scrollBarRect.left) {
+    diff = scrollBarRect.left - activeTabRect.left
+  } else if (activeTabRect.right > scrollBarRect.right) {
+    diff = scrollBarRect.right - activeTabRect.right
   }
+  return diff
+}
 
-  const viewStyle = getElementStyle(viewRef)
-  const left = getPixelNum(viewStyle.left)
+const scrollBarRef = ref(null)
+// 根据当前标签activeTab的偏移量调整滚动条组件的内容区盒子的左偏移量
+// 从而保证activeTab始终在滚动条可视区之内
+const showActiveTab = path => {
+  const activeTabRef = findTabRef(path)
+  if (!activeTabRef || !scrollBarRef.value) return
 
+  const activeTabRect = activeTabRef.getBoundingClientRect()
+
+  // 获取滚动条组件的最外层盒子(可视区)对应的dom节点
+  const wrapRef = scrollBarRef.value.$el
+  const scrollBarRect = wrapRef.getBoundingClientRect()
+
+  // 计算activeTab相较可视区盒子的偏移量
+  const diff = calcDiff(activeTabRect, scrollBarRect)
+  if (diff == 0) return
+
+  // 获取滚动条组件的内容区盒子对应的dom节点（内容区盒子实际宽度不小于可视区盒子的宽度）
+  const viewRef = wrapRef.children[0]
+  // 获取滚动条组件的内容区盒子的左偏移量的数值
+  const left = getNumOfPixelVal(getElementStyle(viewRef).left)
+
+  // 重新设置滚动条组件的内容区盒子的左偏移量
   viewRef.style.left = `${left + diff}px`
-  // 调整滚动条
+  // 同时得重新调整滚动条的位置
   scrollBarRef.value.init()
 }
 </script>
@@ -220,9 +236,7 @@ const showActiveTab = path => {
     align-items: center;
     width: 40px;
     height: 90%;
-    border: solid 1px #d8dce5;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+    font-size: 22px;
     .icon-wrapper {
       padding: 10px;
       cursor: pointer;

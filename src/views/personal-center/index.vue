@@ -24,8 +24,6 @@ import { useStore } from 'vuex'
 
 const router = useRouter()
 const store = useStore()
-// 设置activeMenu,从而更新面包屑
-// store.commit('menu/setActiveMenu', router.currentRoute.value)
 </script>
 
 <style lang="scss" scoped>
