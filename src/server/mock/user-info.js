@@ -11,7 +11,7 @@ const userInfo = Mock.mock({
   birthday: '@date',
   ip: '@ip',
   email: '@email(163.com)',
-  contry: '@county(true)'
+  county: '@county(true)'
 })
 
 module.exports = function (app) {

@@ -1,6 +1,6 @@
 <template>
   <div class="avatar">
-    <el-dropdown placement="bottom-start" @command="handleCommand">
+    <el-dropdown placement="bottom-start" trigger="click" @command="handleCommand">
       <div class="img-wrapper">
         <img :src="imgUrl" alt />
         <el-icon>
@@ -9,8 +9,18 @@
       </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item command="a">个人中心</el-dropdown-item>
-          <el-dropdown-item command="b" divided>退出登录</el-dropdown-item>
+          <el-dropdown-item command="a">
+            <el-icon>
+              <svg-icon icon="personalCenter"></svg-icon>
+            </el-icon>
+            <span>个人中心</span>
+          </el-dropdown-item>
+          <el-dropdown-item command="b" divided>
+            <el-icon>
+              <svg-icon icon="logout"></svg-icon>
+            </el-icon>
+            <span>退出登录</span>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -62,5 +72,8 @@ const handleCommand = command => {
       margin-right: 5px;
     }
   }
+}
+.el-icon {
+  font-size: 18px;
 }
 </style>

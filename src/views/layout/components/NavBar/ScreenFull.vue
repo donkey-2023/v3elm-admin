@@ -30,5 +30,8 @@ onBeforeMount(() => {
   margin: 0 15px;
   cursor: pointer;
   font-size: 26px;
+  &:hover {
+    color: #53a8ff;
+  }
 }
 </style>

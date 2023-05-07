@@ -16,5 +16,8 @@ const toggleCollapse = () => {
 .hamburger {
   font-size: 18px;
   cursor: pointer;
+  &:hover {
+    color: #53a8ff;
+  }
 }
 </style>

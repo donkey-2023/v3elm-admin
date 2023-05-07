@@ -10,17 +10,15 @@
   </el-sub-menu>
   <el-menu-item v-else :index="menu.path" @click="clickMenu(menu)">
     <el-icon class="icon-wrapper">
-      <svg-icon :icon="activeMenu.path === menu.path ? (menu.icon + '1'): menu.icon"></svg-icon>
+      <svg-icon :icon="menu.icon"></svg-icon>
     </el-icon>
     <span>{{ menu.name }}</span>
   </el-menu-item>
 </template>
 
 <script setup name="ElmSubMenu">
-import { computed } from 'vue'
 import { isNotEmpty } from '@/utils/verify'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 
 const props = defineProps({
   menu: {
@@ -29,9 +27,6 @@ const props = defineProps({
 })
 
 const router = useRouter()
-const store = useStore()
-const activeMenu = computed(() => store.getters.activeMenu)
-
 const clickMenu = menu => {
   router.push(menu.url)
 }

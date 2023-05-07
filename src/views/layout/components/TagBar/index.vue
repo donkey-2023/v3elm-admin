@@ -101,7 +101,8 @@ const handleCommand = command => {
   showActiveTab()
 }
 
-// 保存所有已打开的标签的ref
+// 将所有已打开的标签的ref保存到数组中
+// 判断ref是否已经存在于数组中,不存在就添加，否则就替换
 const allTabsRef = []
 const setTagRef = el => {
   if (!el) return
@@ -131,42 +132,42 @@ const findTabRef = path => {
   return index > -1 ? allTabsRef[index] : null
 }
 
-// 计算当前标签activeTab的左侧与滚动条组件的可视区左侧的偏移量
-// 或计算当前标签activeTab的右侧与滚动条组件的可视区右侧的偏移量
-const calcDiff = (activeTabRect, scrollBarRect) => {
+// 计算当前标签activeTab的左侧与滚动条组件最外层盒子wrapBox左侧的偏移量
+// 或计算当前标签activeTab的右侧与滚动条组件最外层盒子wrapBox右侧的偏移量
+const calcDiff = (activeTabRect, wrapBoxRect) => {
   let diff = 0
-  if (activeTabRect.left < scrollBarRect.left) {
-    diff = scrollBarRect.left - activeTabRect.left
-  } else if (activeTabRect.right > scrollBarRect.right) {
-    diff = scrollBarRect.right - activeTabRect.right
+  if (activeTabRect.left < wrapBoxRect.left) {
+    diff = wrapBoxRect.left - activeTabRect.left
+  } else if (activeTabRect.right > wrapBoxRect.right) {
+    diff = wrapBoxRect.right - activeTabRect.right
   }
   return diff
 }
 
 const scrollBarRef = ref(null)
-// 根据当前标签activeTab的偏移量调整滚动条组件的内容区盒子的左偏移量
-// 从而保证activeTab始终在滚动条可视区之内
+// 根据activeTab相较于滚动条组件外层盒子wrapBox的偏移量
+// 来调整滚动条组件viewBox的左偏移量，从而保证activeTab始终可见
 const showActiveTab = path => {
   const activeTabRef = findTabRef(path)
   if (!activeTabRef || !scrollBarRef.value) return
 
   const activeTabRect = activeTabRef.getBoundingClientRect()
 
-  // 获取滚动条组件的最外层盒子(可视区)对应的dom节点
-  const wrapRef = scrollBarRef.value.$el
-  const scrollBarRect = wrapRef.getBoundingClientRect()
+  // 获取滚动条组件的最外层盒子wrapBox对应的dom节点
+  const wrapBoxRef = scrollBarRef.value.$el
+  const wrapBoxRect = wrapBoxRef.getBoundingClientRect()
 
-  // 计算activeTab相较可视区盒子的偏移量
-  const diff = calcDiff(activeTabRect, scrollBarRect)
+  // 计算activeTab相较于wrapBox的偏移量
+  const diff = calcDiff(activeTabRect, wrapBoxRect)
   if (diff == 0) return
 
-  // 获取滚动条组件的内容区盒子对应的dom节点（内容区盒子实际宽度不小于可视区盒子的宽度）
-  const viewRef = wrapRef.children[0]
-  // 获取滚动条组件的内容区盒子的左偏移量的数值
-  const left = getNumOfPixelVal(getElementStyle(viewRef).left)
+  // 获取滚动条组件的内容区盒子viewBox对应的dom节点（viewBox实际宽度不小于wrapBox的宽度）
+  const viewBoxRef = wrapBoxRef.children[0]
+  // 获取滚动条组件的内容区盒子viewBox的左偏移量的数值
+  const left = getNumOfPixelVal(getElementStyle(viewBoxRef).left)
 
-  // 重新设置滚动条组件的内容区盒子的左偏移量
-  viewRef.style.left = `${left + diff}px`
+  // 重新设置滚动条组件的内容区盒子viewBox的左偏移量
+  viewBoxRef.style.left = `${left + diff}px`
   // 同时得重新调整滚动条的位置
   scrollBarRef.value.init()
 }
@@ -240,6 +241,9 @@ const showActiveTab = path => {
     .icon-wrapper {
       padding: 10px;
       cursor: pointer;
+      &:hover {
+        color: #53a8ff;
+      }
     }
   }
 }
