@@ -7,7 +7,7 @@
       </div>
       <div class="info">
         <div class="label">姓名</div>
-        <div class="value">{{ userInfo.name }}</div>
+        <div class="value ellipsis">{{ userInfo.name }}</div>
       </div>
       <div class="info">
         <div class="label">性别</div>
@@ -23,11 +23,11 @@
       </div>
       <div class="info">
         <div class="label">邮箱</div>
-        <div class="value">{{ userInfo.email}}</div>
+        <div class="value ellipsis">{{ userInfo.email}}</div>
       </div>
       <div class="info">
         <div class="label">户籍</div>
-        <div class="value">{{ userInfo.county }}</div>
+        <div class="value ellipsis">{{ userInfo.county }}</div>
       </div>
       <div class="info">
         <div class="label">IP地址</div>
@@ -90,6 +90,7 @@ setTimeout(() => {
       }
       .label {
         color: #333333;
+        min-width: 50px;
       }
       .value {
         color: #aaaaaa;

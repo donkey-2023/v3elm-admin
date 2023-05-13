@@ -123,6 +123,7 @@ const displayBlock = () => {
 }
 
 const init = () => {
+  if (!wrapRef.value) return
   reset()
 
   const wrapStyle = getElementStyle(wrapRef.value)

@@ -10,7 +10,7 @@
       <el-input v-model="dataForm.confirmPsd" type="password" />
     </el-form-item>
   </el-form>
-  <div class="btn-wrapper" :class="deviceType === '02' && 'mobile'">
+  <div class="btn-wrapper" :class="deviceType === 'mobile' && 'mobile'">
     <el-button type="primary" @click="submitForm">提交</el-button>
     <el-button @click="close">关闭</el-button>
   </div>
@@ -39,7 +39,11 @@ const submitForm = async () => {
   if (!ruleFormRef.value) return
   await ruleFormRef.value.validate(valid => {
     if (valid) {
-      ElMessage.warning('仅供演示,不允许操作！')
+      if (dataForm.newPsd !== dataForm.confirmPsd) {
+        ElMessage.warning('新密码和确认密码不一致')
+        return
+      }
+      ElMessage.warning('操作失败，仅供演示！')
     }
   })
 }

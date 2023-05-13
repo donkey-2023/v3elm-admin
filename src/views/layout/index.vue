@@ -1,9 +1,9 @@
 <template>
-  <el-container class="app-container" :class="deviceType === '02' ? 'mobile' : ''">
+  <el-container class="app-container" :class="deviceType === 'mobile' ? 'mobile' : ''">
     <el-aside class="sidebar-wrapper" :class="!isCollapse ? 'display' : ''">
       <sider-bar></sider-bar>
     </el-aside>
-    <div v-if="deviceType === '02' && !isCollapse" class="mask" @click="hideMask"></div>
+    <div v-if="deviceType === 'mobile' && !isCollapse" class="mask" @click="hideMask"></div>
     <el-container class="offside-wrapper">
       <nav-bar></nav-bar>
       <tag-bar></tag-bar>
@@ -34,7 +34,7 @@ const setDeviceType = () => {
   // 获取浏览器可视区域的宽度
   const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
   console.log('视口宽度：', w)
-  store.commit('app/setDeviceType', w < 1000 ? '02' : '01')
+  store.commit('app/setDeviceType', w < 1000 ? 'mobile' : 'pc')
 }
 setDeviceType()
 // 监听浏览器窗口resize事件，当视口宽度小于1000px，将设备类型设置为mobile

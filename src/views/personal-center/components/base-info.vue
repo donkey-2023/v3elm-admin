@@ -1,5 +1,5 @@
 <template>
-  <div class="base-info" :class="deviceType === '02' && 'mobile'">
+  <div class="base-info" :class="deviceType === 'mobile' && 'mobile'">
     <el-tabs v-model="activeName" class="demo-tabs">
       <el-tab-pane label="基本资料" name="first">
         <base-info-form></base-info-form>
@@ -29,8 +29,10 @@ const activeName = ref('first')
   border: solid 1px #f3f3f3;
   background-color: #fff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+
   &.mobile {
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   ::v-deep .demo-tabs {
     .el-tabs__item {

@@ -2,9 +2,8 @@
   <div>欢迎访问【用户】管理页面</div>
 </template>
   
-<script>
-export default {}
+<script setup>
 </script>
   
-<style>
+<style lang="scss" scoped>
 </style>

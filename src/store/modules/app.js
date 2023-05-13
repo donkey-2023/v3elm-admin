@@ -5,7 +5,7 @@ import router from '@/router'
 const state = () => ({
   token: localStorage.getItem(TOKEN) || '',
   logouting: false,
-  deviceType: '01' // 设备类型：01 PC | 02 Mobile
+  deviceType: 'pc' // 设备类型
 })
 
 const mutations = {

@@ -27,9 +27,9 @@
       <el-input v-model="dataForm.county" />
     </el-form-item>
   </el-form>
-  <div class="btn-wrapper" :class="deviceType === '02' && 'mobile'">
+  <div class="btn-wrapper" :class="deviceType === 'mobile' && 'mobile'">
     <el-button type="primary" @click="submitForm">提交</el-button>
-    <el-button @click="close">关闭</el-button>
+    <el-button @click="reset">重置</el-button>
   </div>
 </template>
   
@@ -40,7 +40,7 @@ import { useStore } from 'vuex'
 const store = useStore()
 const deviceType = computed(() => store.getters.deviceType)
 const userInfo = computed(() => store.getters.userInfo)
-let dataForm = reactive(userInfo.value)
+let dataForm = reactive(JSON.parse(JSON.stringify(userInfo.value)))
 
 const rules = reactive({
   name: [{ required: true, message: '不能为空', trigger: 'blur' }],
@@ -61,9 +61,11 @@ const submitForm = async () => {
   })
 }
 
-const activeMenu = computed(() => store.getters.activeMenu)
-const close = () => {
-  store.commit('menu/removeSingleTab', activeMenu.value)
+const reset = () => {
+  for (let key of Object.keys(dataForm)) {
+    dataForm[key] = userInfo.value[key]
+  }
+  ruleFormRef.value.clearValidate()
 }
 </script>
   

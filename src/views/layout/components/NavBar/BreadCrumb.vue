@@ -1,5 +1,5 @@
 <template>
-  <div v-if="deviceType === '01'" class="bread-crumb">
+  <div v-if="deviceType === 'pc'" class="bread-crumb">
     <span :key="index" v-for="(item,index ) in fullNameArr" class="menu-name">
       {{ item }}
       <span v-if="index < fullNameArr.length - 1" class="separator">/</span>
@@ -22,7 +22,6 @@ const fullNameArr = computed(() => {
   return []
 })
 
-// 01 PC , 02 Mobile
 const deviceType = computed(() => store.getters.deviceType)
 </script>
 
