@@ -10,7 +10,8 @@ import { TOKEN_EXPIRED } from '@/utils/constant'
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API,
   baseURL: '/api',
-  timeout: 3000
+  timeout: 3000,
+  loading: true
 })
 
 // 请求拦截

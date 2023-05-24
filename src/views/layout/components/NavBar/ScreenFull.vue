@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-full" @click="toggleScreen">
+  <div class="screen-full" @click="toggleFullScreen">
     <svg-icon :icon="isFull? 'fullscreen-exit1':'fullscreen1' " />
   </div>
 </template>
@@ -8,7 +8,7 @@ import { ref, onMounted, onBeforeMount } from 'vue'
 import screenfull from 'screenfull'
 
 const isFull = ref(false)
-const toggleScreen = () => {
+const toggleFullScreen = () => {
   if (screenfull.isEnabled) {
     screenfull.toggle()
   }
