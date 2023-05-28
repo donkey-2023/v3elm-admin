@@ -31,7 +31,6 @@
     <div ref="tableWrapRef" class="table-wrap">
       <column-setting-wrap
         v-if="dialogVisible"
-        :dialogVisible="dialogVisible"
         :columnsOption="columnsOption"
         @close="dialogVisible = false"
       ></column-setting-wrap>
@@ -66,7 +65,7 @@
         </div>
       </div>
       <el-table :data="tableData" border style="width: 100%">
-        <table-column-wrap ref="columnWrapRef">
+        <table-column-wrap ref="columnWrapRef" :key="$store.getters.key">
           <el-table-column type="index" width="50" align="center" />
           <el-table-column prop="deptName" label="部门名称" align="center" />
           <el-table-column prop="status" label="状态" width="180" align="center">
@@ -147,17 +146,16 @@ const toggleFullScreen = () => {
   }
 }
 
-// 表格列隐藏和表头排序
 const columnWrapRef = ref(null)
 const dialogVisible = ref(false)
-let columnsOption = null
+const columnsOption = ref([])
+// 获取表格列配置信息
 watch(
   () => columnWrapRef.value,
   newValue => {
-    columnsOption = newValue ? newValue.columnsOption : []
+    columnsOption.value = newValue ? newValue.columnsOption : []
   },
   {
-    immediate: true,
     deep: true
   }
 )
