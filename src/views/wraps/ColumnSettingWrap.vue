@@ -2,17 +2,34 @@
   <div class="column-setting">
     <el-dialog
       :model-value="true"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       title="自定义列"
       :width="deviceType === 'mobile' ? '90%' : '30%'"
       align-center
       @close="handleClose"
     >
       <el-scrollbar max-height="60vh">
-        <draggable v-model="data" class="wrapper" @end="onEnd" item-key="index">
+        <draggable
+          v-model="data"
+          class="wrapper"
+          chosen-class="chosen"
+          force-fallback="true"
+          @end="onEnd"
+          item-key="index"
+          handle=".right"
+        >
           <template #item="{ element }">
             <div class="item">
-              <el-checkbox v-model="element.visible" label size="large" />
-              <span class="text">{{ element.label }}</span>
+              <div class="left">
+                <el-checkbox v-model="element.visible" label size="large" />
+                <span class="text">{{ element.label }}</span>
+              </div>
+              <div class="right">
+                <el-icon>
+                  <Rank></Rank>
+                </el-icon>
+              </div>
             </div>
           </template>
         </draggable>
@@ -58,9 +75,12 @@ if (isNotEmpty(adjustedColumns)) {
 const dataStr = JSON.stringify(data)
 
 const set = type => {
-  // 判断表格列是否有变化
-  if (JSON.stringify(data) !== dataStr) {
-    store.dispatch('column/updateCache', type === '0' ? [] : JSON.parse(JSON.stringify(data)))
+  if (type === '0') {
+    // 重置 && 判断表格列是否与默认配置一直
+    JSON.stringify(props.columnsOption) !== dataStr && store.dispatch('column/updateCache', [])
+  } else {
+    // 确定 && 判断表格列是否有改动
+    JSON.stringify(data) !== dataStr && store.dispatch('column/updateCache', JSON.parse(JSON.stringify(data)))
   }
   emits('close')
 }
@@ -83,15 +103,42 @@ const onEnd = ({ oldIndex, newIndex }) => {
     margin-right: 0;
   }
   ::v-deep .el-dialog__body {
-    padding: 10px 0 10px 20px;
+    padding: 10px 0 10px 10px;
     .wrapper {
       .item {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
-        font-size: 16px;
-        .text {
-          margin-left: 10px;
+        margin: 0 10px 10px 0;
+        padding: 6px 6px 6px 10px;
+        background-color: #fdfdfd;
+        border: solid 1px #eee;
+        border-radius: 8px;
+        cursor: default;
+        cursor: not-allowed;
+        .left {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          font-size: 16px;
+          width: calc(100% - 60px);
+          .el-checkbox__inner {
+            transform: scale(1.1);
+          }
+          .text {
+            margin-left: 10px;
+          }
+        }
+        .right {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          height: 40px;
+          padding: 0 18px;
+          cursor: move;
+          .el-icon {
+            font-size: 20px;
+          }
         }
       }
     }
@@ -104,5 +151,8 @@ const onEnd = ({ oldIndex, newIndex }) => {
     border-top: 1px solid #dee2e6;
     padding: 15px;
   }
+}
+.chosen {
+  border: solid 2px #3089dc !important;
 }
 </style>
