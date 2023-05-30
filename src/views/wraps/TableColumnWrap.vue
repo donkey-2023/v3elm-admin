@@ -32,7 +32,7 @@ const myRender = () => {
     isNotEmpty(arr) &&
       arr.forEach(item1 => {
         const i = defaultSlot.findIndex(item2 => item2.props.label === item1.props.label)
-        columnsOption[i].visible = item1.visible
+        // columnsOption[i].visible = item1.visible
         i > -1 && item1.visible && result.push(defaultSlot[i])
       })
     return result

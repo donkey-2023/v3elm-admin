@@ -5,8 +5,8 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       title="自定义列"
-      :width="deviceType === 'mobile' ? '90%' : '30%'"
-      align-center
+      :width="deviceType === 'mobile' ? '90%' : '28%'"
+      :align-center="true"
       @close="handleClose"
     >
       <el-scrollbar max-height="60vh">
@@ -76,7 +76,7 @@ const dataStr = JSON.stringify(data)
 
 const set = type => {
   if (type === '0') {
-    // 重置 && 判断表格列是否与默认配置一直
+    // 重置 && 判断表格列是否与默认配置一致
     JSON.stringify(props.columnsOption) !== dataStr && store.dispatch('column/updateCache', [])
   } else {
     // 确定 && 判断表格列是否有改动
@@ -114,7 +114,6 @@ const onEnd = ({ oldIndex, newIndex }) => {
         background-color: #fdfdfd;
         border: solid 1px #eee;
         border-radius: 8px;
-        cursor: default;
         cursor: not-allowed;
         .left {
           display: flex;

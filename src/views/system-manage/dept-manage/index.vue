@@ -64,9 +64,9 @@
           </el-icon>
         </div>
       </div>
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table :data="tableData" row-key="id" border style="width: 100%;">
         <table-column-wrap ref="columnWrapRef" :key="$store.getters.key">
-          <el-table-column type="index" width="50" align="center" />
+          <el-table-column prop="order" label="序号" width="60" align="center" />
           <el-table-column prop="deptName" label="部门名称" align="center" />
           <el-table-column prop="status" label="状态" width="180" align="center">
             <template #default="{ row}">
@@ -74,7 +74,7 @@
               <el-tag v-else type="danger">禁用</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="creatTime" label="创建时间" width="180" align="center" />
+          <el-table-column prop="creatTime" label="创建时间" width="200" align="center" />
           <el-table-column label="操作" width="200" align="center">
             <template #default="scope">
               <div class="btn-icon-wrap">
@@ -125,7 +125,7 @@ query()
 // 重置
 const reset = () => {
   dataForm.deptName = ''
-  dataForm.status = '1'
+  dataForm.status = ''
 }
 
 const add = () => {}
@@ -212,9 +212,24 @@ watch(
   display: flex;
   justify-content: space-around;
   padding: 0 20px;
+  width: 100%;
   .btn-icon {
     font-size: 18px;
     vertical-align: middle;
+  }
+}
+::v-deep .el-table__row--level-0 td:first-child {
+  .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+::v-deep .el-table__row--level-1 {
+  .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

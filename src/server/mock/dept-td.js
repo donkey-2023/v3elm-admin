@@ -4,27 +4,95 @@ const random = () => (Math.random() > 0.2 ? '1' : '0')
 const getTableData = () => [
   {
     id: Mock.Random.id(),
-    deptName: '莲花社区',
+    order: 1,
+    deptName: '莲花一区',
     status: random(),
-    creatTime: Mock.mock('@datetime()')
+    creatTime: Mock.mock('@datetime()'),
+    children: [
+      {
+        id: Mock.Random.id(),
+        order: 1,
+        deptName: '莲花一区A栋',
+        status: random(),
+        creatTime: Mock.mock('@datetime()')
+      },
+      {
+        id: Mock.Random.id(),
+        order: 2,
+        deptName: '莲花一区B栋',
+        status: random(),
+        creatTime: Mock.mock('@datetime()')
+      }
+    ]
   },
   {
     id: Mock.Random.id(),
-    deptName: '滨江社区',
+    order: 2,
+    deptName: '滨江小区',
     status: random(),
-    creatTime: Mock.mock('@datetime()')
+    creatTime: Mock.mock('@datetime()'),
+    children: [
+      {
+        id: Mock.Random.id(),
+        order: 1,
+        deptName: '滨江小区A栋',
+        status: random(),
+        creatTime: Mock.mock('@datetime()')
+      },
+      {
+        id: Mock.Random.id(),
+        order: 2,
+        deptName: '滨江小区B栋',
+        status: random(),
+        creatTime: Mock.mock('@datetime()')
+      }
+    ]
   },
   {
     id: Mock.Random.id(),
-    deptName: '快乐城社区',
+    order: 3,
+    deptName: '阳光城小区',
     status: random(),
-    creatTime: Mock.mock('@datetime()')
+    creatTime: Mock.mock('@datetime()'),
+    children: [
+      {
+        id: Mock.Random.id(),
+        order: 1,
+        deptName: '阳光城小区A栋',
+        status: random(),
+        creatTime: Mock.mock('@datetime()')
+      },
+      {
+        id: Mock.Random.id(),
+        order: 2,
+        deptName: '阳光城小区B栋',
+        status: random(),
+        creatTime: Mock.mock('@datetime()')
+      }
+    ]
   },
   {
     id: Mock.Random.id(),
-    deptName: '城市广场社区',
+    order: 4,
+    deptName: '科苑小区',
     status: random(),
-    creatTime: Mock.mock('@datetime()')
+    creatTime: Mock.mock('@datetime()'),
+    children: [
+      {
+        id: Mock.Random.id(),
+        order: 1,
+        deptName: '科苑小区A栋',
+        status: random(),
+        creatTime: Mock.mock('@datetime()')
+      },
+      {
+        id: Mock.Random.id(),
+        order: 2,
+        deptName: '科苑小区B栋',
+        status: random(),
+        creatTime: Mock.mock('@datetime()')
+      }
+    ]
   }
 ]
 
