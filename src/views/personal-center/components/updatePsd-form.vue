@@ -43,7 +43,7 @@ const submitForm = async () => {
         ElMessage.warning('新密码和确认密码不一致')
         return
       }
-      ElMessage.warning('操作失败，仅供演示！')
+      ElMessage.warning('操作失败（仅供演示）！')
     }
   })
 }

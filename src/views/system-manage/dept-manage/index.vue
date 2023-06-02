@@ -42,13 +42,12 @@
             </el-icon>
             <span>新增</span>
           </el-button>
-          <el-button type="primary" @click="updateRow" plain>
-            <el-icon>
-              <Edit />
-            </el-icon>
-            <span>修改</span>
-          </el-button>
-          <el-button type="danger" @click="deleteRow" plain>
+          <el-button
+            type="danger"
+            @click="deleteRow"
+            :disabled="!selection || selection.length === 0"
+            plain
+          >
             <el-icon>
               <Delete />
             </el-icon>
@@ -64,8 +63,16 @@
           </el-icon>
         </div>
       </div>
-      <el-table :data="tableData" row-key="id" border style="width: 100%;">
+      <el-table
+        ref="tableRef"
+        :data="tableData"
+        row-key="id"
+        @selection-change="onSelectionChange"
+        border
+        style="width: 100%;"
+      >
         <table-column-wrap ref="columnWrapRef" :key="$store.getters.key">
+          <el-table-column type="selection" label width="60" align="center" />
           <el-table-column prop="order" label="序号" width="60" align="center" />
           <el-table-column prop="deptName" label="部门名称" align="center" />
           <el-table-column prop="status" label="状态" width="180" align="center">
@@ -93,6 +100,7 @@
           </el-table-column>
         </table-column-wrap>
       </el-table>
+      <add-or-update v-if="visible" :initData="initData" @close="visible = false"></add-or-update>
     </div>
   </div>
 </template>
@@ -104,7 +112,7 @@ import screenfull from 'screenfull'
 import $http from '@/utils/http/index'
 import TableColumnWrap from '@/views/wraps/TableColumnWrap.vue'
 import ColumnSettingWrap from '@/views/wraps/ColumnSettingWrap.vue'
-// import { Search, Refresh, Plus, Edit, Delete, Setting } from '@element-plus/icons-vue'
+import AddOrUpdate from './add-or-update.vue'
 
 const store = useStore()
 const deviceType = computed(() => store.getters.deviceType)
@@ -128,9 +136,40 @@ const reset = () => {
   dataForm.status = ''
 }
 
-const add = () => {}
-const updateRow = row => {}
-const deleteRow = row => {}
+const tableRef = ref(null)
+const selection = ref(null)
+const onSelectionChange = rows => {
+  selection.value = rows
+}
+const visible = ref(false)
+const initData = ref({})
+const add = () => {
+  visible.value = true
+  initData.value = {
+    type: 'add'
+  }
+}
+const updateRow = row => {
+  visible.value = true
+  initData.value = {
+    type: 'edit',
+    ...row
+  }
+}
+const deleteRow = row => {
+  ElMessageBox.confirm('是否删除数据？', '提示', {
+    showCancelButton: 'true',
+    cancelButtonText: '取消',
+    confirmButtonText: '确认',
+    callback: action => {
+      action === 'confirm' &&
+        ElMessage({
+          type: 'success',
+          message: '删除成功（仅供演示）！'
+        })
+    }
+  })
+}
 
 // 全屏切换
 const isFull = ref(false)
@@ -216,6 +255,7 @@ watch(
   .btn-icon {
     font-size: 18px;
     vertical-align: middle;
+    cursor: pointer;
   }
 }
 ::v-deep .el-table__row--level-0 td:first-child {

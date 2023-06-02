@@ -12,8 +12,9 @@ const slots = useSlots()
 const defaultSlot = slots.default()
 isNotEmpty(defaultSlot) &&
   defaultSlot.forEach((item, index) => {
+    const label = item.props.type === 'selection' ? '复选框' : '序号'
     columnsOption.push({
-      label: item.props.label || '序号',
+      label: item.props.label || label,
       visible: true,
       order: index,
       props: item.props

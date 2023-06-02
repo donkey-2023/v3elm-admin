@@ -81,7 +81,7 @@ window.addEventListener('resize', setDeviceType)
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 400%;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 99;
   }
@@ -92,7 +92,7 @@ window.addEventListener('resize', setDeviceType)
     align-items: center;
     width: 100%;
     height: 100%;
-    background-color: #f7f7f7;
+    background-color: #f4f4f4;
     margin-left: v-bind(asideWidth);
     transition: margin-left 0.2s;
   }

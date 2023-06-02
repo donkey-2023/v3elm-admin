@@ -112,6 +112,6 @@ defineExpose({
 
 <style lang="scss" scoped>
 .canvas {
-  background: #f7f7f7;
+  background: #f4f4f4;
 }
 </style>

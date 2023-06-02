@@ -14,10 +14,9 @@
   margin-top: 20px;
   padding: 2px 0;
   width: 100%;
-  border: solid 1px #dcdfe6;
   .label {
     position: absolute;
-    top: -8px;
+    top: -4px;
     left: 30px;
     z-index: 9;
     padding: 0 5px;

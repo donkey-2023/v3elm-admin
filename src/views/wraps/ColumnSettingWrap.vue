@@ -6,7 +6,7 @@
       :close-on-press-escape="false"
       title="自定义列"
       :width="deviceType === 'mobile' ? '90%' : '28%'"
-      :align-center="true"
+      align-center
       @close="handleClose"
     >
       <el-scrollbar max-height="60vh">

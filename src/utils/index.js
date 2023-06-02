@@ -119,3 +119,14 @@ export function stopFullScreenLoading() {
 export function generateRandomInt(min, max) {
   return Math.ceil(Math.random() * (max - min) + min)
 }
+
+// 防抖
+export function debounce(fn, delay) {
+  let timer = null
+  return function (...args) {
+    timer && clearTimeout(timer)
+    timer = setTimeout(() => {
+      fn(...args)
+    }, delay)
+  }
+}

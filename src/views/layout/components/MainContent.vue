@@ -11,8 +11,7 @@
 <style lang="scss" scoped>
 .main-content {
   width: 100%;
-  height: 100%;
-  padding: 10px;
+  padding: 15px;
   box-sizing: border-box;
 }
 .fade-leave-active,

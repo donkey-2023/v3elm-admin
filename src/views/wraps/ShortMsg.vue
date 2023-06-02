@@ -75,10 +75,9 @@ const fn = () => {
     padding: 2px 0;
     flex-grow: 1;
     max-width: calc(100% - 120px);
-    border: solid 1px #dcdfe6;
     .label {
       position: absolute;
-      top: -8px;
+      top: -4px;
       left: 30px;
       z-index: 9;
       padding: 0 5px;

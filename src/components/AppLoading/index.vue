@@ -23,7 +23,7 @@
   top: 0;
   height: 100%;
   width: 100%;
-  background: #f7f7f7;
+  background: #f4f4f4;
   user-select: none;
   z-index: 9999;
   overflow: hidden;

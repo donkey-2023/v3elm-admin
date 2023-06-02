@@ -10,6 +10,7 @@ import useSvgIcons from '@/icons/index'
 import directives from './directives/index'
 import '@/router/permission'
 import AppLoading from './components/AppLoading'
+import { debounce } from '@/utils/index'
 
 async function setupApp() {
   // 创建一个用于挂载appLoading组件的div节点
@@ -31,6 +32,8 @@ async function setupApp() {
   app.mount('#app')
   // 最后，移除div节点，显示常规页面
   $container.removeChild($div)
+
+  patch()
 }
 
 async function initRouter(app) {
@@ -41,3 +44,14 @@ async function initRouter(app) {
   })
 }
 setupApp()
+
+// 解决el-table组件宽或高调整时，报ResizeObserver loop limit exceeded错误
+function patch() {
+  const _ResizeObserver = window.ResizeObserver
+  window.ResizeObserver = class ResizeObserver extends _ResizeObserver {
+    constructor(callback) {
+      callback = debounce(callback, 16)
+      super(callback)
+    }
+  }
+}
