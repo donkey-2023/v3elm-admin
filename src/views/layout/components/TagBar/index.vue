@@ -203,6 +203,7 @@ const showActiveTab = path => {
         font-size: 14px;
         border-radius: 4px;
         box-sizing: border-box;
+        cursor: pointer;
         &.active {
           background-color: #42b983;
           color: #fff;

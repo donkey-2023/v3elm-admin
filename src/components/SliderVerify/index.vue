@@ -9,14 +9,14 @@
       <canvas
         ref="fullImgRef"
         :width="width"
-        height="150"
+        height="130"
         class="full-img"
         :style="{width:width +'px'}"
       ></canvas>
       <canvas
         ref="partialImgRef"
         :width="width"
-        height="150"
+        height="130"
         :style="{left: formData.left+'px'}"
         class="partial-img"
       ></canvas>
@@ -80,9 +80,9 @@ let isRezie = false // 浏览器窗口是否缩放
 
 const width = inject('width')
 
-const onSubmit = () => {
-  console.log('onsubmit')
-}
+// const onSubmit = () => {
+//   console.log('onsubmit')
+// }
 
 const mouseDownCallback = e => {
   // 阻止默认行为

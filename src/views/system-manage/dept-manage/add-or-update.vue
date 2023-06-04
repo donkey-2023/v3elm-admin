@@ -14,6 +14,7 @@
           v-model="dataForm.parentDept"
           :data="deptData"
           :render-after-expand="false"
+          placeholder="请选择"
           :props="{
             label:'deptName',
             value:'id'
@@ -30,6 +31,9 @@
           <el-radio label="0">禁用</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="排序">
+        <el-input-number v-model="dataForm.order"></el-input-number>
+      </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -44,7 +48,6 @@
 import { computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import $http from '@/utils/http/index'
-import { isNotEmpty } from '@/utils/verify'
 
 const store = useStore()
 const deviceType = computed(() => store.getters.deviceType)
@@ -55,7 +58,7 @@ const props = defineProps({
   }
 })
 
-let dataForm = reactive({ status: '0' })
+let dataForm = reactive({ status: '0', order: '1' })
 const rules = reactive({
   parentDept: [{ required: true, message: '不能为空', trigger: 'change' }],
   deptName: [{ required: true, message: '不能为空', trigger: 'blur' }]
@@ -67,7 +70,7 @@ if (props.initData.type === 'edit') {
 // 加载部门下拉树数据
 const deptData = ref([])
 const queryDeptInfo = () => {
-  $http.post('/queryDeptInfo', dataForm).then(res => {
+  $http.post('/queryDeptInfo').then(res => {
     deptData.value = [
       {
         id: '0',
@@ -84,8 +87,8 @@ const submit = async () => {
   if (!ruleFormRef.value) return
   await ruleFormRef.value.validate(valid => {
     if (valid) {
-      store.commit('user/setUserInfo', JSON.parse(JSON.stringify(dataForm)))
-      ElMessage.success('提交成功')
+      ElMessage.success('提交成功（仅供演示）！')
+      emits('close')
     }
   })
 }

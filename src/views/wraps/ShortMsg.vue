@@ -68,16 +68,15 @@ const fn = () => {
   justify-content: space-between;
   flex-wrap: nowrap;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   .input-wrapper {
     position: relative;
-    margin-top: 20px;
-    padding: 2px 0;
+    margin-top: 10px;
     flex-grow: 1;
     max-width: calc(100% - 120px);
     .label {
       position: absolute;
-      top: -4px;
+      top: -6px;
       left: 30px;
       z-index: 9;
       padding: 0 5px;
@@ -109,10 +108,11 @@ const fn = () => {
 ::v-deep {
   .el-input__inner {
     border: none;
+    height: 32px;
   }
   .el-button {
     width: 100%;
-    height: 40px;
+    height: 34px;
   }
   .el-input__prefix-inner {
     display: flex;

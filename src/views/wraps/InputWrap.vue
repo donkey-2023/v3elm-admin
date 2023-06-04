@@ -11,7 +11,7 @@
 <style lang="scss" scoped>
 .wrapper {
   position: relative;
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 2px 0;
   width: 100%;
   .label {
@@ -28,5 +28,6 @@
 }
 ::v-deep .el-input__inner {
   border: none;
+  height: 32px;
 }
 </style>

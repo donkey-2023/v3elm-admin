@@ -102,7 +102,7 @@ Array.from({ length: 9 }).forEach((e, i) => {
 <style lang="scss" scoped>
 ::v-deep .last-form-item {
   .el-form-item__error {
-    margin-top: -18px;
+    margin-top: -10px;
   }
 }
 </style>

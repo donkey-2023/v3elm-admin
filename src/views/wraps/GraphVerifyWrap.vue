@@ -9,7 +9,7 @@
       </el-input>
     </div>
     <div class="code-wrapper">
-      <graph-verify :height="38" @captcha="updateCaptcha"></graph-verify>
+      <graph-verify :height="32" @captcha="updateCaptcha"></graph-verify>
     </div>
   </div>
 </template>
@@ -25,9 +25,10 @@ const updateCaptcha = val => {
 .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: nowrap;
   width: 100%;
-  margin: 15px auto;
+  margin: 10px auto;
   .input-wrapper {
     position: relative;
     padding: 2px 0;
@@ -49,7 +50,7 @@ const updateCaptcha = val => {
     display: flex;
     align-items: flex-end;
     flex-basis: 100px;
-    height: 38px;
+    height: 32px;
   }
 }
 ::v-deep {

@@ -23,12 +23,12 @@ async function setupApp() {
   const app = createApp(App)
   useSvgIcons(app)
   app.use(store).use(elementPlus).use(directives)
-
+  // 全局注册elementplus图标
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }
   await initRouter(app)
-  // 路由加载完成后,再挂载常规页面
+  // 路由初始化完成后,再渲染常规页面
   app.mount('#app')
   // 最后，移除div节点，显示常规页面
   $container.removeChild($div)

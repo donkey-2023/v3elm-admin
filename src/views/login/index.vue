@@ -3,7 +3,7 @@
     <el-row justify="center">
       <el-col :xs="22" :sm="19" :md="19" :lg="18" :xl="16">
         <div ref="innerRef" class="inner-wrapper">
-          <div class="title"></div>
+          <div class="title">公寓后台管理系统</div>
           <el-tabs v-model="activeName" class="demo-tabs">
             <el-tab-pane label="账号密码登录" name="first">
               <transition name="tab1-fade">
@@ -40,8 +40,9 @@ provide('width', width)
 const { proxy } = getCurrentInstance()
 const updateSliderWidth = () => {
   if (proxy.$refs['innerRef']) {
-    width.value = proxy.$refs['innerRef'].clientWidth - 80
-    console.log('width', width.value)
+    const $firstTabPane = proxy.$refs['innerRef'].querySelector('#pane-first form')
+    // 根据第一个Tab的内容区宽度，来设置第二个Tab中滑块组件的宽度(目的：为了保持两个Tab的内容区宽度一致)
+    $firstTabPane && (width.value = $firstTabPane.clientWidth)
   }
 }
 
@@ -68,12 +69,19 @@ window.addEventListener('resize', updateSliderWidth)
 .outer-container {
   .inner-wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px 40px;
     background: #fff;
     ::v-deep .el-button {
       width: 100%;
+    }
+    .title {
+      font-size: 20px;
+      text-align: center;
+      color: #707070;
+      padding: 10px;
     }
   }
 }

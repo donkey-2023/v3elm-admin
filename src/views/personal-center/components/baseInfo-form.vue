@@ -56,7 +56,7 @@ const submitForm = async () => {
   await ruleFormRef.value.validate(valid => {
     if (valid) {
       store.commit('user/setUserInfo', JSON.parse(JSON.stringify(dataForm)))
-      ElMessage.success('提交成功')
+      ElMessage.success('提交成功（仅供演示）！')
     }
   })
 }

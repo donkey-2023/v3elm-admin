@@ -73,7 +73,7 @@
       >
         <table-column-wrap ref="columnWrapRef" :key="$store.getters.key">
           <el-table-column type="selection" label width="60" align="center" />
-          <el-table-column prop="order" label="序号" width="60" align="center" />
+          <el-table-column prop="order" label="排序" width="60" align="center" />
           <el-table-column prop="deptName" label="部门名称" align="center" />
           <el-table-column prop="status" label="状态" width="180" align="center">
             <template #default="{ row}">
@@ -211,12 +211,13 @@ watch(
       justify-content: center;
     }
     ::v-deep .el-button {
-      width: 40%;
+      width: 30%;
+      margin-right: 20px;
     }
   }
 }
-::v-deep .el-select .el-input__inner {
-  width: 200px;
+::v-deep .el-select.el-select--medium {
+  width: 90%;
 }
 .table-wrap {
   margin-top: 10px;

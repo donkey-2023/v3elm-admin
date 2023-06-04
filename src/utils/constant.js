@@ -16,7 +16,7 @@ export const ACTIVE_MENU = 'active_menu'
 // 登录人信息
 export const USER_INFO = 'userInfo'
 
-export const TOKEN_EXPIRED = 'token已失效'
+export const TOKEN_EXPIRED = 'token已失效，请重新登录！'
 
 // 侧边栏宽度最大值
 export const MAX_ASIDE_WIDTH = '220px'
