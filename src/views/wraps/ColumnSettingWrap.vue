@@ -11,11 +11,10 @@
     >
       <el-scrollbar max-height="60vh">
         <draggable
-          v-model="data"
+          :list="data"
           class="wrapper"
           chosen-class="chosen"
           force-fallback="true"
-          @end="onEnd"
           item-key="index"
           handle=".right"
         >
@@ -66,12 +65,7 @@ const emits = defineEmits(['close'])
 const handleClose = () => {
   emits('close')
 }
-let data = []
-if (isNotEmpty(adjustedColumns)) {
-  data = reactive(JSON.parse(JSON.stringify(adjustedColumns)))
-} else {
-  data = reactive(JSON.parse(JSON.stringify(props.columnsOption)))
-}
+const data = reactive(JSON.parse(JSON.stringify(isNotEmpty(adjustedColumns) ? adjustedColumns : props.columnsOption)))
 const dataStr = JSON.stringify(data)
 
 const set = type => {
@@ -83,16 +77,6 @@ const set = type => {
     JSON.stringify(data) !== dataStr && store.dispatch('column/updateCache', JSON.parse(JSON.stringify(data)))
   }
   emits('close')
-}
-//拖拽结束事件
-const onEnd = ({ oldIndex, newIndex }) => {
-  const dragItem = data[oldIndex]
-
-  data.splice(oldIndex < newIndex ? newIndex + 1 : newIndex, 0, dragItem)
-  data.splice(oldIndex < newIndex ? oldIndex : oldIndex + 1, 1)
-  data.forEach((item, index) => {
-    item.order = index
-  })
 }
 </script>
 

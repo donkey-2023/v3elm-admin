@@ -9,7 +9,8 @@ import { useStore } from 'vuex'
 
 const columnsOption = []
 const slots = useSlots()
-const defaultSlot = slots.default()
+// 过滤注释了的代码
+const defaultSlot = slots.default().filter(item => !!item.props)
 isNotEmpty(defaultSlot) &&
   defaultSlot.forEach((item, index) => {
     const label = item.props.type === 'selection' ? '复选框' : '序号'
@@ -33,7 +34,6 @@ const myRender = () => {
     isNotEmpty(arr) &&
       arr.forEach(item1 => {
         const i = defaultSlot.findIndex(item2 => item2.props.label === item1.props.label)
-        // columnsOption[i].visible = item1.visible
         i > -1 && item1.visible && result.push(defaultSlot[i])
       })
     return result
