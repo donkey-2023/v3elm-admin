@@ -55,23 +55,23 @@ const adjustedColumns = store.getters.adjustedColumns
 const deviceType = computed(() => store.getters.deviceType)
 
 const props = defineProps({
-  columnsOption: {
-    type: Array,
-    default: []
+  columnWrapRef: {
+    type: Object
   }
 })
+const columnsOption = props.columnWrapRef.columnsOption
 
 const emits = defineEmits(['close'])
 const handleClose = () => {
   emits('close')
 }
-const data = reactive(JSON.parse(JSON.stringify(isNotEmpty(adjustedColumns) ? adjustedColumns : props.columnsOption)))
+const data = reactive(JSON.parse(JSON.stringify(isNotEmpty(adjustedColumns) ? adjustedColumns : columnsOption)))
 const dataStr = JSON.stringify(data)
 
 const set = type => {
   if (type === '0') {
     // 重置 && 判断表格列是否与默认配置一致
-    JSON.stringify(props.columnsOption) !== dataStr && store.dispatch('column/updateCache', [])
+    JSON.stringify(columnsOption) !== dataStr && store.dispatch('column/updateCache', [])
   } else {
     // 确定 && 判断表格列是否有改动
     JSON.stringify(data) !== dataStr && store.dispatch('column/updateCache', JSON.parse(JSON.stringify(data)))

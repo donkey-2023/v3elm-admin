@@ -10,7 +10,7 @@ const getTableData = () => [
     creatTime: Mock.mock('@datetime()'),
     children: [
       {
-        id: Mock.Random.id(),
+        id: '001001',
         pid: '001',
         order: 1,
         deptName: '莲花一区A栋',
@@ -18,7 +18,7 @@ const getTableData = () => [
         creatTime: Mock.mock('@datetime()')
       },
       {
-        id: Mock.Random.id(),
+        id: '001002',
         pid: '001',
         order: 2,
         deptName: '莲花一区B栋',
@@ -35,7 +35,7 @@ const getTableData = () => [
     creatTime: Mock.mock('@datetime()'),
     children: [
       {
-        id: Mock.Random.id(),
+        id: '002001',
         pid: '002',
         order: 1,
         deptName: '滨江小区A栋',
@@ -43,7 +43,7 @@ const getTableData = () => [
         creatTime: Mock.mock('@datetime()')
       },
       {
-        id: Mock.Random.id(),
+        id: '002002',
         pid: '002',
         order: 2,
         deptName: '滨江小区B栋',
@@ -53,15 +53,14 @@ const getTableData = () => [
     ]
   },
   {
-    id: Mock.Random.id(),
-    pid: '003',
+    id: '003',
     order: 3,
     deptName: '阳光城小区',
     status: random(),
     creatTime: Mock.mock('@datetime()'),
     children: [
       {
-        id: Mock.Random.id(),
+        id: '003001',
         pid: '003',
         order: 1,
         deptName: '阳光城小区A栋',
@@ -69,7 +68,7 @@ const getTableData = () => [
         creatTime: Mock.mock('@datetime()')
       },
       {
-        id: Mock.Random.id(),
+        id: '003002',
         pid: '003',
         order: 2,
         deptName: '阳光城小区B栋',
@@ -86,7 +85,7 @@ const getTableData = () => [
     creatTime: Mock.mock('@datetime()'),
     children: [
       {
-        id: Mock.Random.id(),
+        id: '004001',
         pid: '004',
         order: 1,
         deptName: '科苑小区A栋',
@@ -94,7 +93,7 @@ const getTableData = () => [
         creatTime: Mock.mock('@datetime()')
       },
       {
-        id: Mock.Random.id(),
+        id: '004002',
         pid: '004',
         order: 2,
         deptName: '科苑小区B栋',

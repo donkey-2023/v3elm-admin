@@ -17,7 +17,6 @@ isNotEmpty(defaultSlot) &&
     columnsOption.push({
       label: item.props.label || label,
       visible: true,
-      order: index,
       props: item.props
     })
   })
