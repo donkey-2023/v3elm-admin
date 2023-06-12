@@ -9,9 +9,21 @@
     @close="handleClose"
   >
     <el-form ref="ruleFormRef" :model="dataForm" :rules="rules" label-width="100px" size="medium">
-      <el-form-item label="上级部门" prop="parentDept">
+      <el-form-item label="用户名称" prop="userName">
+        <el-input v-model="dataForm.userName"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号码" prop="phone">
+        <el-input v-model="dataForm.phone"></el-input>
+      </el-form-item>
+      <el-form-item label="性别">
+        <el-radio-group v-model="dataForm.sex">
+          <el-radio label="1">男</el-radio>
+          <el-radio label="0">女</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="部门名称" prop="deptId">
         <el-tree-select
-          v-model="dataForm.parentDept"
+          v-model="dataForm.deptId"
           :data="deptData"
           :render-after-expand="false"
           placeholder="请选择"
@@ -22,17 +34,11 @@
           check-strictly
         />
       </el-form-item>
-      <el-form-item label="部门名称" prop="deptName">
-        <el-input v-model="dataForm.deptName" />
-      </el-form-item>
       <el-form-item label="状态">
         <el-radio-group v-model="dataForm.status">
           <el-radio label="1">正常</el-radio>
           <el-radio label="0">禁用</el-radio>
         </el-radio-group>
-      </el-form-item>
-      <el-form-item label="排序">
-        <el-input-number v-model="dataForm.order"></el-input-number>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -58,26 +64,21 @@ const props = defineProps({
   }
 })
 
-let dataForm = reactive({ status: '0', order: '1' })
+let dataForm = reactive({ userName: '', phone: '', deptId: '', sex: '1', status: '0' })
 const rules = reactive({
-  parentDept: [{ required: true, message: '不能为空', trigger: 'change' }],
-  deptName: [{ required: true, message: '不能为空', trigger: 'blur' }]
+  userName: [{ required: true, message: '不能为空', trigger: 'blur' }],
+  phone: [{ required: true, message: '不能为空', trigger: 'blur' }],
+  deptId: [{ required: true, message: '不能为空', trigger: 'change' }]
 })
 if (props.initData.type === 'edit') {
-  dataForm = reactive({ parentDept: props.initData.pid || '0', ...props.initData })
+  dataForm = reactive({ ...props.initData })
 }
 
 // 加载部门下拉树数据
 const deptData = ref([])
 const queryDeptInfo = () => {
   $http.post('/queryDeptInfo').then(res => {
-    deptData.value = [
-      {
-        id: '0',
-        deptName: '顶级部门',
-        children: res.data || []
-      }
-    ]
+    deptData.value = res.data || []
   })
 }
 queryDeptInfo()

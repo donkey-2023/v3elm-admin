@@ -5,7 +5,7 @@
     </template>
     <div class="form-wrap">
       <el-form label-width="100px" :model="dataForm" inline="true" size="medium">
-        <el-form-item label="用户名">
+        <el-form-item label="用户名称">
           <el-input v-model="dataForm.userName" />
         </el-form-item>
         <el-form-item label="手机号码">
@@ -75,7 +75,7 @@
           <el-table-column prop="phone" label="手机号码" width="150" align="center" />
           <el-table-column prop="sex" label="性别" width="100" align="center">
             <template #default="{ row}">
-              <span v-if="row.sex === 1" type="text">男</span>
+              <span v-if="row.sex === '1'" type="text">男</span>
               <span v-else type="text">女</span>
             </template>
           </el-table-column>
@@ -114,6 +114,7 @@ import TableColumnWrap from '@/views/wraps/TableColumnWrap.vue'
 import ColumnSettingWrap from '@/views/wraps/ColumnSettingWrap.vue'
 import FullScreenWrap from '@/views/wraps/FullScreenWrap.vue'
 import AddOrUpdate from '../add-or-update.vue'
+import mitt from '@/utils/mitt'
 
 const store = useStore()
 const deviceType = computed(() => store.getters.deviceType)
@@ -122,11 +123,12 @@ const dataForm = reactive({
   phone: ''
 })
 
+let arr = []
 // 查询
 const tableData = ref([])
 const query = () => {
   $http.post('/loadUsersInfo', dataForm).then(res => {
-    const arr = res.data || []
+    arr = res.data || []
     tableData.value = arr.filter(item => {
       const condition1 = dataForm.userName ? item.userName.indexOf(dataForm.userName) > -1 : true
       const condition2 = dataForm.phone ? item.phone.indexOf(dataForm.phone) > -1 : true
@@ -134,6 +136,15 @@ const query = () => {
     })
   })
 }
+
+mitt.on('clickDeptTreeNode', deptId => {
+  tableData.value = arr.filter(item => {
+    const condition1 = dataForm.userName ? item.userName.indexOf(dataForm.userName) > -1 : true
+    const condition2 = dataForm.phone ? item.phone.indexOf(dataForm.phone) > -1 : true
+    const conditio3 = item.deptId.indexOf(deptId) > -1
+    return condition1 && condition2 && conditio3
+  })
+})
 query()
 
 // 重置

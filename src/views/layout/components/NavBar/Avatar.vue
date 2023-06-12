@@ -49,9 +49,11 @@ const handleCommand = command => {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
-    }).then(() => {
-      store.dispatch('app/logout')
     })
+      .then(() => {
+        store.dispatch('app/logout')
+      })
+      .catch(() => {})
   }
 }
 </script>

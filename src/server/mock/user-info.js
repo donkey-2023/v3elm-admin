@@ -19,7 +19,7 @@ module.exports = function (app) {
     res.send({
       code: 0,
       user: {
-        sex: Math.random() > 0.2 ? 1 : 0,
+        sex: Math.random() > 0.2 ? '1' : '0',
         phone: Mock.Random.phone(),
         ...userInfo
       },

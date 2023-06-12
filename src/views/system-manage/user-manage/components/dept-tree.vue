@@ -33,6 +33,7 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import $http from '@/utils/http/index'
+import mitt from '@/utils/mitt'
 
 const store = useStore()
 const deviceType = computed(() => store.getters.deviceType)
@@ -59,7 +60,7 @@ const filterNode = (value, data) => {
 
 // 处理树节点的点击事件
 const handleNodeClick = node => {
-  console.log(node.deptName)
+  mitt.emit('clickDeptTreeNode', node.id)
 }
 </script>
 
