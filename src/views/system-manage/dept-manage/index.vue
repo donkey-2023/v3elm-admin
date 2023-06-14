@@ -107,6 +107,7 @@ import TableColumnWrap from '@/views/wraps/TableColumnWrap.vue'
 import ColumnSettingWrap from '@/views/wraps/ColumnSettingWrap.vue'
 import FullScreenWrap from '@/views/wraps/FullScreenWrap.vue'
 import AddOrUpdate from './add-or-update.vue'
+import { isNotEmpty } from '@/utils/verify'
 
 const store = useStore()
 const deviceType = computed(() => store.getters.deviceType)
@@ -119,12 +120,19 @@ const dataForm = reactive({
 const tableData = ref([])
 const query = () => {
   $http.post('/queryDeptInfo', dataForm).then(res => {
-    const arr = res.data || []
-    tableData.value = arr.filter(item => {
-      const condition1 = dataForm.deptName ? item.deptName.indexOf(dataForm.deptName) > -1 : true
-      const condition2 = dataForm.status ? item.status == dataForm.status : true
-      return condition1 && condition2
-    })
+    tableData.value = []
+    filterData(res.data || [])
+  })
+}
+const filterData = arr => {
+  arr.forEach(item => {
+    const condition1 = dataForm.deptName ? item.deptName.indexOf(dataForm.deptName) > -1 : true
+    const condition2 = dataForm.status ? item.status == dataForm.status : true
+    if (condition1 && condition2) {
+      tableData.value.push(item)
+    } else if (isNotEmpty(item.children)) {
+      filterData(item.children)
+    }
   })
 }
 query()

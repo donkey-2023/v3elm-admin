@@ -12,7 +12,7 @@
 .main-content {
   width: 100%;
   height: 100%;
-  padding: 15px;
+  padding: 10px;
   box-sizing: border-box;
 }
 .fade-leave-active,

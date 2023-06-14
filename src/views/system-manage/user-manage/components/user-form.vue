@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="never">
+  <el-card shadow="never" :style="{ 'margin-top': deviceType === 'mobile' ? '10px': ''}">
     <template #header>
       <span>用户列表</span>
     </template>
