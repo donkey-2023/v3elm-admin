@@ -11,7 +11,7 @@
       </div>
       <div class="info">
         <div class="label">性别</div>
-        <div class="value">{{ userInfo.sex === 1 ? '男': '女'}}</div>
+        <div class="value">{{ userInfo.sex === '1' ? '男': '女'}}</div>
       </div>
       <div class="info">
         <div class="label">电话</div>

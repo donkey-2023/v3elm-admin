@@ -21,6 +21,9 @@ module.exports = defineConfig({
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
       }
+    },
+    client: {
+      overlay: false
     }
   },
   configureWebpack: config => {

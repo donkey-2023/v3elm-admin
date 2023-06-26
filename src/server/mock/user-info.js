@@ -13,14 +13,16 @@ const userInfo = Mock.mock({
   email: '@email(163.com)',
   county: '@county(true)'
 })
+const sex = Math.random() > 0.5 ? '1' : '0'
+const phone = Mock.Random.phone()
 
 module.exports = function (app) {
   app.post('/getUserInfo', (req, res) => {
     res.send({
       code: 0,
       user: {
-        sex: Math.random() > 0.2 ? '1' : '0',
-        phone: Mock.Random.phone(),
+        sex: sex,
+        phone: phone,
         ...userInfo
       },
       msg: '操作成功'

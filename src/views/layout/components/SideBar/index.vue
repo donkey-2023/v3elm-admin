@@ -28,7 +28,6 @@ import ElmSubMenu from './elmSubMenu.vue'
 const store = useStore()
 const router = useRouter()
 
-const deviceType = computed(() => store.getters.deviceType)
 const isCollapse = computed(() => store.getters.isCollapse)
 const activeMenu = computed(() => store.getters.activeMenu)
 const allMenus = computed(() => store.getters.asyncRoutes)

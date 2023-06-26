@@ -8,7 +8,7 @@
         <el-form-item label="状态">
           <el-select v-model="dataForm.status">
             <el-option label="请选择" value></el-option>
-            <el-option label="正常" value="1"></el-option>
+            <el-option label="启用" value="1"></el-option>
             <el-option label="禁用" value="0"></el-option>
           </el-select>
         </el-form-item>
@@ -81,10 +81,10 @@
             </template>
           </el-table-column>
           <el-table-column prop="auth" label="权限标识" width="180" align="center" />
-          <el-table-column prop="path" label="路由地址" width="280" align="center" />
+          <el-table-column prop="path" label="组件路径" width="280" align="center" />
           <el-table-column prop="status" label="状态" width="180" align="center">
             <template #default="{ row }">
-              <el-tag v-if="row.status === '1'" type="success">正常</el-tag>
+              <el-tag v-if="row.status === '1'" type="success">启用</el-tag>
               <el-tag v-else type="danger">禁用</el-tag>
             </template>
           </el-table-column>
@@ -183,14 +183,12 @@ const del = (row, length) => {
     cancelButtonText: '取消',
     confirmButtonText: '确认',
     type: 'warning'
-  })
-    .then(() => {
-      ElMessage({
-        type: 'success',
-        message: '删除成功（仅供演示）！'
-      })
+  }).then(() => {
+    ElMessage({
+      type: 'success',
+      message: '删除成功（仅供演示）！'
     })
-    .catch(() => {})
+  })
 }
 
 const tableWrapRef = ref(null)
@@ -214,9 +212,7 @@ const stgDlgVisible = ref(false)
     }
   }
 }
-::v-deep .el-select.el-select--medium {
-  width: 90%;
-}
+
 .table-wrap {
   margin-top: 10px;
   padding: 10px;

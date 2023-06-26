@@ -11,6 +11,7 @@ const menus = [
     children: [
       {
         id: 'muid_01100',
+        pid: 'muid_01000',
         order: 1,
         icon: 'user',
         name: '用户管理',
@@ -23,6 +24,7 @@ const menus = [
       },
       {
         id: 'muid_01200',
+        pid: 'muid_01000',
         order: 2,
         icon: 'role',
         name: '角色管理',
@@ -35,6 +37,7 @@ const menus = [
       },
       {
         id: 'muid_01300',
+        pid: 'muid_01000',
         order: 3,
         icon: 'menu',
         name: '菜单管理',
@@ -47,6 +50,7 @@ const menus = [
       },
       {
         id: 'muid_01400',
+        pid: 'muid_01000',
         order: 4,
         icon: 'dept',
         name: '部门管理',

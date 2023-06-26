@@ -27,7 +27,7 @@
       </el-form-item>
       <el-form-item label="状态">
         <el-radio-group v-model="dataForm.status">
-          <el-radio label="1">正常</el-radio>
+          <el-radio label="1">启用</el-radio>
           <el-radio label="0">禁用</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -100,16 +100,7 @@ const handleClose = () => {
 </script>
 
 <style lang="scss" scoped>
-.el-input.el-input--medium {
-  width: 85%;
-}
 ::v-deep .el-select.el-select--medium {
-  width: 85%;
-  .el-input.el-input--medium {
-    width: 100%;
-    .el-input__inner {
-      width: 100%;
-    }
-  }
+  width: 85% !important;
 }
 </style>

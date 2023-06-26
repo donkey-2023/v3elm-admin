@@ -101,6 +101,15 @@
           </el-table-column>
         </table-column-wrap>
       </el-table>
+      <el-pagination
+        style="margin-top:10px;"
+        :page-size="5"
+        :page-sizes="[5,10, 20, 50, 100]"
+        layout="total,prev, pager, next,sizes "
+        :total="total"
+        @size-change="query"
+        @current-change="query"
+      />
       <add-or-update v-if="aouVisible" :initData="initData" @close="aouVisible = false"></add-or-update>
     </div>
   </el-card>
@@ -126,9 +135,11 @@ const dataForm = reactive({
 let arr = []
 // 查询
 const tableData = ref([])
+const total = ref(0)
 const query = () => {
   $http.post('/loadUsersInfo', dataForm).then(res => {
     arr = res.data || []
+    total.value = arr.length
     tableData.value = arr.filter(item => {
       const condition1 = dataForm.userName ? item.userName.indexOf(dataForm.userName) > -1 : true
       const condition2 = dataForm.phone ? item.phone.indexOf(dataForm.phone) > -1 : true
@@ -182,14 +193,12 @@ const del = (row, length) => {
     cancelButtonText: '取消',
     confirmButtonText: '确认',
     type: 'warning'
-  })
-    .then(() => {
-      ElMessage({
-        type: 'success',
-        message: '删除成功（仅供演示）！'
-      })
+  }).then(() => {
+    ElMessage({
+      type: 'success',
+      message: '删除成功（仅供演示）！'
     })
-    .catch(() => {})
+  })
 }
 
 const tableWrapRef = ref(null)

@@ -5,7 +5,7 @@ export const TOKEN = 'token'
 export const EFFECTIVE_TIME = 'effective_time'
 
 // TOKEN有效时长
-export const DURATION = 3600 * 1000
+export const DURATION = 7200 * 1000
 
 // 后台请求的菜单数据
 export const MENUS_LIST = 'menus_list'

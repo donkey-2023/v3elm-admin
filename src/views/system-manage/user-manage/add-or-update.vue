@@ -105,12 +105,6 @@ const handleClose = () => {
   width: 85%;
 }
 ::v-deep .el-select.el-select--medium {
-  width: 85%;
-  .el-input.el-input--medium {
-    width: 100%;
-    .el-input__inner {
-      width: 100%;
-    }
-  }
+  width: 85% !important;
 }
 </style>
