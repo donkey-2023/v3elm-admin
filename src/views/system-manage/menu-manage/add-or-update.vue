@@ -33,12 +33,11 @@
         <el-col :span="24">
           <el-form-item label="图标" prop="icon">
             <menu-icon @clickIcon="clickIcon" @click="showPop" :visible="popVisible">
-              <el-input
-                v-model="dataForm.icon"
-                readonly
-                placeholder="点击选择图标"
-                :prefix-icon="Search"
-              />
+              <el-input v-model="dataForm.icon" readonly placeholder="点击选择图标" :prefix-icon="Search">
+                <template #prepend>
+                  <svg-icon :icon="dataForm.icon"></svg-icon>
+                </template>
+              </el-input>
             </menu-icon>
           </el-form-item>
         </el-col>

@@ -4,7 +4,7 @@
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :title="initData.type === 'add' ? '新增' : '修改' "
-    :width="deviceType === 'mobile' ? '90%' : '30%'"
+    :width="deviceType === 'mobile' ? '90%' : '40%'"
     align-center
     @close="handleClose"
   >
@@ -100,7 +100,10 @@ const handleClose = () => {
 </script>
 
 <style lang="scss" scoped>
+.el-input.el-input--medium {
+  width: 90%;
+}
 ::v-deep .el-select.el-select--medium {
-  width: 85% !important;
+  width: 90% !important;
 }
 </style>
