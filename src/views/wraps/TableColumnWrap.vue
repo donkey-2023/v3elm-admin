@@ -13,9 +13,18 @@ const slots = useSlots()
 const defaultSlot = slots.default().filter(item => !!item.props)
 isNotEmpty(defaultSlot) &&
   defaultSlot.forEach((item, index) => {
+    const fixed = item.props.fixed || item.props.fixed === ''
+    // 固定左列的顺序值为1，普通列的顺序值为2，固定右列的顺序值为3
+    // 结合第52行，从而保证“自定义列”设置页面从上到下的显示排序为：固定左列 ->  普通列 -> 固定右列
+    let fixedOrder = 2
+    if (fixed) {
+      fixedOrder = item.props.fixed === 'right' ? 3 : 1
+    }
     const label = item.props.type === 'selection' ? '复选框' : '序号'
     columnsOption.push({
       label: item.props.label || label,
+      fixed,
+      fixedOrder,
       visible: true,
       props: item.props
     })
@@ -40,7 +49,7 @@ const myRender = () => {
 }
 const toBeRendered = myRender()
 defineExpose({
-  columnsOption
+  columnsOption: columnsOption.sort((a, b) => a.fixedOrder - b.fixedOrder)
 })
 </script>
 

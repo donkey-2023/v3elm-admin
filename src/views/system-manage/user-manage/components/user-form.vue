@@ -69,7 +69,7 @@
         style="width: 100%;"
       >
         <table-column-wrap ref="columnWrapRef" :key="$store.getters.key">
-          <el-table-column type="selection" label width="60" align="center" />
+          <el-table-column fixed type="selection" label width="60" align="center" />
           <el-table-column type="index" width="60" align="center" />
           <el-table-column prop="userName" label="用户名称" width="100" align="center" />
           <el-table-column prop="phone" label="手机号码" width="150" align="center" />
@@ -87,7 +87,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="creatTime" label="创建时间" width="200" align="center" />
-          <el-table-column label="操作" width="200" align="center">
+          <el-table-column fixed="right" label="操作" width="100" align="center">
             <template #default="scope">
               <div class="btn-icon-wrap">
                 <el-icon class="btn-icon" @click.prevent="update(scope.row)">

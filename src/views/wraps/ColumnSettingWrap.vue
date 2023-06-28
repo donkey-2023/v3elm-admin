@@ -16,12 +16,19 @@
           chosen-class="chosen"
           force-fallback="true"
           item-key="index"
+          filter=".fixed"
           handle=".right"
+          :move="onMove"
         >
           <template #item="{ element }">
-            <div class="item">
+            <div class="item" :class="{'fixed': element.fixed }">
               <div class="left">
-                <el-checkbox v-model="element.visible" label size="large" />
+                <el-checkbox
+                  v-model="element.visible"
+                  :disabled="element.fixed"
+                  label
+                  size="large"
+                />
                 <span class="text">{{ element.label }}</span>
               </div>
               <div class="right">
@@ -77,6 +84,13 @@ const set = type => {
     JSON.stringify(data) !== dataStr && store.dispatch('column/updateCache', JSON.parse(JSON.stringify(data)))
   }
   emits('close')
+}
+
+// 禁止其它列拖动到固定列的位置
+const onMove = evt => {
+  const index = evt.relatedContext.index
+  const list = evt.relatedContext.list
+  return !list[index].fixed
 }
 </script>
 
